@@ -1,10 +1,18 @@
-filename=main
+# build main.pdf as default
+.PHONY: default
+default: main.pdf
 
-pdf-firefox: pdf
-	firefox $(filename).pdf
+# build <filename>.pdf from <filename>.tex
+# it builds it twice (solve some references issue)
+%.pdf: %.tex
+	pdflatex $< -o $@ 2>&1 | tee errors.err
+	$(MAKE) $@
 
-pdf: $(filename).tex
-	pdflatex $(filename).tex
 
+.PHONY: clean
 clean:
-	rm $(filename).{aux,log,out,pdf}
+	rm errors.err
+	rm *.aux
+	rm *.log
+	rm *.out
+	rm *.pdf

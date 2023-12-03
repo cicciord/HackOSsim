@@ -1,4 +1,6 @@
+errors.err
 *.aux
 *.log
 *.out
 *.pdf
+*.toc
