@@ -7,10 +7,11 @@
 \hypersetup{hidelinks}
 
 \usepackage{graphicx}
+\graphicspath{{src/images}}
 
 % title
 \title{
-    \includegraphics[width=0.8\textwidth]{src/images/logo/polito_logo_2021_blu.jpg}
+    \includegraphics[width=0.8\textwidth]{logo/polito_logo_2021_blu.jpg}
     \\[1cm]
     Computer Architectures and Operating Systems
     \\[0.5cm] \hrulefill \\[0.5cm]
@@ -31,8 +32,23 @@
   \maketitle
   \newpage
 
-  % content index
-  \tableofcontents
-  \newpage
+% abstract
+\input{./src/abstract.tex}
+\clearpage
+
+% content index
+\tableofcontents
+\newpage
+
+\input{./src/sections/introduction.tex}
+
+
 
 \end{document}
+
+
+
+
+
+
+

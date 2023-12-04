@@ -1,21 +1,19 @@
 SRC_DIR := ./src
 BUILD_DIR := ./build
 
+ENTRY_POINT := $(SRC_DIR)/main.tex
+OUTPUT_FILE := $(BUILD_DIR)/main.pdf
+SRC_FILES := $(wildcard $(SRC_DIR)/*.tex)
+
 # build main.pdf as default
-.PHONY: default
-default: $(BUILD_DIR)/main.pdf
+$(OUTPUT_FILE): $(SRC_FILES) $(BUILD_DIR)
+	pdflatex -halt-on-error -shell-escape -output-directory $(BUILD_DIR) $(ENTRY_POINT) 2>&1 | tee $(BUILD_DIR)/errors.err
+	pdflatex -halt-on-error -shell-escape -output-directory $(BUILD_DIR) $(ENTRY_POINT) 2>&1 | tee $(BUILD_DIR)/errors.err
 
-# build <filename>.pdf from <filename>.tex
-# it builds it twice (solve some references issue)
-$(BUILD_DIR)/%.pdf: $(SRC_DIR)/%.tex
-	pdflatex -halt-on-error -output-directory $(BUILD_DIR) $< 2>&1 | tee errors.err
-	pdflatex -halt-on-error -output-directory $(BUILD_DIR) $< 2>&1 | tee errors.err
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
 
-.PHONY: clean
 clean:
-	rm errors.err
-	rm $(BUILD_DIR)/*.aux
-	rm $(BUILD_DIR)/*.log
-	rm $(BUILD_DIR)/*.out
-	rm $(BUILD_DIR)/*.pdf
-	rm $(BUILD_DIR)/*.toc
+	@rm -rf build
+
+.PHONY: default clean
