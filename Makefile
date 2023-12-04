@@ -9,7 +9,7 @@ default: $(BUILD_DIR)/main.pdf
 # it builds it twice (solve some references issue)
 $(BUILD_DIR)/%.pdf: $(SRC_DIR)/%.tex
 	pdflatex -halt-on-error -output-directory $(BUILD_DIR) $< 2>&1 | tee errors.err
-	$(MAKE) $@
+	pdflatex -halt-on-error -output-directory $(BUILD_DIR) $< 2>&1 | tee errors.err
 
 .PHONY: clean
 clean:
