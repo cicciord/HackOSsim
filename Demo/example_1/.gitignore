@@ -1,0 +1,4 @@
+build/output/*.map
+build/output/*.o
+build/output/*.d
+build/output/*.out
