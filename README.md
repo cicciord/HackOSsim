@@ -18,6 +18,8 @@ Clone this repo running the following command. Be sure to have git installed on 
 git clone --recurse-submodules https://github.com/cicciord/HackOSsim.git
 ```
 
+#### Submodules
+
 Beware that this project includes _submodules_, so you need to run git clone with the flag `--recurse-submodules` otherwise the content of the submodule directories will not be cloned.
 
 If you run the command without the flag you can run the following command, after changing the directory in the cloned one, to download the submodules content in a second time.
@@ -26,6 +28,9 @@ If you run the command without the flag you can run the following command, after
 cd HackOSsim
 git submodule update --init --recursive
 ```
+
+#### Contributors
+If you are a student working on this project, please run the `init.sh` script after cloning the repo.
 
 ### Explore the Project
 
