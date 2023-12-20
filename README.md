@@ -24,7 +24,7 @@ If you run the command without the flag you can run the following command, after
 
 ```bash
 cd HackOSsim
-git submodule update --init -recursive
+git submodule update --init --recursive
 ```
 
 ### Explore the Project
