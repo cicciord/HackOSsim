@@ -8,14 +8,14 @@ case "$user_name" in
 "cicciord")
 	dev_id="(s323518) "
 	;;
-"Contributor2 Name")
-	dev_id="(dev_id_contributor_2) "
+"leoriz1")
+	dev_id="(s328764) "
 	;;
-"Contributor3 Name")
-	dev_id="(dev_id_contributor_3) "
+"fred")
+	dev_id="(s322787) "
 	;;
-"Contributor4 Name")
-	dev_id="(dev_id_contributor_4) "
+"s328743_poli")
+	dev_id="(s328743) "
 	;;
 *)
 	dev_id=""
