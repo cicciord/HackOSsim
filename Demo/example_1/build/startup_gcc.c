@@ -63,11 +63,11 @@ const uint32_t *isr_vector[] __attribute__((section(".isr_vector"))) = {
     0,                              // reserved
     0,                              // reserved
     0,                              // reserved   -6
-    0,
-    0,
-    0, // reserved
-    0,
-    0,
+    (uint32_t *)&Default_Handler,   // SVC_Handler              -5
+    (uint32_t *)&Default_Handler,   // DebugMon_Handler         -4
+    0,                              // reserved
+    (uint32_t *)&Default_Handler,   // PendSV handler    -2
+    (uint32_t *)&Default_Handler,   // SysTick_Handler   -1
     0,
     0,
     0,
