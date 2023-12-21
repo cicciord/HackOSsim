@@ -5,25 +5,25 @@ user_name=$(git config user.name)
 
 # Define dev_id mapping for contributors
 case "$user_name" in
-    "cicciord")
-        dev_id="(s323518)"
-        ;;
-    "Contributor2 Name")
-        dev_id="(dev_id_contributor_2)"
-        ;;
-    "Contributor3 Name")
-        dev_id="(dev_id_contributor_3)"
-        ;;
-    "Contributor4 Name")
-        dev_id="(dev_id_contributor_4)"
-        ;;
-    *)
-        dev_id=""
-        ;;
+"cicciord")
+	dev_id="(s323518) "
+	;;
+"Contributor2 Name")
+	dev_id="(dev_id_contributor_2) "
+	;;
+"Contributor3 Name")
+	dev_id="(dev_id_contributor_3) "
+	;;
+"Contributor4 Name")
+	dev_id="(dev_id_contributor_4) "
+	;;
+*)
+	dev_id=""
+	;;
 esac
 
 # Check if dev_id is already present in the commit message
 if ! grep -q "$dev_id" "$1"; then
-    # Prepend dev_id to the commit message
-    sed -i.bak -e "1s/^/$dev_id /" "$1"
+	# Prepend dev_id to the commit message
+	sed -i.bak -e "1s/^/$dev_id/" "$1"
 fi
