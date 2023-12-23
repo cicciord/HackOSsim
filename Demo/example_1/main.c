@@ -16,7 +16,7 @@ TaskHandle_t xTaskHandle2=NULL;
 #define TASK_STACK_SIZE  520
 
 /* Task priorities. */
-#define TASK1_PRIORITY						( tskIDLE_PRIORITY + 4 )
+#define TASK1_PRIORITY			  ( tskIDLE_PRIORITY + 4 )
 #define TASK2_PRIORITY            ( tskIDLE_PRIORITY + 4 )
 
 void vTaskFunction1(void *params);
@@ -40,7 +40,7 @@ void main(void) {
   prvUARTInit();
 
   xTaskCreate(vTaskFunction1,"Task-1",TASK_STACK_SIZE,NULL,TASK1_PRIORITY,&xTaskHandle1);
-	xTaskCreate(vTaskFunction2,"Task-2",TASK_STACK_SIZE,NULL,TASK2_PRIORITY,&xTaskHandle2);
+  xTaskCreate(vTaskFunction2,"Task-2",TASK_STACK_SIZE,NULL,TASK2_PRIORITY,&xTaskHandle2);
   
   /* Start the scheduler. */
 	vTaskStartScheduler();
@@ -59,6 +59,17 @@ void vTaskFunction1(void *params){
 	for(;;){
 
 		printf("hello from task 1");
+
+		vTaskDelay(pdMS_TO_TICKS(1000));
+	}
+}
+
+//Task 2 function
+void vTaskFunction2(void *params){
+
+	for(;;){
+
+		printf("hello from task 2");
 
 		vTaskDelay(pdMS_TO_TICKS(1000));
 	}
