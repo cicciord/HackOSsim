@@ -55,6 +55,7 @@ static void prvUARTInit(void) {
 
 //Task 1 function
 void vTaskFunction1(void *params){
+	(void)params; // Evita il warning "unused parameter"
 
 	for(;;){
 
@@ -66,6 +67,7 @@ void vTaskFunction1(void *params){
 
 //Task 2 function
 void vTaskFunction2(void *params){
+	(void)params; // Evita il warning "unused parameter"
 
 	for(;;){
 
