@@ -1,5 +1,5 @@
 /// TODO: Make a demo application where multiple tasks are created and show how the scheduling is handled with same or different priorities.
-//In this first example , two task has got the same priority
+//In this first example , two task has got the same priority , Freertos use  "Round-robin" which means that tasks that share a priority take turns entering the Running state
 #include <stdint.h>
 #include <stdio.h>
 #include "FreeRTOSConfig.h"
