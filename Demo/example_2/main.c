@@ -1,6 +1,4 @@
-/*Make a demo application where multiple tasks are created and show how the scheduling is handled with same priorities.
-*Here, Round Robin is used so tasks that share a priority take turns entering the Running state
-*/
+
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -82,7 +80,17 @@ required UART registers. */
 #define UART0_BAUDDIV	( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 16UL ) ) ) )
 #define TX_BUFFER_MASK	( 1UL )
 
-
+/*"Check" task - This only executes every five (simulated) seconds.  Its main
+ * function is to check the tests running in the standard demo tasks have never
+ * failed and that all the tasks are still running.  If that is the case the
+ * check task prints "PASS : nnnn (x)", where nnnn is the current tick count and
+ * x is the number of times the interrupt nesting test executed while interrupts
+ * were nested.  If the check task discovers a failed test or a stalled task
+ * it prints a message that indicates which task reported the error or stalled.
+ * Normally the check task would have the highest priority to keep its timing
+ * jitter to a minimum.  In this case the check task is run at the idle priority
+ * to ensure other tasks are not stalled by it writing to a slow UART using a
+ * polling driver.
 
 /*
  * Only the comprehensive demo uses application hook (callback) functions.  See
