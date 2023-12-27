@@ -9,7 +9,7 @@ Everything needed to build the project is in the build directory
 To compile the project go in the build directory
 
 ```bash
-cd build
+cd build/gcc
 ```
 
 and run this command

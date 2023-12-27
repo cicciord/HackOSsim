@@ -3,7 +3,7 @@ IMAGE := RTOSDemo.out
 SUB_MAKEFILE_DIR = ./library-makefiles
 
 # The directory that contains the /source and /demo sub directories.
-FREERTOS_ROOT = ./../../../..
+HackOSsim = ./../../../..
 
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-gcc
@@ -18,7 +18,7 @@ CFLAGS += $(INCLUDE_DIRS) -nostartfiles -ffreestanding -mthumb -mcpu=cortex-m3 \
 #
 # Kernel build.
 #
-KERNEL_DIR = $(FREERTOS_ROOT)/Source
+KERNEL_DIR = $(HackOSsim)/Source
 KERNEL_PORT_DIR += $(KERNEL_DIR)/portable/GCC/ARM_CM3
 INCLUDE_DIRS += -I$(KERNEL_DIR)/include \
 				-I$(KERNEL_PORT_DIR)
@@ -36,7 +36,7 @@ SOURCE_FILES += $(KERNEL_DIR)/portable/GCC/ARM_CM3/port.c
 # Common demo files for the "full" build, as opposed to the "blinky" build - 
 # these files are build by all the FreeRTOS kernel demos.
 #
-DEMO_ROOT = $(FREERTOS_ROOT)/Demo
+DEMO_ROOT = $(HackOSsim)/Demo
 
 COMMON_DEMO_FILES = $(DEMO_PROJECT)/Common/Minimal
 INCLUDE_DIRS += -I$(DEMO_PROJECT)/Common/include
