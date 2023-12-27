@@ -284,7 +284,7 @@ void vTaskFunction1(void *params){
 
 	for(;;){
 
-		printf("hello from task1 ");
+		printf("hello from task1\n ");
 
 		vTaskDelay(pdMS_TO_TICKS(1000));
 	}
@@ -296,7 +296,7 @@ void vTaskFunction2(void *params){
 
 	for(;;){
 
-		printf("hello from task2 ");
+		printf("hello from task2\n ");
 
 		vTaskDelay(pdMS_TO_TICKS(1000));
 	}

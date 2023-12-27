@@ -746,7 +746,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x14f ./output/BlockQ.o
  .debug_macro   0x0000000000000000       0x8e ./output/BlockQ.o
  .debug_line    0x0000000000000000      0x4ef ./output/BlockQ.o
- .debug_str     0x0000000000000000    0x11981 ./output/BlockQ.o
+ .debug_str     0x0000000000000000    0x11918 ./output/BlockQ.o
  .comment       0x0000000000000000       0x4a ./output/BlockQ.o
  .debug_frame   0x0000000000000000       0xa0 ./output/BlockQ.o
  .ARM.attributes
@@ -1148,7 +1148,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xc3 ./output/integer.o
  .debug_macro   0x0000000000000000      0x14f ./output/integer.o
  .debug_line    0x0000000000000000      0x447 ./output/integer.o
- .debug_str     0x0000000000000000    0x11009 ./output/integer.o
+ .debug_str     0x0000000000000000    0x10fa0 ./output/integer.o
  .comment       0x0000000000000000       0x4a ./output/integer.o
  .debug_frame   0x0000000000000000       0x7c ./output/integer.o
  .ARM.attributes
@@ -7096,79 +7096,79 @@ LOAD linker stubs
  .debug_line    0x000000000001157a      0x34e ./output/startup_gcc.o
  .debug_line    0x00000000000118c8      0x407 ./output/printf-stdarg.o
 
-.debug_str      0x0000000000000000    0x2b2b1
- .debug_str     0x0000000000000000    0x13092 ./output/tasks.o
-                                      0x133e6 (size before relaxing)
- .debug_str     0x0000000000013092       0xa9 ./output/list.o
-                                       0xfb29 (size before relaxing)
- .debug_str     0x000000000001313b     0x14bb ./output/queue.o
-                                      0x12600 (size before relaxing)
- .debug_str     0x00000000000145f6      0x66f ./output/timers.o
-                                      0x129cc (size before relaxing)
- .debug_str     0x0000000000014c65      0x55c ./output/event_groups.o
-                                      0x11eda (size before relaxing)
- .debug_str     0x00000000000151c1      0xf72 ./output/stream_buffer.o
-                                      0x11ede (size before relaxing)
- .debug_str     0x0000000000016133      0x6ed ./output/heap_4.o
-                                      0x115a4 (size before relaxing)
- .debug_str     0x0000000000016820      0x7a8 ./output/port.o
-                                       0xea0f (size before relaxing)
- .debug_str     0x0000000000016fc8     0x137d ./output/AbortDelay.o
-                                      0x127b9 (size before relaxing)
- .debug_str     0x0000000000018345      0x2df ./output/blocktim.o
-                                       0xedd1 (size before relaxing)
- .debug_str     0x0000000000018624      0x1e6 ./output/countsem.o
-                                       0xf73b (size before relaxing)
- .debug_str     0x000000000001880a      0x137 ./output/death.o
-                                      0x10faf (size before relaxing)
- .debug_str     0x0000000000018941      0x327 ./output/dynamic.o
-                                      0x124f6 (size before relaxing)
- .debug_str     0x0000000000018c68      0x60c ./output/EventGroupsDemo.o
-                                       0xf44b (size before relaxing)
- .debug_str     0x0000000000019274      0x3c2 ./output/GenQTest.o
-                                      0x125b0 (size before relaxing)
- .debug_str     0x0000000000019636      0xb07 ./output/IntQueue.o
-                                      0x121e8 (size before relaxing)
- .debug_str     0x000000000001a13d     0xb48c ./output/IntQueueTimer.o
-                                      0x1773b (size before relaxing)
- .debug_str     0x00000000000255c9      0x2d1 ./output/IntSemTest.o
-                                      0x124d6 (size before relaxing)
- .debug_str     0x000000000002589a     0x1ccc ./output/MessageBufferAMP.o
-                                      0x12cb1 (size before relaxing)
- .debug_str     0x0000000000027566      0x71e ./output/MessageBufferDemo.o
-                                      0x13271 (size before relaxing)
- .debug_str     0x0000000000027c84      0x241 ./output/PollQ.o
-                                      0x11958 (size before relaxing)
- .debug_str     0x0000000000027ec5      0x20e ./output/QPeek.o
-                                      0x123c1 (size before relaxing)
- .debug_str     0x00000000000280d3      0x139 ./output/QueueOverwrite.o
-                                       0xec12 (size before relaxing)
- .debug_str     0x000000000002820c      0x612 ./output/QueueSet.o
-                                      0x12260 (size before relaxing)
- .debug_str     0x000000000002881e      0x118 ./output/QueueSetPolling.o
-                                      0x11d2d (size before relaxing)
- .debug_str     0x0000000000028936      0x325 ./output/recmutex.o
-                                       0xf8d3 (size before relaxing)
- .debug_str     0x0000000000028c5b      0x21c ./output/semtest.o
-                                      0x12405 (size before relaxing)
- .debug_str     0x0000000000028e77      0x50a ./output/StaticAllocation.o
-                                      0x1098a (size before relaxing)
- .debug_str     0x0000000000029381      0x4b5 ./output/StreamBufferDemo.o
-                                      0x12961 (size before relaxing)
- .debug_str     0x0000000000029836      0x1a7 ./output/StreamBufferInterrupt.o
-                                      0x122d4 (size before relaxing)
- .debug_str     0x00000000000299dd      0x384 ./output/TaskNotify.o
-                                      0x10da3 (size before relaxing)
- .debug_str     0x0000000000029d61      0x2cb ./output/TaskNotifyArray.o
-                                      0x10eb5 (size before relaxing)
- .debug_str     0x000000000002a02c      0x5bd ./output/TimerDemo.o
-                                      0x11cb3 (size before relaxing)
- .debug_str     0x000000000002a5e9      0x61d ./output/main.o
-                                      0x13b3c (size before relaxing)
- .debug_str     0x000000000002ac06      0x4c8 ./output/startup_gcc.o
-                                       0x7c79 (size before relaxing)
- .debug_str     0x000000000002b0ce      0x1e3 ./output/printf-stdarg.o
-                                       0x2f64 (size before relaxing)
+.debug_str      0x0000000000000000    0x2b248
+ .debug_str     0x0000000000000000    0x13029 ./output/tasks.o
+                                      0x1337d (size before relaxing)
+ .debug_str     0x0000000000013029       0xa9 ./output/list.o
+                                       0xfac0 (size before relaxing)
+ .debug_str     0x00000000000130d2     0x14bb ./output/queue.o
+                                      0x12597 (size before relaxing)
+ .debug_str     0x000000000001458d      0x66f ./output/timers.o
+                                      0x12963 (size before relaxing)
+ .debug_str     0x0000000000014bfc      0x55c ./output/event_groups.o
+                                      0x11e71 (size before relaxing)
+ .debug_str     0x0000000000015158      0xf72 ./output/stream_buffer.o
+                                      0x11e75 (size before relaxing)
+ .debug_str     0x00000000000160ca      0x6ed ./output/heap_4.o
+                                      0x1153b (size before relaxing)
+ .debug_str     0x00000000000167b7      0x7a8 ./output/port.o
+                                       0xe9a6 (size before relaxing)
+ .debug_str     0x0000000000016f5f     0x137d ./output/AbortDelay.o
+                                      0x12750 (size before relaxing)
+ .debug_str     0x00000000000182dc      0x2df ./output/blocktim.o
+                                       0xed68 (size before relaxing)
+ .debug_str     0x00000000000185bb      0x1e6 ./output/countsem.o
+                                       0xf6d2 (size before relaxing)
+ .debug_str     0x00000000000187a1      0x137 ./output/death.o
+                                      0x10f46 (size before relaxing)
+ .debug_str     0x00000000000188d8      0x327 ./output/dynamic.o
+                                      0x1248d (size before relaxing)
+ .debug_str     0x0000000000018bff      0x60c ./output/EventGroupsDemo.o
+                                       0xf3e2 (size before relaxing)
+ .debug_str     0x000000000001920b      0x3c2 ./output/GenQTest.o
+                                      0x12547 (size before relaxing)
+ .debug_str     0x00000000000195cd      0xb07 ./output/IntQueue.o
+                                      0x1217f (size before relaxing)
+ .debug_str     0x000000000001a0d4     0xb48c ./output/IntQueueTimer.o
+                                      0x176d2 (size before relaxing)
+ .debug_str     0x0000000000025560      0x2d1 ./output/IntSemTest.o
+                                      0x1246d (size before relaxing)
+ .debug_str     0x0000000000025831     0x1ccc ./output/MessageBufferAMP.o
+                                      0x12c48 (size before relaxing)
+ .debug_str     0x00000000000274fd      0x71e ./output/MessageBufferDemo.o
+                                      0x13208 (size before relaxing)
+ .debug_str     0x0000000000027c1b      0x241 ./output/PollQ.o
+                                      0x118ef (size before relaxing)
+ .debug_str     0x0000000000027e5c      0x20e ./output/QPeek.o
+                                      0x12358 (size before relaxing)
+ .debug_str     0x000000000002806a      0x139 ./output/QueueOverwrite.o
+                                       0xeba9 (size before relaxing)
+ .debug_str     0x00000000000281a3      0x612 ./output/QueueSet.o
+                                      0x121f7 (size before relaxing)
+ .debug_str     0x00000000000287b5      0x118 ./output/QueueSetPolling.o
+                                      0x11cc4 (size before relaxing)
+ .debug_str     0x00000000000288cd      0x325 ./output/recmutex.o
+                                       0xf86a (size before relaxing)
+ .debug_str     0x0000000000028bf2      0x21c ./output/semtest.o
+                                      0x1239c (size before relaxing)
+ .debug_str     0x0000000000028e0e      0x50a ./output/StaticAllocation.o
+                                      0x10921 (size before relaxing)
+ .debug_str     0x0000000000029318      0x4b5 ./output/StreamBufferDemo.o
+                                      0x128f8 (size before relaxing)
+ .debug_str     0x00000000000297cd      0x1a7 ./output/StreamBufferInterrupt.o
+                                      0x1226b (size before relaxing)
+ .debug_str     0x0000000000029974      0x384 ./output/TaskNotify.o
+                                      0x10d3a (size before relaxing)
+ .debug_str     0x0000000000029cf8      0x2cb ./output/TaskNotifyArray.o
+                                      0x10e4c (size before relaxing)
+ .debug_str     0x0000000000029fc3      0x5bd ./output/TimerDemo.o
+                                      0x11c4a (size before relaxing)
+ .debug_str     0x000000000002a580      0x61d ./output/main.o
+                                      0x13ad3 (size before relaxing)
+ .debug_str     0x000000000002ab9d      0x4c8 ./output/startup_gcc.o
+                                       0x7c10 (size before relaxing)
+ .debug_str     0x000000000002b065      0x1e3 ./output/printf-stdarg.o
+                                       0x2efb (size before relaxing)
 
 .comment        0x0000000000000000       0x49
  .comment       0x0000000000000000       0x49 ./output/tasks.o
