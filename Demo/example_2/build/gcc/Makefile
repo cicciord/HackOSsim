@@ -3,7 +3,7 @@ IMAGE := RTOSDemo.out
 SUB_MAKEFILE_DIR = ./library-makefiles
 
 # The directory that contains the /source and /demo sub directories.
-HackOSsim = ./../../../..
+EXAMPLE_2 = ./../../
 
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-gcc
@@ -18,7 +18,7 @@ CFLAGS += $(INCLUDE_DIRS) -nostartfiles -ffreestanding -mthumb -mcpu=cortex-m3 \
 #
 # Kernel build.
 #
-KERNEL_DIR = $(HackOSsim)/Source
+KERNEL_DIR = $(EXAMPLE_2)/Source
 KERNEL_PORT_DIR += $(KERNEL_DIR)/portable/GCC/ARM_CM3
 INCLUDE_DIRS += -I$(KERNEL_DIR)/include \
 				-I$(KERNEL_PORT_DIR)
@@ -31,53 +31,15 @@ SOURCE_FILES += $(KERNEL_DIR)/event_groups.c
 SOURCE_FILES += $(KERNEL_DIR)/stream_buffer.c
 SOURCE_FILES += $(KERNEL_DIR)/portable/MemMang/heap_4.c
 SOURCE_FILES += $(KERNEL_DIR)/portable/GCC/ARM_CM3/port.c
+SOURCE_FILES += (EXAMPLE_2)/IntQueue.c
+SOURCE_FILES += (EXAMPLE_2)/IntQueueTimer.c
 
-#
-# Common demo files for the "full" build, as opposed to the "blinky" build - 
-# these files are build by all the FreeRTOS kernel demos.
-#
-DEMO_ROOT = $(HackOSsim)/Demo
 
-COMMON_DEMO_FILES = $(DEMO_PROJECT)/Common/Minimal
-INCLUDE_DIRS += -I$(DEMO_PROJECT)/Common/include
-VPATH += $(COMMON_DEMO_FILES)
-SOURCE_FILES += (COMMON_DEMO_FILES)/AbortDelay.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/BlockQ.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/blocktim.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/countsem.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/death.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/dynamic.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/EventGroupsDemo.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/GenQTest.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/integer.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/IntQueue.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/IntQueueTimer.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/IntSemTest.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/MessageBufferAMP.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/MessageBufferDemo.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/PollQ.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/QPeek.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/QueueOverwrite.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/QueueSet.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/QueueSetPolling.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/recmutex.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/semtest.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/StaticAllocation.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/StreamBufferDemo.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/StreamBufferInterrupt.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/TaskNotify.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/TaskNotifyArray.c
-SOURCE_FILES += (COMMON_DEMO_FILES)/TimerDemo.c
-
-#
-# Application entry point.  main_blinky is self contained.  main_full builds
-# the above common demo (and test) files too.
-#
-DEMO_PROJECT = $(DEMO_ROOT)/example_2
-VPATH += $(DEMO_PROJECT)
-INCLUDE_DIRS += -I$(DEMO_PROJECT) -I$(DEMO_PROJECT)/CMSIS
-SOURCE_FILES += (DEMO_PROJECT)/main.c
+VPATH += $(EXAMPLE_2)
+INCLUDE_DIRS += -I$(EXAMPLE_2) -I$(EXAMPLE_2)/CMSIS
+SOURCE_FILES += (EXAMPLE_2)/main.c
 SOURCE_FILES += ./startup_gcc.c
+
 # Lightweight print formatting to use in place of the heavier GCC equivalent.
 SOURCE_FILES += ./printf-stdarg.c
 

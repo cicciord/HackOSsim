@@ -9,31 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Demo app includes. */
-#include "death.h"
-#include "blocktim.h"
-#include "semtest.h"
-#include "PollQ.h"
-#include "GenQTest.h"
-#include "QPeek.h"
-#include "recmutex.h"
-#include "IntQueue.h"
-#include "QueueSet.h"
-#include "EventGroupsDemo.h"
-#include "MessageBufferDemo.h"
-#include "StreamBufferDemo.h"
-#include "AbortDelay.h"
-#include "countsem.h"
-#include "dynamic.h"
-#include "MessageBufferAMP.h"
-#include "QueueOverwrite.h"
-#include "QueueSetPolling.h"
-#include "StaticAllocation.h"
-#include "TaskNotify.h"
-#include "TaskNotifyArray.h"
-#include "TimerDemo.h"
-#include "StreamBufferInterrupt.h"
-#include "IntSemTest.h"
 
 
 //Task priorities
@@ -52,23 +27,9 @@ void vTaskFunction2(void *params);
 /*-----------------------------------------------------------*/
 
 /* Task priorities. */
-#define mainQUEUE_POLL_PRIORITY				( tskIDLE_PRIORITY + 2 )
-#define mainCHECK_TASK_PRIORITY				( tskIDLE_PRIORITY + 3 )
-#define mainSEM_TEST_PRIORITY				( tskIDLE_PRIORITY + 1 )
-#define mainCREATOR_TASK_PRIORITY           ( tskIDLE_PRIORITY + 3 )
-#define mainGEN_QUEUE_TASK_PRIORITY			( tskIDLE_PRIORITY )
+
 #define TASK1_PRIORITY						( tskIDLE_PRIORITY + 4 )
 #define TASK2_PRIORITY                      ( tskIDLE_PRIORITY + 4 )
-/* Stack sizes are defined relative to configMINIMAL_STACK_SIZE so they scale
-across projects that have that constant set differently - in this case the
-constant is different depending on the compiler in use. */
-#define mainMESSAGE_BUFFER_STACK_SIZE		( configMINIMAL_STACK_SIZE + ( configMINIMAL_STACK_SIZE >> 1 ) )
-#define mainCHECK_TASK_STACK_SIZE			( configMINIMAL_STACK_SIZE + ( configMINIMAL_STACK_SIZE >> 1 ) )
-/*-----------------------------------------------------------*/
-
-/* The task that checks the operation of all the other standard demo tasks, as
- * described at the top of this file. */
-static void prvCheckTask( void *pvParameters );
 
 
 /* printf() output uses the UART.  These constants define the addresses of the
@@ -79,18 +40,6 @@ required UART registers. */
 #define UART0_CTRL		( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 8UL ) ) ) )
 #define UART0_BAUDDIV	( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 16UL ) ) ) )
 #define TX_BUFFER_MASK	( 1UL )
-
-/*"Check" task - This only executes every five (simulated) seconds.  Its main
- * function is to check the tests running in the standard demo tasks have never
- * failed and that all the tasks are still running.  If that is the case the
- * check task prints "PASS : nnnn (x)", where nnnn is the current tick count and
- * x is the number of times the interrupt nesting test executed while interrupts
- * were nested.  If the check task discovers a failed test or a stalled task
- * it prints a message that indicates which task reported the error or stalled.
- * Normally the check task would have the highest priority to keep its timing
- * jitter to a minimum.  In this case the check task is run at the idle priority
- * to ensure other tasks are not stalled by it writing to a slow UART using a
- * polling driver.
 
 /*
  * Only the comprehensive demo uses application hook (callback) functions.  See
@@ -112,176 +61,22 @@ void main( void )
 /* Hardware initialisation.  printf() output uses the UART for IO. */
 prvUARTInit();
 
-/* Start the standard demo tasks. */
-	vStartGenericQueueTasks( mainGEN_QUEUE_TASK_PRIORITY );
-	vStartInterruptQueueTasks();
-	vStartRecursiveMutexTasks();
-	vCreateBlockTimeTasks();
-	vStartSemaphoreTasks( mainSEM_TEST_PRIORITY );
-	vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
-	vStartQueuePeekTasks();
-	vStartQueueSetTasks();
-	vStartEventGroupTasks();
-	vStartMessageBufferTasks( mainMESSAGE_BUFFER_STACK_SIZE );
-	vStartStreamBufferTasks();
-	vCreateAbortDelayTasks();
-	vStartCountingSemaphoreTasks();
-	vStartDynamicPriorityTasks();
-	vStartMessageBufferAMPTasks( configMINIMAL_STACK_SIZE );
-	vStartQueueOverwriteTask( tskIDLE_PRIORITY );
-	vStartQueueSetPollingTask();
-	vStartStaticallyAllocatedTasks();
-	vStartTaskNotifyTask();
-	vStartTaskNotifyArrayTask();
-	vStartTimerDemoTask( 50 );
-	vStartStreamBufferInterruptDemo();
-	vStartInterruptSemaphoreTasks();
+/* Start the  tasks. */
+	
 	xTaskCreate(vTaskFunction1,"Task-1",TASK_STACK_SIZE,NULL,TASK1_PRIORITY,&xTaskHandle1);
 	xTaskCreate(vTaskFunction2,"Task-2",TASK_STACK_SIZE,NULL,TASK2_PRIORITY,&xTaskHandle2);
-	xTaskCreate( prvCheckTask, "Check", mainCHECK_TASK_STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
-
-
-
-	/* The suicide tasks must be created last as they need to know how many
-	tasks were running prior to their creation in order to ascertain whether
-	or not the correct/expected number of tasks are running at any given time. */
-	vCreateSuicidalTasks( mainCREATOR_TASK_PRIORITY );
-
 
 	/* Start the scheduler. */
 	vTaskStartScheduler();
 
-	/* If configSUPPORT_STATIC_ALLOCATION was false then execution would only
-	get here if there was insufficient heap memory to create either the idle or
-	timer tasks.  As static allocation is used execution should never be able
-	to reach here. */
 	for( ;; );
 }
 
-/* See the comments at the top of this file. */
-static void prvCheckTask( void *pvParameters )
-{
-static const char * pcMessage = "PASS";
-const TickType_t xTaskPeriod = pdMS_TO_TICKS( 5000UL );
-TickType_t xPreviousWakeTime;
-extern uint32_t ulNestCount;
 
-    /* Avoid warning about unused parameter. */
-    ( void ) pvParameters;
-
-	xPreviousWakeTime = xTaskGetTickCount();
-
-	for( ;; )
-	{
-		vTaskDelayUntil( &xPreviousWakeTime, xTaskPeriod );
-
-		/* Has an error been found in any task? */
-		if( xAreStreamBufferTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreStreamBufferTasksStillRunning() returned false";
-		}
-		else if( xAreMessageBufferTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreMessageBufferTasksStillRunning() returned false";
-		}
-		if( xAreGenericQueueTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreGenericQueueTasksStillRunning() returned false";
-		}
-	    else if( xIsCreateTaskStillRunning() != pdTRUE )
-	    {
-	        pcMessage = "xIsCreateTaskStillRunning() returned false";
-	    }
-		else if( xAreIntQueueTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreIntQueueTasksStillRunning() returned false";
-		}
-		else if( xAreBlockTimeTestTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreBlockTimeTestTasksStillRunning() returned false";
-		}
-		else if( xAreSemaphoreTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreSemaphoreTasksStillRunning() returned false";
-		}
-		else if( xArePollingQueuesStillRunning() != pdTRUE )
-		{
-			pcMessage = "xArePollingQueuesStillRunning() returned false";
-		}
-		else if( xAreQueuePeekTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreQueuePeekTasksStillRunning() returned false";
-		}
-		else if( xAreRecursiveMutexTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreRecursiveMutexTasksStillRunning() returned false";
-		}
-		else if( xAreQueueSetTasksStillRunning() != pdPASS )
-		{
-			pcMessage = "xAreQueueSetTasksStillRunning() returned false";
-		}
-		else if( xAreEventGroupTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreEventGroupTasksStillRunning() returned false";
-		}
-		else if( xAreAbortDelayTestTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreAbortDelayTestTasksStillRunning() returned false";
-		}
-		else if( xAreCountingSemaphoreTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreCountingSemaphoreTasksStillRunning() returned false";
-		}
-		else if( xAreDynamicPriorityTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreDynamicPriorityTasksStillRunning() returned false";
-		}
-		else if( xAreMessageBufferAMPTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreMessageBufferAMPTasksStillRunning() returned false";
-		}
-		else if( xIsQueueOverwriteTaskStillRunning() != pdTRUE )
-		{
-			pcMessage = "xIsQueueOverwriteTaskStillRunning() returned false";
-		}
-		else if( xAreQueueSetPollTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreQueueSetPollTasksStillRunning() returned false";
-		}
-		else if( xAreStaticAllocationTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreStaticAllocationTasksStillRunning() returned false";
-		}
-		else if( xAreTaskNotificationTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreTaskNotificationTasksStillRunning() returned false";
-		}
-		else if( xAreTaskNotificationArrayTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreTaskNotificationArrayTasksStillRunning() returned false";
-		}
-		else if( xAreTimerDemoTasksStillRunning( xTaskPeriod ) != pdTRUE )
-		{
-			pcMessage = "xAreTimerDemoTasksStillRunning() returned false";
-		}
-		else if( xIsInterruptStreamBufferDemoStillRunning() != pdTRUE )
-		{
-			pcMessage = "xIsInterruptStreamBufferDemoStillRunning() returned false";
-		}
-		else if( xAreInterruptSemaphoreTasksStillRunning() != pdTRUE )
-		{
-			pcMessage = "xAreInterruptSemaphoreTasksStillRunning() returned false";
-		}
-
-		/* It is normally not good to call printf() from an embedded system,
-		although it is ok in this simulated case. */
-		printf( "%s : %d (%d)\r\n", pcMessage, (int) xTaskGetTickCount(), ( int ) ulNestCount );
-	}
-}
 
 //Task 1 function
 void vTaskFunction1(void *params){
-
+	
 	for(;;){
 
 		printf("hello from task1\n ");
@@ -305,89 +100,25 @@ void vTaskFunction2(void *params){
 
 void vFullDemoTickHookFunction( void )
 {
-	/* Write to a queue that is in use as part of the queue set demo to
-	demonstrate using queue sets from an ISR. */
-	vQueueSetAccessQueueSetFromISR();
-
-	/* Call the event group ISR tests. */
-	vPeriodicEventGroupsProcessing();
-
-	/* Exercise stream buffers from interrupts. */
-	vPeriodicStreamBufferProcessing();
-
-	/* Exercise using queue overwrites from interrupts. */
-	vQueueOverwritePeriodicISRDemo();
-
-	/* Exercise using Queue Sets from interrupts. */
-	vQueueSetPollingInterruptAccess();
-
-	/* Exercise using task notifications from interrupts. */
-	xNotifyTaskFromISR();
-	xNotifyArrayTaskFromISR();
-
-	/* Exercise software timers from interrupts. */
-	vTimerPeriodicISRTests();
-
-	/* Exercise stream buffers from interrupts. */
-	vBasicStreamBufferSendFromISR();
-
-	/* Exercise semaphores from interrupts. */
-	vInterruptSemaphorePeriodicTest();
+	
+	
 }
-/*-----------------------------------------------------------*/
-
-
-
-
-
-/*-----------------------------------------------------------*/
 
 void vApplicationMallocFailedHook( void )
 {
-	/* vApplicationMallocFailedHook() will only be called if
-	configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h.  It is a hook
-	function that will get called if a call to pvPortMalloc() fails.
-	pvPortMalloc() is called internally by the kernel whenever a task, queue,
-	timer or semaphore is created using the dynamic allocation (as opposed to
-	static allocation) option.  It is also called by various parts of the
-	demo application.  If heap_1.c, heap_2.c or heap_4.c is being used, then the
-	size of the	heap available to pvPortMalloc() is defined by
-	configTOTAL_HEAP_SIZE in FreeRTOSConfig.h, and the xPortGetFreeHeapSize()
-	API function can be used to query the size of free heap space that remains
-	(although it does not provide information on how the remaining heap might be
-	fragmented).  See http://www.freertos.org/a00111.html for more
-	information. */
-	printf( "\r\n\r\nMalloc failed\r\n" );
-	portDISABLE_INTERRUPTS();
-	for( ;; );
+	
 }
 /*-----------------------------------------------------------*/
 
 void vApplicationIdleHook( void )
 {
-	/* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
-	to 1 in FreeRTOSConfig.h.  It will be called on each iteration of the idle
-	task.  It is essential that code added to this hook function never attempts
-	to block in any way (for example, call xQueueReceive() with a block time
-	specified, or call vTaskDelay()).  If application tasks make use of the
-	vTaskDelete() API function to delete themselves then it is also important
-	that vApplicationIdleHook() is permitted to return to its calling function,
-	because it is the responsibility of the idle task to clean up memory
-	allocated by the kernel to any task that has since deleted itself. */
+	
 }
 /*-----------------------------------------------------------*/
 
 void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 {
-	( void ) pcTaskName;
-	( void ) pxTask;
-
-	/* Run time stack overflow checking is performed if
-	configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
-	function is called if a stack overflow is detected. */
-	printf( "\r\n\r\nStack overflow in %s\r\n", pcTaskName );
-	portDISABLE_INTERRUPTS();
-	for( ;; );
+	
 }
 /*-----------------------------------------------------------*/
 
@@ -406,36 +137,10 @@ void vApplicationTickHook( void )
 }
 /*-----------------------------------------------------------*/
 
-void vApplicationDaemonTaskStartupHook( void )
-{
-	/* This function will be called once only, when the daemon task starts to
-	execute (sometimes called the timer task).  This is useful if the
-	application includes initialisation code that would benefit from executing
-	after the scheduler has been started. */
-}
-/*-----------------------------------------------------------*/
 
 void vAssertCalled( const char *pcFileName, uint32_t ulLine )
 {
-volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
-	/* Called if an assertion passed to configASSERT() fails.  See
-	http://www.freertos.org/a00110.html#configASSERT for more information. */
-
-	printf( "ASSERT! Line %d, file %s\r\n", ( int ) ulLine, pcFileName );
-
- 	taskENTER_CRITICAL();
-	{
-		/* You can step out of this function to debug the assertion by using
-		the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
-		value. */
-		while( ulSetToNonZeroInDebuggerToContinue == 0 )
-		{
-			__asm volatile( "NOP" );
-			__asm volatile( "NOP" );
-		}
-	}
-	taskEXIT_CRITICAL();
 }
 /*-----------------------------------------------------------*/
 
@@ -495,36 +200,3 @@ static void prvUARTInit( void )
 	UART0_CTRL = 1;
 }
 /*-----------------------------------------------------------*/
-
-int __write( int iFile, char *pcString, int iStringLength )
-{
-	int iNextChar;
-
-	/* Avoid compiler warnings about unused parameters. */
-	( void ) iFile;
-
-	/* Output the formatted string to the UART. */
-	for( iNextChar = 0; iNextChar < iStringLength; iNextChar++ )
-	{
-		while( ( UART0_STATE & TX_BUFFER_MASK ) != 0 );
-		UART0_DATA = *pcString;
-		pcString++;
-	}
-
-	return iStringLength;
-}
-/*-----------------------------------------------------------*/
-
-void *malloc( size_t size )
-{
-	( void ) size;
-
-	/* This project uses heap_4 so doesn't set up a heap for use by the C
-	library - but something is calling the C library malloc().  See
-	https://freertos.org/a00111.html for more information. */
-	printf( "\r\n\r\nUnexpected call to malloc() - should be usine pvPortMalloc()\r\n" );
-	portDISABLE_INTERRUPTS();
-	for( ;; );
-
-}
-
