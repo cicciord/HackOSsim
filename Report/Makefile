@@ -6,7 +6,7 @@ PDF_FILE_NAME := HackOSsim_Report
 
 CURRENT_DIR := $(abspath .)
 
-SRC_DIR 		:= $(CURRENT_DIR)/src
+SRC_DIR 	:= $(CURRENT_DIR)/src
 BUILD_DIR 	:= $(CURRENT_DIR)/build
 
 ENTRY_POINT := $(TEX_FILE_NAME).tex
