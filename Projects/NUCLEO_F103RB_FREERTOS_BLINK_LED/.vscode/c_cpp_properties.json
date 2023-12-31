@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/Core/Inc",
+        "${workspaceFolder}/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
+        "${workspaceFolder}/Drivers/STM32F1xx_HAL_Driver/Inc",
+        "${workspaceFolder}/../../FreeRTOS/FreeRTOS/Source/include",
+        "${workspaceFolder}/../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3",
+        "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
+        "${workspaceFolder}/Drivers/CMSIS/Include"
+      ],
+      "defines": ["USE_HAL_DRIVER", "STM32F103xB"],
+      "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-gcc-arm"
+    }
+  ],
+  "version": 4
+}

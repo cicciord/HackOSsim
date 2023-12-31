@@ -1,0 +1,44 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build QEMU",
+      "type": "shell",
+      "command": "make --directory=${workspaceFolder}",
+      "problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": ["relative", "${workspaceFolder}"]
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Run QEMU",
+      "type": "shell",
+      "command": "echo 'QEMU started'; qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel ${workspaceFolder}/build/NUCLEO_F103RB_FREERTOS_BLINK_LED.elf -monitor none -nographic -serial mon:stdio -s -S",
+      "dependsOn": ["Build QEMU"],
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "QEMU started"
+          }
+        }
+      ]
+    }
+  ]
+}
