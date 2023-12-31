@@ -1,0 +1,5 @@
+build/gcc/output/*.map
+build/gcc/output/*.out
+build/gcc/output/*.d
+build/gcc/output/*.o
+.vscode
