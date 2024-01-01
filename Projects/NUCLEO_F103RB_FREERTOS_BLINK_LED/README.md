@@ -31,6 +31,28 @@ If you just want to compile the project run
 make
 ```
 
+### Debug
+
+#### Command Line
+
+To debug the project from command line run this commands
+
+```bash
+make qemu-gdb
+```
+
+and in another terminal session
+
+```bash
+arm-none-eabi-gdb build/NUCLEO_F103RB_FREERTOS_BLINK_LED.elf -ex "target remote localhost:1234"
+```
+
+#### Visual Studio Code
+
+To have a nice interface to debug the project you can use the extension for C/C++ for VS Code.
+
+You might need to change the `.vscode/launch.json` and `.vscode/tasks.json` according to your system.
+
 ### Clean
 
 To clean all the build files run
