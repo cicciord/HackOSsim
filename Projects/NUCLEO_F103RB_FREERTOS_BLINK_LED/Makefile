@@ -213,4 +213,6 @@ clean:
 #######################################
 -include $(wildcard $(BUILD_DIR)/*.d)
 
+.PHONY: all clean qemu
+
 # *** EOF ***

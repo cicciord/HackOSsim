@@ -97,7 +97,7 @@ int main(void)
                 "Task-Blink-LED",
                 configMINIMAL_STACK_SIZE,
                 NULL,
-                2,
+                6,
                 &xTaskHandleBlinkLED  );
 
   /* USER CODE END 2 */
