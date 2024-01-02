@@ -1,92 +1,104 @@
 # Qemu Installation and Usage
 
-This tutorial provides comprehensive instructions for setting up FreeRTOS on QEMU, using Ubuntu as the host operating system.
+This tutorial provides comprehensive instructions for setting up an embedded OS on QEMU, using Ubuntu as the host operating system.
 
-## Prerequisites and QEMU Installation
+## Installation
 
-Before beginning the setup process, one must ensure that the following dependencies are installed on their system:
+The following packages have to be installed on the system:
 
 - QEMU
-- Git
 - ARM GCC toolchain
 
-### Installing Dependencies
-
-These dependencies can be installed on Ubuntu using the following commands:
+QEMU can be installed on Ubuntu using the following commands:
 
 ```bash
-sudo apt-get update
-sudo apt-get install qemu git 
+sudo apt update && sudo apt upgrade
+sudo apt install qemu-system
 ```
 
-### Installing Cross-Compiler
+The Cross Compiler can be installed in the following way
 
-Remove existing arm-none installation (if any):
+Download the binaries from the following [Website](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
-```bash
-sudo apt remove arm-none-eabi-gcc
-```
+For Ubuntu download the file ending in .tar.xz in the _AArch32 bare-metal target (arm-none-eabi)_ section
 
-Download the binaries from the following [Website](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads)
-Extract the files into a chosen directory; for instance, /usr/share/:
+Extract the files into a chosen directory, for instance /usr/share/:
 
 ```bash
-sudo tar xjf gcc-arm-none-eabi-YOUR-VERSION.bz2 -C /usr/share/
+sudo tar -xvf arm-gnu-toolchain-<VERSION>-x86_64-arm-none-eabi.tar.xz -C /usr/share/
 ```
 
 Set up symbolic link to point to the extracted version of the compiler tools:
 
 ```bash
-sudo ln -s /usr/share/gcc-arm-none-eabi-YOUR-VERSION/bin/arm-none-eabi-gcc /usr/bin/arm-none-eabi-gcc
-sudo ln -s /usr/share/gcc-arm-none-eabi-YOUR-VERSION/bin/arm-none-eabi-g++ /usr/bin/arm-none-eabi-g++
-sudo ln -s /usr/share/gcc-arm-none-eabi-YOUR-VERSION/bin/arm-none-eabi-gdb /usr/bin/arm-none-eabi-gdb
-sudo ln -s /usr/share/gcc-arm-none-eabi-YOUR-VERSION/bin/arm-none-eabi-size /usr/bin/arm-none-eabi-size
-sudo ln -s /usr/share/gcc-arm-none-eabi-YOUR-VERSION/bin/arm-none-eabi-ob /usr/bin/arm-none-eabi-ob
+sudo ln -s /usr/share/garm-gnu-toolchain-<VERSION>-x86_64-arm-none-eabi/bin/arm-* /usr/bin/
 ```
 
 Check if the installation was successful by inspecting the versions:
 
 ```bash
 arm-none-eabi-gcc --version
-arm-none-eabi-g++ --version
-arm-none-eabi-gdb --version
-arm-none-eabi-size --version
 ```
 
-### Cloning the Official FreeRTOS Repository from GitHub
+## Usage
+
+In this section a guide on how to use QEMU to emulate an embedded system is provided.
+
+QEMU offers several packages for each system to emulate `qemu-system-<target_arch>` In our case the target architecture is 32-bit arm thus the command to be used is `qemu-system-arm`
+
+Standard options to be provided are:
+
+- **-machine name**: this specify the machine to be emulated. To get a list of all available machine run `qemu-system-arm -machine help`
+
+- **-cpu cpu**: specify the cpu to be used. To get a list of all cpus available run `qemu-system-arm -cpu help`
+
+- **-kernel bzImage**: provide the executable to be run as kernel image
+
+Other options useful for debugging are:
+
+- **-serial dev**: redirect the serial port to the device 'dev'
+
+- **-monitor dev**: redirect the monitor to char device 'dev'
+
+- **-S**: freeze CPU at startup
+
+- **-gdb dev**: accept gdb connection on 'dev'
+
+- **-s**: short end for `-gdb tcp::1234`
+
+- **-semihosting**: semihosting mode
+
+- **-semihosting-config [enable=on|off][,target=native|gdb|auto][,chardev=id][,userspace=on|off][,arg=str[,...]]**: semihosting configuration
+
+### FreeRTOS
+
+The embedded OS of choice for this project is **FreeRTOS**. It can be downloaded both from the official [website](https://www.freertos.org/a00104.html) or it can be cloned from github.
 
 ```bash
 git clone https://github.com/FreeRTOS/FreeRTOS.git
-cd FreeRTOS 
 ```
 
-### Navigating to the QEMU Demo Directory
+if you cloned the repo of this project, FreeRTOS is available as a submodule so you do not need to clone it again.
+
+### QEMU Demo
+
+To better understand how to emulate FreeRTOS on QEMU, a Demo Project is provided from FreeRTOS.
+
+The demo can be found in the folder `FreeRTOS/FreeRTOS/Demo/CORTEX_MPS2_QEMU_IAR_GCC`.
+
+#### Building the Demo
+
+To build the demo run the following command in the `build/gcc` directory.
 
 ```bash
-cd Demo/CORTEX_MPS2_QEMU_IAR_GCC
-```
-
-## Building and Executing the Demo Application
-
-Within the `main.c` file, there is a configuration flag named `mainCREATE_SIMPLE_BLINKY_DEMO_ONLY`. This flag allows the user to select the type of demo application to be generated. There are two types of demo applications:
-
-- **Simple Blinky Demo**: If `mainCREATE_SIMPLE_BLINKY_DEMO_ONLY` is set to 1, a simple blinky demo is generated. This demo is basic and typically involves tasks that blink LEDs at different frequencies.
-- **Comprehensive Test and Demo Application**: If `mainCREATE_SIMPLE_BLINKY_DEMO_ONLY` is set to 0, a comprehensive test and demo application is generated. This demo is more complex and includes a variety of tasks that test the FreeRTOS API and port.
-
-By adjusting the value of `mainCREATE_SIMPLE_BLINKY_DEMO_ONLY`, it's possible to control the complexity of the demo application that is built and run on the system. This flexibility allows the user to start with a simple application and gradually move to more complex applications as they become more familiar with FreeRTOS.
-
-### Building the FreeRTOS Demo for QEMU
-
-```bash
-cd build/gcc
 make
 ```
 
-A successful build creates the elf file `RTOSDemo.out`.
+A successful build creates the elf file `output/RTOSDemo.out`.
 
-### Running the FreeRTOS Demo on QEMU
+#### Running the FreeRTOS Demo on QEMU
 
-Start QEMU with the following command line, replacing `[path-to]` with the correct path to the `RTOSDemo.out` file generated by the GCC build.
+Start QEMU with the following command, replacing `[path-to]` with the correct path to the `RTOSDemo.out` file generated by the GCC build.
 
 ```bash
 qemu-system-arm -machine mps2-an385 -cpu cortex-m3 -kernel [path-to]/RTOSDemo.out -monitor none -nographic -serial stdio -s -S
@@ -94,31 +106,49 @@ qemu-system-arm -machine mps2-an385 -cpu cortex-m3 -kernel [path-to]/RTOSDemo.ou
 
 Omit `-s -S` if the user just wants to run the FreeRTOS application in QEMU without attaching the debugger.
 
-## Debugging with GDB
+#### Debugging with GDB
 
 The user can now use `arm-none-eabi-gdb` to start a command line debug session following the steps below:
-
-### Starting GDB
 
 Navigate to the path to `RTOSDemo.out`, and start `arm-none-eabi-gdb`.
 
 ```bash
-arm-none-eabi-gdb RTOSDemo.out
+arm-none-eabi-gdb RTOSDemo.out -ex "target remote localhost:1234"
 ```
 
-### Using GDB
+## xPack QEMU
 
-The following bash commands can be used to start a command line debug session:
+Installing QEMU from xPack will give access to the `qemu-system-gnuarmeclipse` package. This is a fork of `qemu-system-arm` which includes a varaiety of boards, and for some of them provide a nice view of the board during the simulation.
+
+We will use this package to emulate the **NUCLEO-F103RB** board.
+
+### Installation
+
+#### Prerequisite
+
+- npm
+- xpm
+
+We will not go into detail on how to install npm, several guides are available online.
+
+To install `xpm` it is enough to run
 
 ```bash
-# Connect GDB to QEMU (default port for QEMU is 1234)
-(gdb) target remote localhost:1234
+npm i --global xpm
+```
 
-# Set breakpoints
-(gdb) break main
+#### Install xPack QEMU
 
-# Start debugging
-(gdb) continue
+To globally install xPack QEMU run the following commands
 
-# Quit GDB
-(gdb) quit
+```bash
+xpm install --global @xpack-dev-tools/qemu-arm
+```
+
+The packages will be installed at the path `~/.local/xPack/@xpack-dev-tools/qemu-arm/<VERSION>/.content/bin/`.
+
+Create a link to be able to call the package from command line directly
+
+```bash
+sudo ln -s ~/.local/xPack/@xpack-dev-tools/qemu-arm/<VERSION>/.content/bin/qemu-system-gnuarmeclipse /usr/bin/qemu-system-gnuarmeclipse
+```
