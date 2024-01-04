@@ -10,7 +10,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/build/NUCLEO_F103RB_FREERTOS_BLINK_LED.elf",
       "cwd": "${workspaceFolder}",
-      "miDebuggerPath": "/usr/local/bin/arm-none-eabi-gdb",
+      "miDebuggerPath": "/usr/bin/arm-none-eabi-gdb",
       "miDebuggerServerAddress": "localhost:1234",
       "stopAtEntry": true,
       "preLaunchTask": "Run QEMU"

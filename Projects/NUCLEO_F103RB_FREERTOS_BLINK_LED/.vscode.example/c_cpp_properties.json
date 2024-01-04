@@ -13,7 +13,7 @@
         "${workspaceFolder}/Drivers/CMSIS/Include"
       ],
       "defines": ["USE_HAL_DRIVER", "STM32F103xB"],
-      "compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
+      "compilerPath": "/usr/bin/arm-none-eabi-gcc",
       "cStandard": "c17",
       "cppStandard": "c++17",
       "intelliSenseMode": "linux-gcc-arm"
