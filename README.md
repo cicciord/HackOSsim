@@ -18,6 +18,12 @@ Clone this repo running the following command. Be sure to have git installed on 
 git clone --recurse-submodules https://github.com/cicciord/HackOSsim.git
 ```
 
+to clone the repo using ssh use this instead.
+
+```bash
+git clone --recurse-submodules git@github.com:cicciord/HackOSsim.git
+```
+
 #### Submodules
 
 Beware that this project includes _submodules_, so you need to run git clone with the flag `--recurse-submodules` otherwise the content of the submodule directories will not be cloned.
