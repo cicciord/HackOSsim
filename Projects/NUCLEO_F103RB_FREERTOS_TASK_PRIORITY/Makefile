@@ -202,7 +202,7 @@ $(BUILD_DIR):
 # qemu
 #######################################
 qemu: all
-	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -monitor none -serial mon:stdio
+	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic
 
 #######################################
 # clean up
