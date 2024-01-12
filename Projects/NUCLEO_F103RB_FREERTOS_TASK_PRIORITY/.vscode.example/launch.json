@@ -8,7 +8,7 @@
       "name": "Launch QEMU",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/NUCLEO_F103RB_FREERTOS_TASK_PRIORITY.elf",
+      "program": "${workspaceFolder}/build/${workspaceFolderBasename}.elf",
       "cwd": "${workspaceFolder}",
       "miDebuggerPath": "/usr/bin/arm-none-eabi-gdb",
       "miDebuggerServerAddress": "localhost:1234",
