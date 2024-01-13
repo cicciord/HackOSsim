@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "ProjectConfig.h"
 
 /* USER CODE END Includes */
 
@@ -35,8 +36,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define TASK1_PRIO  (tskIDLE_PRIORITY + 2)
-#define TASK2_PRIO  (tskIDLE_PRIORITY + 2)
+#define TASK1_PRIO  (tskIDLE_PRIORITY + PRIORITY_TASK_1)
+#define TASK2_PRIO  (tskIDLE_PRIORITY + PRIORITY_TASK_2)
 
 /* USER CODE END PD */
 
@@ -123,7 +124,9 @@ void vTask1_handler(void *argument)
   for(;;)
   {
     printf("Hello from Task 1\n\r");
-    vTaskDelay(1000);
+    #if ( TASK_1_DELAY_ENABLE )
+      vTaskDelay(TASK_1_DELAY_VALUE);
+    #endif
   }
   /* USER CODE END vTask1_handler */
 }
@@ -142,7 +145,9 @@ void vTask2_handler(void *argument)
   for(;;)
   {
     printf("Hello from Task 2\n\r");
-    vTaskDelay(1000);
+    #if ( TASK_2_DELAY_ENABLE )
+      vTaskDelay(TASK_2_DELAY_VALUE);
+    #endif
   }
   /* USER CODE END vTask2_handler */
 }

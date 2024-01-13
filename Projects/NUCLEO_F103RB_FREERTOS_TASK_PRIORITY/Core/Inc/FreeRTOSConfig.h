@@ -44,6 +44,9 @@
 
 /* USER CODE BEGIN Includes */
 /* Section where include file can be added */
+#if defined(__ICCARM__) || defined(__CC_ARM) || defined(__GNUC__)
+  #include "ProjectConfig.h"
+#endif
 /* USER CODE END Includes */
 
 /* Ensure definitions are only used by the compiler, and not by the assembler. */
@@ -51,7 +54,7 @@
   #include <stdint.h>
   extern uint32_t SystemCoreClock;
 #endif
-#define configUSE_PREEMPTION                     1
+#define configUSE_PREEMPTION                     ( USE_PREEMPTION )
 #define configSUPPORT_STATIC_ALLOCATION          1
 #define configSUPPORT_DYNAMIC_ALLOCATION         1
 #define configUSE_IDLE_HOOK                      0
