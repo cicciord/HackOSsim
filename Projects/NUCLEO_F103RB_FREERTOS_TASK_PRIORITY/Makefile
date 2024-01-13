@@ -127,6 +127,7 @@ AS_INCLUDES =  \
 
 # C includes
 C_INCLUDES =  \
+-I. \
 -ICore/Inc \
 -IDrivers/STM32F1xx_HAL_Driver/Inc/Legacy \
 -IDrivers/STM32F1xx_HAL_Driver/Inc \
@@ -203,6 +204,9 @@ $(BUILD_DIR):
 #######################################
 qemu: all
 	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic
+
+qemu-gdb: all
+	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic -s -S
 
 #######################################
 # clean up
