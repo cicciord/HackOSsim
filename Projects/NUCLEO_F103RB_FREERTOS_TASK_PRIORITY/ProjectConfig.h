@@ -3,7 +3,8 @@
 
 /*-----------------------------------------------------------
  * Configuration parameters for the project.
- * Change them in order to experiment different behaviours of the scheduler
+ * Change them in order to experiment different behaviours of
+ * the scheduler
  *----------------------------------------------------------*/
 
 #define USE_PREEMPTION          1       // Scheduler uses preemption
