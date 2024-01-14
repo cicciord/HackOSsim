@@ -406,11 +406,58 @@ void vPortFree( void * pv )
 
 void * pvPortRealloc( void * pv, size_t xWantedSize )
 {
+    BlockLink_t * pxLink;
+    void * pvReturn = NULL;
+    uint8_t * puc = ( uint8_t * ) pv;
+    size_t xBlockSize;
+    size_t xMoveSize;
+
     if( xWantedSize > 0 )
     {
         if( pv != NULL )
         {
-            /// TODO: continue
+            /* The memory being reallocated will have an BlockLink_t structure immediately
+            * before it. */
+            puc -= xHeapStructSize;
+
+            /* This casting is to keep the compiler from issuing warnings. */
+            pxLink = ( void * ) puc;
+
+            heapVALIDATE_BLOCK_POINTER( pxLink );
+            configASSERT( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 );
+            configASSERT( pxLink->pxNextFreeBlock == NULL );
+
+            if( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 )
+            {
+                if( pxLink->pxNextFreeBlock == NULL )
+                {
+                    /* The size of the block being reallocated */
+                    xBlockSize = ( pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK ) - xHeapStructSize;
+
+                    /* Allocate new memory block */
+                    pvReturn = pvPortMalloc( xWantedSize );
+
+                    if( pvReturn != NULL )
+                    {
+                        /* The size of the memory to copy */
+                        xMoveSize = xBlockSize < xWantedSize ? xBlockSize : xWantedSize;
+
+                        /* Copy the memory to the new location */
+                        memcpy( pvReturn, pv, xMoveSize );
+
+                        /* Free old memory block */
+                        vPortFree(pv);
+                    }
+                }
+                else
+                {
+                    mtCOVERAGE_TEST_MARKER();
+                }
+            }
+            else
+            {
+                mtCOVERAGE_TEST_MARKER();
+            }
         }
         else
         {
@@ -423,6 +470,8 @@ void * pvPortRealloc( void * pv, size_t xWantedSize )
         /* if xWantedSize is 0 free the memory */
         vPortFree( pv );
     }
+
+    return pvReturn;
 }
 /*-----------------------------------------------------------*/
 
