@@ -1,0 +1,20 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}",
+        "${workspaceFolder}/../FreeRTOS/FreeRTOS/Source/include",
+        "${workspaceFolder}/../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3",
+        "${workspaceFolder}/mock_tmp"
+      ],
+      "defines": [],
+      "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-gcc-arm"
+    }
+  ],
+  "version": 4
+}
