@@ -406,7 +406,23 @@ void vPortFree( void * pv )
 
 void * pvPortRealloc( void * pv, size_t xWantedSize )
 {
-
+    if( xWantedSize > 0 )
+    {
+        if( pv != NULL )
+        {
+            /// TODO: continue
+        }
+        else
+        {
+            /* if pv is NULL allocate new memory */
+            pvPortMalloc( xWantedSize );
+        }
+    }
+    else
+    {
+        /* if xWantedSize is 0 free the memory */
+        vPortFree( pv );
+    }
 }
 /*-----------------------------------------------------------*/
 
