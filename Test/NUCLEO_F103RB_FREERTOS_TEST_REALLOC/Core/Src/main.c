@@ -23,6 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -66,6 +67,7 @@ void MX_FREERTOS_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  char * str = NULL;
 
   /* USER CODE END 1 */
 
@@ -95,6 +97,16 @@ int main(void)
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
 
+  /* EXAMPLE TEST BEGIN */
+  str = (char *) pvPortMalloc(sizeof(char) * 24);
+  printf("Malloc pointer value: %p\n\r", str);
+  strcpy(str, "Test realloc\n\r");
+  hexDump("Malloc", (void *) str, sizeof(char) * 24);
+
+  str = (char *) pvPortRealloc((void *) str, sizeof(char) * 10);
+  printf("Realloc pointer value: %p\n\r", str);
+  hexDump("Realloc", (void *) str, sizeof(char) * 10);
+  /* EXAMPLE TEST END */
   /* Start scheduler */
 
   /* We should never get here as control is now taken by the scheduler */
