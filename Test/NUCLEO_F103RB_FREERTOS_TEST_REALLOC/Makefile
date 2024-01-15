@@ -66,7 +66,7 @@ Core/Src/system_stm32f1xx.c \
 ../../FreeRTOS/FreeRTOS/Source/stream_buffer.c \
 ../../FreeRTOS/FreeRTOS/Source/tasks.c \
 ../../FreeRTOS/FreeRTOS/Source/timers.c \
-../../FreeRTOS/FreeRTOS/Source/portable/MemMang/heap_4.c \
+../../MemMang/heap_4.c \
 ../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c  
 
 # ASM sources
