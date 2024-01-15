@@ -23,7 +23,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 #include <string.h>
+#include "FreeRTOS.h"
 
 /* USER CODE END Includes */
 
@@ -52,6 +54,7 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
+void prvPrintHeapStats(HeapStats_t * pxHeapStats);
 
 /* USER CODE END PFP */
 
@@ -67,7 +70,10 @@ void MX_FREERTOS_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  HeapStats_t pxHeapStats = {0,0,0,0,0,0,0};
+
   char * str = NULL;
+  char * str_old = NULL;
 
   /* USER CODE END 1 */
 
@@ -103,9 +109,17 @@ int main(void)
   strcpy(str, "Test realloc\n\r");
   hexDump("Malloc", (void *) str, sizeof(char) * 24);
 
+  vPortGetHeapStats(&pxHeapStats);
+  prvPrintHeapStats(&pxHeapStats);
+
+  str_old = str;
   str = (char *) pvPortRealloc((void *) str, sizeof(char) * 10);
   printf("Realloc pointer value: %p\n\r", str);
   hexDump("Realloc", (void *) str, sizeof(char) * 10);
+  hexDump("Old pointer", (void *) str_old, sizeof(char) * 24);
+
+  vPortGetHeapStats(&pxHeapStats);
+  prvPrintHeapStats(&pxHeapStats);
   /* EXAMPLE TEST END */
   /* Start scheduler */
 
@@ -158,6 +172,16 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void prvPrintHeapStats(HeapStats_t * pxHeapStats)
+{
+  printf("Available Space in bytes          : %lu\n\r", (unsigned long) pxHeapStats->xAvailableHeapSpaceInBytes);
+  printf("Largest free block in bytes       : %lu\n\r", (unsigned long) pxHeapStats->xSizeOfLargestFreeBlockInBytes);
+  printf("Smallest free block in bytes      : %lu\n\r", (unsigned long) pxHeapStats->xSizeOfSmallestFreeBlockInBytes);
+  printf("Number of free block              : %lu\n\r", (unsigned long) pxHeapStats->xNumberOfFreeBlocks);
+  printf("Minumum Ever Free Bytes Remaining : %lu\n\r", (unsigned long) pxHeapStats->xMinimumEverFreeBytesRemaining);
+  printf("Successful allocations            : %lu\n\r", (unsigned long) pxHeapStats->xNumberOfSuccessfulAllocations);
+  printf("Successful frees                  : %lu\n\r", (unsigned long) pxHeapStats->xNumberOfSuccessfulFrees);
+}
 
 /* USER CODE END 4 */
 
