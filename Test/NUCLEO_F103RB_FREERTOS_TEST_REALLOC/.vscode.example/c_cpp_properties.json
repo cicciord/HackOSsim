@@ -11,7 +11,9 @@
         "${workspaceFolder}/../../FreeRTOS/FreeRTOS/Source/include",
         "${workspaceFolder}/../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3",
         "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
-        "${workspaceFolder}/Drivers/CMSIS/Include"
+        "${workspaceFolder}/Drivers/CMSIS/Include",
+        "${workspaceFolder}/Test",
+        "${workspaceFolder}/../../MemMang"
       ],
       "defines": ["USE_HAL_DRIVER", "STM32F103xB"],
       "compilerPath": "/usr/bin/arm-none-eabi-gcc",

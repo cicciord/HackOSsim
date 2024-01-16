@@ -44,6 +44,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "realloc.h"
 
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
@@ -679,3 +680,50 @@ void vPortGetHeapStats( HeapStats_t * pxHeapStats )
     taskEXIT_CRITICAL();
 }
 /*-----------------------------------------------------------*/
+
+#ifdef REALLOC_TEST
+    void vPortGetBlockStats(BlockStats_t * pxBlockStats, void * pv)
+    {
+        BlockLink_t * pxLink;
+        uint8_t * puc = (uint8_t *) pv;
+
+        if(pv != NULL)
+        {
+            /* pv will have an BlockLink_t structure immediately before it. */
+            puc -= xHeapStructSize;
+
+            /* This casting is to keep the compiler from issuing warnings. */
+            pxLink = ( void * ) puc;
+
+            heapVALIDATE_BLOCK_POINTER( pxLink );
+            configASSERT( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 );
+            configASSERT( pxLink->pxNextFreeBlock == NULL );
+
+            if( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 )
+            {
+                if( pxLink->pxNextFreeBlock == NULL )
+                {
+                    pxBlockStats->pvBlock = (void *)pxLink;
+                    pxBlockStats->pvData = pv;
+                    pxBlockStats->xBlockSize = pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK;
+                    pxBlockStats->xDataSize = ( pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK ) - xHeapStructSize;
+                }
+                else
+                {
+                    /* next block of allocated block should be NULL */
+                    return;
+                }
+            }
+            else
+            {
+                /* block is not allocated */
+                return;
+            }
+        }
+        else
+        {
+            /* pv is NULL, return */
+            return;
+        }
+    }
+#endif

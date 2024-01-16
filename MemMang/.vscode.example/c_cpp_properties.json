@@ -7,7 +7,8 @@
         "${workspaceFolder}",
         "${workspaceFolder}/../FreeRTOS/FreeRTOS/Source/include",
         "${workspaceFolder}/../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3",
-        "${workspaceFolder}/mock_tmp"
+        "${workspaceFolder}/mock_tmp",
+        "${workspaceFolder}/../Test/NUCLEO_F103RB_FREERTOS_TEST_REALLOC/Test"
       ],
       "defines": [],
       "compilerPath": "/usr/bin/arm-none-eabi-gcc",

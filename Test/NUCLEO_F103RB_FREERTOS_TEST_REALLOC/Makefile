@@ -67,7 +67,8 @@ Core/Src/system_stm32f1xx.c \
 ../../FreeRTOS/FreeRTOS/Source/tasks.c \
 ../../FreeRTOS/FreeRTOS/Source/timers.c \
 ../../MemMang/heap_4.c \
-../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c  
+../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
+Test/realloc_test.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -134,7 +135,9 @@ C_INCLUDES =  \
 -I../../FreeRTOS/FreeRTOS/Source/include \
 -I../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3 \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
--IDrivers/CMSIS/Include
+-IDrivers/CMSIS/Include \
+-ITest \
+-I../../MemMang
 
 
 # compile gcc flags

@@ -7,17 +7,20 @@
 void hexDump(char *desc, void *addr, int len)
 {
   int i;
-  unsigned char buff[17];
+  unsigned char buff[9];
   unsigned char *pc = (unsigned char*)addr;
 
   // Output description if given.
   if (desc != NULL)
     printf ("%s:\n", desc);
 
+  // print header
+  printf(" offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII\n");
+
   // Process every byte in the data.
   for (i = 0; i < len; i++) {
-    // Multiple of 16 means new line (with line offset).
-    if ((i % 16) == 0) {
+    // Multiple of 8 means new line (with line offset).
+    if ((i % 8) == 0) {
       // Just don't print ASCII for the zeroth line.
       if (i != 0)
         printf ("  %s\n", buff);
@@ -31,14 +34,14 @@ void hexDump(char *desc, void *addr, int len)
 
     // And store a printable ASCII character for later.
     if ((pc[i] < 0x20) || (pc[i] > 0x7e))
-      buff[i % 16] = '.';
+      buff[i % 8] = '.';
     else
-      buff[i % 16] = pc[i];
-    buff[(i % 16) + 1] = '\0';
+      buff[i % 8] = pc[i];
+    buff[(i % 8) + 1] = '\0';
   }
 
-  // Pad out last line if not exactly 16 characters.
-  while ((i % 16) != 0) {
+  // Pad out last line if not exactly 8 characters.
+  while ((i % 8) != 0) {
     printf ("   ");
     i++;
   }
