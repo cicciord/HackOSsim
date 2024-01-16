@@ -10,5 +10,6 @@
 
 /* Exported functions prototypes ---------------------------------------------*/
 void vTestReallocate();
+void vTestAllocate();
 
 #endif

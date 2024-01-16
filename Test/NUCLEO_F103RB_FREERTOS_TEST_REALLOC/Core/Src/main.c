@@ -104,6 +104,8 @@ int main(void)
   printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
 
   vTestReallocate();
+  printf("\n\r\n\r");
+  vTestAllocate();
   /* EXAMPLE TEST END */
   /* Start scheduler */
   /* there is no need to start the scheduler, only the memory
