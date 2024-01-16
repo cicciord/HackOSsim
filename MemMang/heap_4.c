@@ -463,7 +463,7 @@ void * pvPortRealloc( void * pv, size_t xWantedSize )
         else
         {
             /* if pv is NULL allocate new memory */
-            pvPortMalloc( xWantedSize );
+            return pvPortMalloc( xWantedSize );
         }
     }
     else
