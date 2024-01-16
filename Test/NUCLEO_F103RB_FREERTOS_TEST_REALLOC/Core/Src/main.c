@@ -106,6 +106,8 @@ int main(void)
   vTestReallocate();
   printf("\n\r\n\r");
   vTestAllocate();
+  printf("\n\r\n\r");
+  vTestFree();
   /* EXAMPLE TEST END */
   /* Start scheduler */
   /* there is no need to start the scheduler, only the memory

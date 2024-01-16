@@ -31,15 +31,15 @@ void vTestReallocate()
     size_t xNewSize = 30;
 
     /* Initialized pointer */
-    char *buff = NULL;
-    char *newBuff = NULL;
+    char *pcBuff = NULL;
+    char *pcNewBuff = NULL;
 
     /* The pointer is allocated */
     printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long) xInitSize * sizeof(char));
-    buff = (char *)pvPortMalloc(xInitSize * sizeof(char));
+    pcBuff = (char *)pvPortMalloc(xInitSize * sizeof(char));
 
     /* Check that the pointer is allocated */
-    if (buff == NULL)
+    if (pcBuff == NULL)
     {
         printf("Malloc failed\n\r");
         return;
@@ -49,11 +49,11 @@ void vTestReallocate()
     printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xInitSize, 'a');
     for (int i = 0; i < xInitSize; i++)
     {
-        buff[i] = 'a';
+        pcBuff[i] = 'a';
     }
 
     printf("Initial Block stats:\n\r");
-    vPortGetBlockStats(&xBlockStats, (void *)buff);
+    vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
     prvPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
@@ -61,17 +61,17 @@ void vTestReallocate()
     printf("\n\r\n\r");
     /* Reallocate the memory */
     printf("Memory is reallocated with new size %lu\n\r\n\r", (unsigned long)xNewSize * sizeof(char));
-    newBuff = (char *)pvPortRealloc((void *)buff, xNewSize);
+    pcNewBuff = (char *)pvPortRealloc((void *)pcBuff, xNewSize);
 
     /* Check the memory is allocated */
-    if (newBuff == NULL)
+    if (pcNewBuff == NULL)
     {
         printf("The memory has not been reallocated\n\r");
         return;
     }
 
     printf("New Block stats:\n\r");
-    vPortGetBlockStats(&xNewBlockStats, (void *)newBuff);
+    vPortGetBlockStats(&xNewBlockStats, (void *)pcNewBuff);
     prvPrintBlockStats(&xNewBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xNewBlockStats.pvBlock, xNewBlockStats.xBlockSize);
@@ -79,7 +79,7 @@ void vTestReallocate()
     printf("\n\r");
     hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
-    vPortFree(newBuff);
+    vPortFree(pcNewBuff);
 
     printf("\n\r\n\rHeap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
@@ -98,29 +98,29 @@ void vTestReallocate()
     xNewSize = 10;
 
     /* Initialize pointer */
-    buff = NULL;
-    newBuff = NULL;
+    pcBuff = NULL;
+    pcNewBuff = NULL;
 
     /* The pointer is allocated */
     printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long) xInitSize * sizeof(char));
-    buff = (char *)pvPortMalloc(xInitSize * sizeof(char));
+    pcBuff = (char *)pvPortMalloc(xInitSize * sizeof(char));
 
     /* Check that the pointer is allocated */
-    if (buff == NULL)
+    if (pcBuff == NULL)
     {
         printf("Malloc failed\n\r");
         return;
     }
 
     /* Initialize the buffer with some data */
-    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xInitSize, 'a');
+    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xInitSize, 'b');
     for (int i = 0; i < xInitSize; i++)
     {
-        buff[i] = 'a';
+        pcBuff[i] = 'b';
     }
 
     printf("Initial Block stats:\n\r");
-    vPortGetBlockStats(&xBlockStats, (void *)buff);
+    vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
     prvPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
@@ -128,17 +128,17 @@ void vTestReallocate()
     printf("\n\r\n\r");
     /* Reallocate the memory */
     printf("Memory is reallocated with new size %lu\n\r\n\r", (unsigned long)xNewSize * sizeof(char));
-    newBuff = (char *)pvPortRealloc((void *)buff, xNewSize);
+    pcNewBuff = (char *)pvPortRealloc((void *)pcBuff, xNewSize);
 
     /* Check the memory is allocated */
-    if (newBuff == NULL)
+    if (pcNewBuff == NULL)
     {
         printf("The memory has not been reallocated\n\r");
         return;
     }
 
     printf("New Block stats:\n\r");
-    vPortGetBlockStats(&xNewBlockStats, (void *)newBuff);
+    vPortGetBlockStats(&xNewBlockStats, (void *)pcNewBuff);
     prvPrintBlockStats(&xNewBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xNewBlockStats.pvBlock, xNewBlockStats.xBlockSize);
@@ -146,7 +146,7 @@ void vTestReallocate()
     printf("\n\r");
     hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
-    vPortFree(newBuff);
+    vPortFree(pcNewBuff);
 
     printf("\n\r\n\rHeap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
@@ -169,33 +169,96 @@ void vTestAllocate()
     size_t xWantedSize = 10;
 
     /* Initialized pointer */
-    char *buff = NULL;
+    char *pcBuff = NULL;
 
     /* The pointer is allocated */
     printf("Realloc is called with wantedSize %lu bytes and NULL pointer\n\r\n\r", (unsigned long) xWantedSize * sizeof(char));
-    buff = (char *)pvPortRealloc(NULL, xWantedSize * sizeof(char));
+    pcBuff = (char *)pvPortRealloc(NULL, xWantedSize * sizeof(char));
 
     /* Check that the pointer is allocated */
-    if (buff == NULL)
+    if (pcBuff == NULL)
     {
         printf("Realloc failed\n\r");
         return;
     }
 
     /* Initialize the buffer with some data */
-    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xWantedSize, 'a');
+    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xWantedSize, 'c');
     for (int i = 0; i < xWantedSize; i++)
     {
-        buff[i] = 'a';
+        pcBuff[i] = 'c';
     }
 
     printf("Block stats:\n\r");
-    vPortGetBlockStats(&xBlockStats, (void *)buff);
+    vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
     prvPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
-    vPortFree(buff);
+    vPortFree(pcBuff);
+
+    printf("\n\r\n\rHeap Stats:\n\r");
+    vPortGetHeapStats(&xHeapStats);
+    prvPrintHeapStats(&xHeapStats);
+
+    printf("\n\r");
+    printf("-----[END TEST]---------------------------------------------");
+    printf("\n\r");
+}
+
+void vTestFree()
+{
+    printf("-----[TEST] Free memory uising realloc----------------------");
+    printf("\n\r\n\r");
+
+    HeapStats_t xHeapStats;
+    BlockStats_t xBlockStats;
+
+    /* The number of elements to be allocated */
+    size_t xWantedSize = 10;
+    size_t xNewSize = 0;
+
+    /* Initialized pointer */
+    char *pcBuff = NULL;
+    char *pcNewBuff = NULL;
+
+    /* The pointer is allocated */
+    printf("Malloc is called with wantedSize %lu\n\r\n\r", (unsigned long) xWantedSize * sizeof(char));
+    pcBuff = (char *)pvPortMalloc(xWantedSize * sizeof(char));
+
+    /* Check that the pointer is allocated */
+    if (pcBuff == NULL)
+    {
+        printf("Malloc failed\n\r");
+        return;
+    }
+
+    /* Initialize the buffer with some data */
+    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xWantedSize, 'd');
+    for (int i = 0; i < xWantedSize; i++)
+    {
+        pcBuff[i] = 'd';
+    }
+
+    printf("Block stats:\n\r");
+    vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
+    prvPrintBlockStats(&xBlockStats);
+    printf("\n\r");
+    hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
+
+    printf("\n\r\n\r");
+    /* Reallocate the memory */
+    printf("Memory is reallocated with new size %lu\n\r\n\r", (unsigned long)xNewSize * sizeof(char));
+    pcNewBuff = (char *)pvPortRealloc((void *)pcBuff, xNewSize);
+
+    /* Check that the pointer has been freed */
+    if(pcNewBuff != NULL)
+    {
+        printf("Realloc free failed\n\r");
+        return;
+    }
+
+    hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
     printf("\n\r\n\rHeap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
