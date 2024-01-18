@@ -35,7 +35,7 @@ void vTestReallocate()
     char *pcNewBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long) xInitSize * sizeof(char));
+    printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long)xInitSize * sizeof(char));
     pcBuff = (char *)pvPortMalloc(xInitSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -102,7 +102,7 @@ void vTestReallocate()
     pcNewBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long) xInitSize * sizeof(char));
+    printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long)xInitSize * sizeof(char));
     pcBuff = (char *)pvPortMalloc(xInitSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -172,7 +172,7 @@ void vTestAllocate()
     char *pcBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Realloc is called with wantedSize %lu bytes and NULL pointer\n\r\n\r", (unsigned long) xWantedSize * sizeof(char));
+    printf("Realloc is called with wantedSize %lu bytes and NULL pointer\n\r\n\r", (unsigned long)xWantedSize * sizeof(char));
     pcBuff = (char *)pvPortRealloc(NULL, xWantedSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -223,7 +223,7 @@ void vTestFree()
     char *pcNewBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Malloc is called with wantedSize %lu\n\r\n\r", (unsigned long) xWantedSize * sizeof(char));
+    printf("Malloc is called with wantedSize %lu\n\r\n\r", (unsigned long)xWantedSize * sizeof(char));
     pcBuff = (char *)pvPortMalloc(xWantedSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -252,7 +252,7 @@ void vTestFree()
     pcNewBuff = (char *)pvPortRealloc((void *)pcBuff, xNewSize);
 
     /* Check that the pointer has been freed */
-    if(pcNewBuff != NULL)
+    if (pcNewBuff != NULL)
     {
         printf("Realloc free failed\n\r");
         return;
@@ -287,6 +287,6 @@ void prvPrintBlockStats(BlockStats_t *pxBlockStats)
 {
     printf("Block pointer : %p\n\r", pxBlockStats->pvBlock);
     printf("Data pointer  : %p\n\r", pxBlockStats->pvData);
-    printf("Block size    : %lu (bytes)\n\r", (unsigned long) pxBlockStats->xBlockSize);
-    printf("Data size     : %lu (bytes)\n\r", (unsigned long) pxBlockStats->xDataSize);
+    printf("Block size    : %lu (bytes)\n\r", (unsigned long)pxBlockStats->xBlockSize);
+    printf("Data size     : %lu (bytes)\n\r", (unsigned long)pxBlockStats->xDataSize);
 }
