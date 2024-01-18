@@ -104,9 +104,7 @@ int main(void)
   printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
 
   vTestReallocate();
-  printf("\n\r\n\r");
   vTestAllocate();
-  printf("\n\r\n\r");
   vTestFree();
   /* EXAMPLE TEST END */
   /* Start scheduler */
