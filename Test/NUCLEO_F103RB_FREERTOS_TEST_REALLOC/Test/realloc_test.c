@@ -19,8 +19,10 @@ void prvPrintBlockStats(BlockStats_t *pxBlockStats);
 /* Private user code ---------------------------------------------------------*/
 void vTestReallocate()
 {
-    printf("-----[TEST] Reallocate memory to a greater size-------------");
-    printf("\n\r\n\r");
+    printf("************************************************************\n\r");
+    printf("*  [TEST]   Reallocate memory to a greater size            *\n\r");
+    printf("************************************************************\n\r");
+    printf("\n\r");
 
     HeapStats_t xHeapStats;
     BlockStats_t xBlockStats;
@@ -35,7 +37,7 @@ void vTestReallocate()
     char *pcNewBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long)xInitSize * sizeof(char));
+    printf("---[DEBUG]--- Malloc is called with wantedSize %lu bytes\n\r", (unsigned long)xInitSize * sizeof(char));
     pcBuff = (char *)pvPortMalloc(xInitSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -46,21 +48,22 @@ void vTestReallocate()
     }
 
     /* Initialize the buffer with some data */
-    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xInitSize, 'a');
+    printf("---[DEBUG]--- Buffer initialized with %lu char (%c)\n\r", (unsigned long)xInitSize, 'a');
     for (int i = 0; i < xInitSize; i++)
     {
         pcBuff[i] = 'a';
     }
 
+    printf("\n\r");
     printf("Initial Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
     prvPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
-    printf("\n\r\n\r");
     /* Reallocate the memory */
-    printf("Memory is reallocated with new size %lu\n\r\n\r", (unsigned long)xNewSize * sizeof(char));
+    printf("\n\r");
+    printf("---[DEBUG]--- Memory is reallocated with new size %lu\n\r", (unsigned long)xNewSize * sizeof(char));
     pcNewBuff = (char *)pvPortRealloc((void *)pcBuff, xNewSize);
 
     /* Check the memory is allocated */
@@ -70,6 +73,7 @@ void vTestReallocate()
         return;
     }
 
+    printf("\n\r");
     printf("New Block stats:\n\r");
     vPortGetBlockStats(&xNewBlockStats, (void *)pcNewBuff);
     prvPrintBlockStats(&xNewBlockStats);
@@ -79,20 +83,24 @@ void vTestReallocate()
     printf("\n\r");
     hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
+    printf("\n\r");
+    printf("---[DEBUG]--- Used memory is freed\n\r");
     vPortFree(pcNewBuff);
 
-    printf("\n\r\n\rHeap Stats:\n\r");
+    printf("\n\r");
+    printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
     prvPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
-    printf("-----[END TEST]---------------------------------------------");
+    printf("************************************************************\n\r");
+
+    printf("\n\r\n\r");
+
+    printf("************************************************************\n\r");
+    printf("*  [TEST]   Reallocate memory to a smaller size            *\n\r");
+    printf("************************************************************\n\r");
     printf("\n\r");
-
-    printf("\n\r\n\r");
-
-    printf("-----[TEST] Reallocate memory to a smaller size-------------");
-    printf("\n\r\n\r");
 
     xInitSize = 30;
     xNewSize = 10;
@@ -102,7 +110,7 @@ void vTestReallocate()
     pcNewBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Malloc is called with wantedSize %lu bytes\n\r\n\r", (unsigned long)xInitSize * sizeof(char));
+    printf("---[DEBUG]--- Malloc is called with wantedSize %lu bytes\n\r", (unsigned long)xInitSize * sizeof(char));
     pcBuff = (char *)pvPortMalloc(xInitSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -113,21 +121,22 @@ void vTestReallocate()
     }
 
     /* Initialize the buffer with some data */
-    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xInitSize, 'b');
+    printf("---[DEBUG]--- Buffer initialized with %lu char (%c)\n\r", (unsigned long)xInitSize, 'b');
     for (int i = 0; i < xInitSize; i++)
     {
         pcBuff[i] = 'b';
     }
 
+    printf("\n\r");
     printf("Initial Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
     prvPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
-    printf("\n\r\n\r");
     /* Reallocate the memory */
-    printf("Memory is reallocated with new size %lu\n\r\n\r", (unsigned long)xNewSize * sizeof(char));
+    printf("\n\r");
+    printf("---[DEBUG]--- Memory is reallocated with new size %lu\n\r", (unsigned long)xNewSize * sizeof(char));
     pcNewBuff = (char *)pvPortRealloc((void *)pcBuff, xNewSize);
 
     /* Check the memory is allocated */
@@ -137,6 +146,7 @@ void vTestReallocate()
         return;
     }
 
+    printf("\n\r");
     printf("New Block stats:\n\r");
     vPortGetBlockStats(&xNewBlockStats, (void *)pcNewBuff);
     prvPrintBlockStats(&xNewBlockStats);
@@ -146,21 +156,25 @@ void vTestReallocate()
     printf("\n\r");
     hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
+    printf("\n\r");
+    printf("---[DEBUG]--- Used memory is freed\n\r");
     vPortFree(pcNewBuff);
 
-    printf("\n\r\n\rHeap Stats:\n\r");
+    printf("\n\r");
+    printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
     prvPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
-    printf("-----[END TEST]---------------------------------------------");
-    printf("\n\r");
+    printf("************************************************************\n\r");
 }
 
 void vTestAllocate()
 {
-    printf("-----[TEST] Allocate memory using realloc-------------------");
-    printf("\n\r\n\r");
+    printf("************************************************************\n\r");
+    printf("*  [TEST]   Allocate memory using realloc                  *\n\r");
+    printf("************************************************************\n\r");
+    printf("\n\r");
 
     HeapStats_t xHeapStats;
     BlockStats_t xBlockStats;
@@ -172,7 +186,8 @@ void vTestAllocate()
     char *pcBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Realloc is called with wantedSize %lu bytes and NULL pointer\n\r\n\r", (unsigned long)xWantedSize * sizeof(char));
+    printf("---[DEBUG]--- Realloc is called with wantedSize %lu bytes and\n\r", (unsigned long)xWantedSize * sizeof(char));
+    printf("              NULL pointer\n\r");
     pcBuff = (char *)pvPortRealloc(NULL, xWantedSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -183,33 +198,38 @@ void vTestAllocate()
     }
 
     /* Initialize the buffer with some data */
-    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xWantedSize, 'c');
+    printf("---[DEBUG]--- Buffer initialized with %lu char (%c)\n\r", (unsigned long)xWantedSize, 'c');
     for (int i = 0; i < xWantedSize; i++)
     {
         pcBuff[i] = 'c';
     }
 
+    printf("\n\r");
     printf("Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
     prvPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
+    printf("\n\r");
+    printf("---[DEBUG]--- Used memory is freed\n\r");
     vPortFree(pcBuff);
 
-    printf("\n\r\n\rHeap Stats:\n\r");
+    printf("\n\r");
+    printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
     prvPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
-    printf("-----[END TEST]---------------------------------------------");
-    printf("\n\r");
+    printf("************************************************************\n\r");
 }
 
 void vTestFree()
 {
-    printf("-----[TEST] Free memory uising realloc----------------------");
-    printf("\n\r\n\r");
+    printf("************************************************************\n\r");
+    printf("*  [TEST]   Free memory uising realloc                     *\n\r");
+    printf("************************************************************\n\r");
+    printf("\n\r");
 
     HeapStats_t xHeapStats;
     BlockStats_t xBlockStats;
@@ -223,7 +243,7 @@ void vTestFree()
     char *pcNewBuff = NULL;
 
     /* The pointer is allocated */
-    printf("Malloc is called with wantedSize %lu\n\r\n\r", (unsigned long)xWantedSize * sizeof(char));
+    printf("---[DEBUG]--- Malloc is called with wantedSize %lu\n\r", (unsigned long)xWantedSize * sizeof(char));
     pcBuff = (char *)pvPortMalloc(xWantedSize * sizeof(char));
 
     /* Check that the pointer is allocated */
@@ -234,21 +254,22 @@ void vTestFree()
     }
 
     /* Initialize the buffer with some data */
-    printf("Buffer initialized with %lu char (%c)\n\r\n\r", (unsigned long)xWantedSize, 'd');
+    printf("---[DEBUG]--- Buffer initialized with %lu char (%c)\n\r", (unsigned long)xWantedSize, 'd');
     for (int i = 0; i < xWantedSize; i++)
     {
         pcBuff[i] = 'd';
     }
 
+    printf("\n\r");
     printf("Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
     prvPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
-    printf("\n\r\n\r");
     /* Reallocate the memory */
-    printf("Memory is reallocated with new size %lu\n\r\n\r", (unsigned long)xNewSize * sizeof(char));
+    printf("\n\r");
+    printf("---[DEBUG]--- Memory is reallocated with new size %lu\n\r", (unsigned long)xNewSize * sizeof(char));
     pcNewBuff = (char *)pvPortRealloc((void *)pcBuff, xNewSize);
 
     /* Check that the pointer has been freed */
@@ -258,15 +279,16 @@ void vTestFree()
         return;
     }
 
+    printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
-    printf("\n\r\n\rHeap Stats:\n\r");
+    printf("\n\r");
+    printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
     prvPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
-    printf("-----[END TEST]---------------------------------------------");
-    printf("\n\r");
+    printf("************************************************************\n\r");
 }
 
 /*----------------------------------------------------------------------------*/
