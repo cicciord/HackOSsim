@@ -199,6 +199,15 @@ $(BUILD_DIR):
 	mkdir $@		
 
 #######################################
+# qemu
+#######################################
+qemu: all
+	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic
+
+qemu-gdb: all
+	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic -s -S
+
+#######################################
 # clean up
 #######################################
 clean:
@@ -208,5 +217,7 @@ clean:
 # dependencies
 #######################################
 -include $(wildcard $(BUILD_DIR)/*.d)
+
+.PHONY: all clean qemu qemu-gdb
 
 # *** EOF ***
