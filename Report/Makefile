@@ -12,7 +12,8 @@ BUILD_DIR 	:= $(CURRENT_DIR)/build
 ENTRY_POINT := $(TEX_FILE_NAME).tex
 OUTPUT_FILE := $(TEX_FILE_NAME).pdf
 OUTPUT_PDF 	:= $(PDF_FILE_NAME).pdf
-SRC_FILES 	:= $(wildcard $(SRC_DIR)/*.tex)
+SRC_FILES 	 = $(wildcard $(SRC_DIR)/*.tex)
+SRC_FILES 	+= $(wildcard $(SRC_DIR)/**/*.tex)
 
 # build main.pdf as default
 $(BUILD_DIR)/$(OUTPUT_FILE): $(SRC_FILES) $(BUILD_DIR)
