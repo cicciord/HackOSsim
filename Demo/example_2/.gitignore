@@ -1,5 +1,5 @@
-build/gcc/output/*.map
-build/gcc/output/*.out
-build/gcc/output/*.d
-build/gcc/output/*.o
+build/output/*.map
+build/output/*.out
+build/output/*.d
+build/output/*.o
 .vscode
