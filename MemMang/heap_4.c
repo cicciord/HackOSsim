@@ -245,12 +245,18 @@ void * pvPortMalloc( size_t xWantedSize )
                 pxBlock = heapPROTECT_BLOCK_POINTER( xStart.pxNextFreeBlock );
                 heapVALIDATE_BLOCK_POINTER( pxBlock );
 
-                while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
-                {
-                    pxPreviousBlock = pxBlock;
-                    pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
-                    heapVALIDATE_BLOCK_POINTER( pxBlock );
-                }
+                #if (configAPPLICATION_ALLOCATED_HEAP == 1)
+                    /// TODO: best-fit
+                #elif (configAPPLICATION_ALLOCATED_HEAP == 2)
+                    /// TODO: worst-fit
+                #else
+                    while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
+                    {
+                        pxPreviousBlock = pxBlock;
+                        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+                        heapVALIDATE_BLOCK_POINTER( pxBlock );
+                    }
+                #endif
 
                 /* If the end marker was reached then a block of adequate size
                  * was not found. */
