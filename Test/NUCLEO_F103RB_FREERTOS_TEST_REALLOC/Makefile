@@ -43,7 +43,6 @@ Core/Src/usart.c \
 Core/Src/stm32f1xx_it.c \
 Core/Src/stm32f1xx_hal_msp.c \
 Core/Src/stm32f1xx_hal_timebase_tim.c \
-Core/Src/hex_dump.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c \
@@ -68,7 +67,10 @@ Core/Src/system_stm32f1xx.c \
 ../../FreeRTOS/FreeRTOS/Source/timers.c \
 ../../MemMang/heap_4.c \
 ../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
-Test/realloc_test.c
+Test/realloc_test.c \
+Test/malloc_test.c \
+Core/Src/hex_dump.c \
+Core/Src/heap_stats.c
 
 # ASM sources
 ASM_SOURCES =  \

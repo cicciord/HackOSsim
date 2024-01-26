@@ -175,8 +175,8 @@ void * pvPortMalloc( size_t xWantedSize )
 {
     BlockLink_t * pxBlock;
     #if (configHEAP_ALLOCATION_TYPE)
-        BlockLink_t * pxBlockTmp;
-        BlockLink_t * pxPreviousBlockTmp;
+        BlockLink_t * pxBlockTmp = NULL;
+        BlockLink_t * pxPreviousBlockTmp = NULL;
     #endif
     BlockLink_t * pxPreviousBlock;
     BlockLink_t * pxNewBlockLink;
@@ -259,7 +259,7 @@ void * pvPortMalloc( size_t xWantedSize )
                            was found before and check wheter is a best fit */
                         if  (   ( pxBlock->xBlockSize >= xWantedSize )
                                 &&
-                                (   !pxPreviousBlock->xBlockSize
+                                (   pxBlockTmp == NULL
                                     ||
                                     ( ( pxBlock->xBlockSize - xWantedSize ) < ( pxBlockTmp->xBlockSize - xWantedSize ) )
                                 )
@@ -729,29 +729,12 @@ void vPortGetHeapStats( HeapStats_t * pxHeapStats )
             pxLink = ( void * ) puc;
 
             heapVALIDATE_BLOCK_POINTER( pxLink );
-            configASSERT( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 );
-            configASSERT( pxLink->pxNextFreeBlock == NULL );
 
-            if( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 )
-            {
-                if( pxLink->pxNextFreeBlock == NULL )
-                {
-                    pxBlockStats->pvBlock = (void *)pxLink;
-                    pxBlockStats->pvData = pv;
-                    pxBlockStats->xBlockSize = pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK;
-                    pxBlockStats->xDataSize = ( pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK ) - xHeapStructSize;
-                }
-                else
-                {
-                    /* next block of allocated block should be NULL */
-                    return;
-                }
-            }
-            else
-            {
-                /* block is not allocated */
-                return;
-            }
+            pxBlockStats->pvBlock = (void *)pxLink;
+            pxBlockStats->pvData = pv;
+            pxBlockStats->xBlockSize = pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK;
+            pxBlockStats->xDataSize = ( pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK ) - xHeapStructSize;
+            pxBlockStats->ucIsAllocated = heapBLOCK_IS_ALLOCATED( pxLink );
         }
         else
         {

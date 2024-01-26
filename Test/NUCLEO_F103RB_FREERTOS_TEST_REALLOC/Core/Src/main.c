@@ -27,6 +27,7 @@
 #include <string.h>
 #include "FreeRTOS.h"
 #include "realloc_test.h"
+#include "malloc_test.h"
 
 /* USER CODE END Includes */
 
@@ -106,6 +107,7 @@ int main(void)
   vTestReallocate();
   vTestAllocate();
   vTestFree();
+  vTestBestEffort();
   /* EXAMPLE TEST END */
   /* Start scheduler */
   /* there is no need to start the scheduler, only the memory
