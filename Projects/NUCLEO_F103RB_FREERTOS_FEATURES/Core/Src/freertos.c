@@ -38,8 +38,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define SEMPHR_TASK_PRIO  ( configMAX_PRIORITIES - 1 )  /* semaphore has maximum priority */
+#define TASK_TX_PRIO      ( tskIDLE_PRIORITY + 1 )
 
 #define TIMER_PERIOD_MS   pdMS_TO_TICKS( 1000 )
+#define QUEUE_LEN         ( 1 )
 
 /* USER CODE END PD */
 
@@ -52,6 +54,8 @@
 /* USER CODE BEGIN Variables */
 SemaphoreHandle_t xSemphr = NULL;
 TimerHandle_t xTimer = NULL;
+QueueHandle_t xQueue = NULL;
+TaskHandle_t xTaskTX = NULL;
 
 /* USER CODE END Variables */
 
@@ -59,6 +63,7 @@ TimerHandle_t xTimer = NULL;
 /* USER CODE BEGIN FunctionPrototypes */
 void prvSemphrTask( void *pvParams );
 void vTimerCallback( TimerHandle_t xTimer );
+void prvTaskTX( void *pvParams );
 
 /* USER CODE END FunctionPrototypes */
 
@@ -92,11 +97,18 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+  /// TODO: change type whene decide what values to pass
+  xQueue = xQueueCreate(  QUEUE_LEN,
+                          sizeof( uint32_t ) );
   /* USER CODE END RTOS_QUEUES */
 
   /* USER CODE BEGIN RTOS_TASKS */
-  /* add tasks, ... */
+  xTaskCreate(  prvTaskTX,
+                "Task-TX",
+                configMINIMAL_STACK_SIZE,
+                NULL,
+                TASK_TX_PRIO,
+                &xTaskTX );
   /* USER CODE END RTOS_TASKS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -107,17 +119,19 @@ void MX_FREERTOS_Init(void) {
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-void prvSemphrTask( void *pvParams )
-{
-  for(;;)
-  {
-    xSemaphoreTake( xSemphr, portMAX_DELAY );
-  }
-}
-
 void vTimerCallback( TimerHandle_t xTimer )
 {
   xSemaphoreGive( xSemphr );
+}
+
+void prvTaskTX( void *pvParams )
+{
+  const uint32_t uwExampleValueToSend = 1UL;
+  for(;;)
+  {
+    xSemaphoreTake( xSemphr, portMAX_DELAY );
+    xQueueSend( xQueue, uwExampleValueToSend, 0 );
+  }
 }
 
 /*---------------------------------------------------------------------------*/
