@@ -219,7 +219,7 @@ test-worstfit: test-clean all
 	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic
 
 test-clean:
-	rm $(BUILD_DIR)/{freertos*,heap_4*,heap_stats*,main*,malloc_test*,realloc_test*}
+	if [ -d "$(BUILD_DIR)" ]; then rm $(BUILD_DIR)/{freertos*,heap_4*,heap_stats*,main*,malloc_test*,realloc_test*}; fi
 
 #######################################
 # clean up
