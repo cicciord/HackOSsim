@@ -138,7 +138,7 @@ C_INCLUDES =  \
 -I../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3 \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
 -IDrivers/CMSIS/Include \
--ITest \
+-ITest/Inc \
 -I../../MemMang
 
 
