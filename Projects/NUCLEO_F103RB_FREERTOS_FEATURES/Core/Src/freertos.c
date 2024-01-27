@@ -20,6 +20,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
+#include "timers.h"
+#include "semphr.h"
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -34,6 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define SEMPHR_TASK_PRIO  ( configMAX_PRIORITIES - 1 )
 
 /* USER CODE END PD */
 
@@ -44,11 +48,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+SemaphoreHandle_t xSemphr = NULL;
 
 /* USER CODE END Variables */
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+void prvSemphrTask( void *pvParams );
 
 /* USER CODE END FunctionPrototypes */
 
@@ -69,7 +75,7 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
+  xSemphr = xSemaphoreCreateBinary();
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -92,6 +98,13 @@ void MX_FREERTOS_Init(void) {
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void prvSemphrTask( void *pvParams )
+{
+  for(;;)
+  {
+    xSemaphoreTake( xSemphr, portMAX_DELAY );
+  }
+}
 
 /*---------------------------------------------------------------------------*/
 
