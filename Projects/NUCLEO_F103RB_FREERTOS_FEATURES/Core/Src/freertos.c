@@ -37,7 +37,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define SEMPHR_TASK_PRIO  ( configMAX_PRIORITIES - 1 )
+#define SEMPHR_TASK_PRIO  ( configMAX_PRIORITIES - 1 )  /* semaphore has maximum priority */
+
+#define TIMER_PERIOD_MS   pdMS_TO_TICKS( 1000 )
 
 /* USER CODE END PD */
 
@@ -49,12 +51,14 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 SemaphoreHandle_t xSemphr = NULL;
+TimerHandle_t xTimer = NULL;
 
 /* USER CODE END Variables */
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void prvSemphrTask( void *pvParams );
+void vTimerCallback( TimerHandle_t xTimer );
 
 /* USER CODE END FunctionPrototypes */
 
@@ -79,7 +83,12 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
+  xTimer = xTimerCreate(  ( const char * ) "Timer",
+                          TIMER_PERIOD_MS,
+                          pdTRUE,
+                          ( void * ) 0,
+                          vTimerCallback  );
+  xTimerStart( xTimer, 0 );
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
@@ -104,6 +113,11 @@ void prvSemphrTask( void *pvParams )
   {
     xSemaphoreTake( xSemphr, portMAX_DELAY );
   }
+}
+
+void vTimerCallback( TimerHandle_t xTimer )
+{
+  xSemaphoreGive( xSemphr );
 }
 
 /*---------------------------------------------------------------------------*/
