@@ -9,7 +9,7 @@
 #define MALLOC_TEST
 
 /* Exported functions prototypes ---------------------------------------------*/
-void vTestBestEffort();
+void vTestBestFit();
 
 
 #endif

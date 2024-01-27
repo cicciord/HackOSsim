@@ -14,7 +14,7 @@
 #include "heap_stats.h"
 
 /* Private user code ---------------------------------------------------------*/
-void vTestBestEffort()
+void vTestBestFit()
 {
     printf("************************************************************\n\r");
     printf("*  [TEST]   Reallocate memory to a greater size            *\n\r");

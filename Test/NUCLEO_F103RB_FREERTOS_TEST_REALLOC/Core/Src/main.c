@@ -104,10 +104,15 @@ int main(void)
   /* EXAMPLE TEST BEGIN */
   printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
 
+  #if( configHEAP_ALLOCATION_TYPE == 1 )
+  vTestBestFit();
+  #elif( configHEAP_ALLOCATION_TYPE == 2 )
+  printf("Hello, World!\n\r");
+  #else
   vTestReallocate();
   vTestAllocate();
   vTestFree();
-  vTestBestEffort();
+  #endif
   /* EXAMPLE TEST END */
   /* Start scheduler */
   /* there is no need to start the scheduler, only the memory
