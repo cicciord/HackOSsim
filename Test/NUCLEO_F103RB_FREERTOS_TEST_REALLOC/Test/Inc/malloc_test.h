@@ -10,6 +10,7 @@
 
 /* Exported functions prototypes ---------------------------------------------*/
 void vTestBestFit();
+void vTestWorstFit();
 
 
 #endif

@@ -107,7 +107,7 @@ int main(void)
   vTestBestFit();
   #elif( configHEAP_ALLOCATION_TYPE == 2 )
   printf("MALLOC WORST-FIT UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
-  printf("Hello, World!\n\r");
+  vTestWorstFit();
   #else
   printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
   vTestReallocate();
