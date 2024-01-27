@@ -27,6 +27,7 @@
 #include <string.h>
 #include "FreeRTOS.h"
 #include "realloc_test.h"
+#include "malloc_test.h"
 
 /* USER CODE END Includes */
 
@@ -101,11 +102,18 @@ int main(void)
   MX_FREERTOS_Init();
 
   /* EXAMPLE TEST BEGIN */
+  #if( configHEAP_ALLOCATION_TYPE == 1 )
+  printf("MALLOC BEST-FIT UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
+  vTestBestFit();
+  #elif( configHEAP_ALLOCATION_TYPE == 2 )
+  printf("MALLOC WORST-FIT UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
+  vTestWorstFit();
+  #else
   printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
-
   vTestReallocate();
   vTestAllocate();
   vTestFree();
+  #endif
   /* EXAMPLE TEST END */
   /* Start scheduler */
   /* there is no need to start the scheduler, only the memory

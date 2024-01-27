@@ -43,7 +43,6 @@ Core/Src/usart.c \
 Core/Src/stm32f1xx_it.c \
 Core/Src/stm32f1xx_hal_msp.c \
 Core/Src/stm32f1xx_hal_timebase_tim.c \
-Core/Src/hex_dump.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c \
@@ -68,7 +67,10 @@ Core/Src/system_stm32f1xx.c \
 ../../FreeRTOS/FreeRTOS/Source/timers.c \
 ../../MemMang/heap_4.c \
 ../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
-Test/realloc_test.c
+Test/realloc_test.c \
+Test/malloc_test.c \
+Core/Src/hex_dump.c \
+Core/Src/heap_stats.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -136,7 +138,7 @@ C_INCLUDES =  \
 -I../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3 \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
 -IDrivers/CMSIS/Include \
--ITest \
+-ITest/Inc \
 -I../../MemMang
 
 
@@ -203,10 +205,21 @@ $(BUILD_DIR):
 	mkdir $@		
 
 #######################################
-# qemu
+# tests
 #######################################
-qemu: all
+test-realloc: test-clean all
 	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic
+
+test-bestfit: C_DEFS += -DconfigHEAP_ALLOCATION_TYPE=1
+test-bestfit: test-clean all
+	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic
+
+test-worstfit: C_DEFS += -DconfigHEAP_ALLOCATION_TYPE=2
+test-worstfit: test-clean all
+	qemu-system-gnuarmeclipse -machine NUCLEO-F103RB -cpu cortex-m3 -kernel $(BUILD_DIR)/$(TARGET).elf -serial mon:stdio -nographic
+
+test-clean:
+	rm $(BUILD_DIR)/{freertos*,heap_4*,heap_stats*,main*,malloc_test*,realloc_test*}
 
 #######################################
 # clean up
@@ -218,5 +231,7 @@ clean:
 # dependencies
 #######################################
 -include $(wildcard $(BUILD_DIR)/*.d)
+
+.PHONY: all clean qemu test-realloc test-bestfit test-worstfit test-clean
 
 # *** EOF ***

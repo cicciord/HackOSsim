@@ -146,6 +146,7 @@ standard names. */
 /* USER CODE BEGIN Defines */
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
 #define configHEAP_CLEAR_MEMORY_ON_FREE   1
+// #define configHEAP_ALLOCATION_TYPE        0
 /* USER CODE END Defines */
 
 #endif /* FREERTOS_CONFIG_H */

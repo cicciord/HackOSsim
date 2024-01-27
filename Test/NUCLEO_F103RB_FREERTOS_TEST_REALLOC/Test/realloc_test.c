@@ -10,11 +10,8 @@
 #include <stdio.h>
 #include "FreeRTOS.h"
 #include "hex_dump.h"
+#include "heap_stats.h"
 #include "realloc.h"
-
-/* Private function prototypes -----------------------------------------------*/
-void prvPrintHeapStats(HeapStats_t *pxHeapStats);
-void prvPrintBlockStats(BlockStats_t *pxBlockStats);
 
 /* Private user code ---------------------------------------------------------*/
 void vTestReallocate()
@@ -57,7 +54,7 @@ void vTestReallocate()
     printf("\n\r");
     printf("Initial Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
-    prvPrintBlockStats(&xBlockStats);
+    vPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
@@ -76,7 +73,7 @@ void vTestReallocate()
     printf("\n\r");
     printf("New Block stats:\n\r");
     vPortGetBlockStats(&xNewBlockStats, (void *)pcNewBuff);
-    prvPrintBlockStats(&xNewBlockStats);
+    vPrintBlockStats(&xNewBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xNewBlockStats.pvBlock, xNewBlockStats.xBlockSize);
 
@@ -90,7 +87,7 @@ void vTestReallocate()
     printf("\n\r");
     printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
-    prvPrintHeapStats(&xHeapStats);
+    vPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
     printf("************************************************************\n\r");
@@ -130,7 +127,7 @@ void vTestReallocate()
     printf("\n\r");
     printf("Initial Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
-    prvPrintBlockStats(&xBlockStats);
+    vPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
@@ -149,7 +146,7 @@ void vTestReallocate()
     printf("\n\r");
     printf("New Block stats:\n\r");
     vPortGetBlockStats(&xNewBlockStats, (void *)pcNewBuff);
-    prvPrintBlockStats(&xNewBlockStats);
+    vPrintBlockStats(&xNewBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xNewBlockStats.pvBlock, xNewBlockStats.xBlockSize);
 
@@ -163,7 +160,7 @@ void vTestReallocate()
     printf("\n\r");
     printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
-    prvPrintHeapStats(&xHeapStats);
+    vPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
     printf("************************************************************\n\r");
@@ -208,7 +205,7 @@ void vTestAllocate()
     printf("\n\r");
     printf("Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
-    prvPrintBlockStats(&xBlockStats);
+    vPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
@@ -219,7 +216,7 @@ void vTestAllocate()
     printf("\n\r");
     printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
-    prvPrintHeapStats(&xHeapStats);
+    vPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
     printf("************************************************************\n\r");
@@ -265,7 +262,7 @@ void vTestFree()
     printf("\n\r");
     printf("Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
-    prvPrintBlockStats(&xBlockStats);
+    vPrintBlockStats(&xBlockStats);
     printf("\n\r");
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
@@ -287,7 +284,7 @@ void vTestFree()
     printf("\n\r");
     printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
-    prvPrintHeapStats(&xHeapStats);
+    vPrintHeapStats(&xHeapStats);
 
     printf("\n\r");
     printf("************************************************************\n\r");
@@ -295,23 +292,3 @@ void vTestFree()
 }
 
 /*----------------------------------------------------------------------------*/
-
-void prvPrintHeapStats(HeapStats_t *pxHeapStats)
-{
-    printf("  Total Heap Size                   : %lu\n\r", (unsigned long)configTOTAL_HEAP_SIZE);
-    printf("  Available Space in bytes          : %lu\n\r", (unsigned long)pxHeapStats->xAvailableHeapSpaceInBytes);
-    printf("  Largest free block in bytes       : %lu\n\r", (unsigned long)pxHeapStats->xSizeOfLargestFreeBlockInBytes);
-    printf("  Smallest free block in bytes      : %lu\n\r", (unsigned long)pxHeapStats->xSizeOfSmallestFreeBlockInBytes);
-    printf("  Number of free block              : %lu\n\r", (unsigned long)pxHeapStats->xNumberOfFreeBlocks);
-    printf("  Minumum Ever Free Bytes Remaining : %lu\n\r", (unsigned long)pxHeapStats->xMinimumEverFreeBytesRemaining);
-    printf("  Successful allocations            : %lu\n\r", (unsigned long)pxHeapStats->xNumberOfSuccessfulAllocations);
-    printf("  Successful frees                  : %lu\n\r", (unsigned long)pxHeapStats->xNumberOfSuccessfulFrees);
-}
-
-void prvPrintBlockStats(BlockStats_t *pxBlockStats)
-{
-    printf("  Block pointer : %p\n\r", pxBlockStats->pvBlock);
-    printf("  Data pointer  : %p\n\r", pxBlockStats->pvData);
-    printf("  Block size    : %lu (bytes)\n\r", (unsigned long)pxBlockStats->xBlockSize);
-    printf("  Data size     : %lu (bytes)\n\r", (unsigned long)pxBlockStats->xDataSize);
-}
