@@ -27,6 +27,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -39,6 +40,7 @@
 /* USER CODE BEGIN PD */
 #define SEMPHR_TASK_PRIO  ( configMAX_PRIORITIES - 1 )  /* semaphore has maximum priority */
 #define TASK_TX_PRIO      ( tskIDLE_PRIORITY + 1 )
+#define TASK_RX_PRIO      ( tskIDLE_PRIORITY + 2 )
 
 #define TIMER_PERIOD_MS   pdMS_TO_TICKS( 1000 )
 #define QUEUE_LEN         ( 1 )
@@ -56,6 +58,7 @@ SemaphoreHandle_t xSemphr = NULL;
 TimerHandle_t xTimer = NULL;
 QueueHandle_t xQueue = NULL;
 TaskHandle_t xTaskTX = NULL;
+TaskHandle_t xTaskRX = NULL;
 
 /* USER CODE END Variables */
 
@@ -64,6 +67,7 @@ TaskHandle_t xTaskTX = NULL;
 void prvSemphrTask( void *pvParams );
 void vTimerCallback( TimerHandle_t xTimer );
 void prvTaskTX( void *pvParams );
+void prvTaskRX( void *pvParams );
 
 /* USER CODE END FunctionPrototypes */
 
@@ -109,6 +113,13 @@ void MX_FREERTOS_Init(void) {
                 NULL,
                 TASK_TX_PRIO,
                 &xTaskTX );
+
+  xTaskCreate(  prvTaskRX,
+                "Task-RX",
+                configMINIMAL_STACK_SIZE,
+                NULL,
+                TASK_RX_PRIO,
+                &xTaskRX );
   /* USER CODE END RTOS_TASKS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -126,11 +137,21 @@ void vTimerCallback( TimerHandle_t xTimer )
 
 void prvTaskTX( void *pvParams )
 {
-  const uint32_t uwExampleValueToSend = 1UL;
+  const uint32_t uwExampleValueToSend = 5UL;
   for(;;)
   {
     xSemaphoreTake( xSemphr, portMAX_DELAY );
-    xQueueSend( xQueue, uwExampleValueToSend, 0 );
+    xQueueSend( xQueue, &uwExampleValueToSend, 0 );
+  }
+}
+
+void prvTaskRX( void *pvParams )
+{
+  uint32_t uwExampleValueReceived;
+  for(;;)
+  {
+    xQueueReceive( xQueue, &uwExampleValueReceived, portMAX_DELAY );
+    printf("%lu\n\r", uwExampleValueReceived);
   }
 }
 
