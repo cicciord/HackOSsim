@@ -102,13 +102,14 @@ int main(void)
   MX_FREERTOS_Init();
 
   /* EXAMPLE TEST BEGIN */
-  printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
-
   #if( configHEAP_ALLOCATION_TYPE == 1 )
+  printf("MALLOC BEST-FIT UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
   vTestBestFit();
   #elif( configHEAP_ALLOCATION_TYPE == 2 )
+  printf("MALLOC WORST-FIT UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
   printf("Hello, World!\n\r");
   #else
+  printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
   vTestReallocate();
   vTestAllocate();
   vTestFree();
