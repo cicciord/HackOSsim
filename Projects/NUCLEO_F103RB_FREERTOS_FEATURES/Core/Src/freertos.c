@@ -80,6 +80,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
+  printf("Start Exercise\n\r");
 
   /* USER CODE END Init */
 
@@ -137,21 +138,24 @@ void vTimerCallback( TimerHandle_t xTimer )
 
 void prvTaskTX( void *pvParams )
 {
-  const uint32_t uwExampleValueToSend = 5UL;
+  uint32_t uwConut = 0UL;
   for(;;)
   {
     xSemaphoreTake( xSemphr, portMAX_DELAY );
-    xQueueSend( xQueue, &uwExampleValueToSend, 0 );
+    xQueueSend( xQueue, &uwConut, 0 );
+    uwConut++;
   }
 }
 
 void prvTaskRX( void *pvParams )
 {
-  uint32_t uwExampleValueReceived;
+  TickType_t xTick;
+  uint32_t uwValueReceived;
   for(;;)
   {
-    xQueueReceive( xQueue, &uwExampleValueReceived, portMAX_DELAY );
-    printf("%lu\n\r", uwExampleValueReceived);
+    xQueueReceive( xQueue, &uwValueReceived, portMAX_DELAY );
+    xTick = xTaskGetTickCount();
+    printf("%03lu - Tick Count: %lu\n\r", uwValueReceived, xTick);
   }
 }
 
