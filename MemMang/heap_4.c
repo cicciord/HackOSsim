@@ -254,7 +254,6 @@ void * pvPortMalloc( size_t xWantedSize )
                     /* traverse the whole free block list */
                     while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
                     {
-                        /// TODO: Check this if and if there is a better way to do it
                         /* Check if the current block is a valid option and if another valid block
                            was found before and check wheter is a best fit */
                         if  (   ( pxBlock->xBlockSize >= xWantedSize )
@@ -275,7 +274,30 @@ void * pvPortMalloc( size_t xWantedSize )
                     pxPreviousBlock = pxPreviousBlockTmp;
                     pxBlock = pxBlockTmp;
                 #elif (configHEAP_ALLOCATION_TYPE == 2)
-                    /// TODO: worst-fit
+                    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
+                    /* traverse the whole free block list */
+                    while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
+                    {
+                        /* Check if the current block is a valid option and if another valid block
+                           was found before and check wheter is a worst fit */
+                        if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                                &&
+                                (   pxBlockTmp == NULL
+                                    ||
+                                    ( ( pxBlock->xBlockSize - xWantedSize ) > ( pxBlockTmp->xBlockSize - xWantedSize ) )
+                                )
+                            )
+                        {
+                            pxPreviousBlockTmp = pxPreviousBlock;
+                            pxBlockTmp = pxBlock;
+                        }
+                        pxPreviousBlock = pxBlock;
+                        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+                        heapVALIDATE_BLOCK_POINTER( pxBlock );
+                    }
+                    pxPreviousBlock = pxPreviousBlockTmp;
+                    pxBlock = pxBlockTmp;
+
                 #else
                     while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
                     {
