@@ -80,7 +80,6 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-  printf("Start Exercise\n\r");
 
   /* USER CODE END Init */
 
@@ -133,6 +132,9 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE BEGIN Application */
 void vTimerCallback( TimerHandle_t xTimer )
 {
+  #ifdef VERBOSE
+    printf("---[DEBUG]--- Timer expired! Callback function called => give semaphore\n\r"); 
+  #endif
   xSemaphoreGive( xSemphr );
 }
 
@@ -142,6 +144,9 @@ void prvTaskTX( void *pvParams )
   for(;;)
   {
     xSemaphoreTake( xSemphr, portMAX_DELAY );
+    #ifdef VERBOSE
+      printf("---[DEBUG]--- Semaphore taken from TX task! Send count value to queue\n\r"); 
+    #endif
     xQueueSend( xQueue, &uwConut, 0 );
     uwConut++;
   }
@@ -154,6 +159,9 @@ void prvTaskRX( void *pvParams )
   for(;;)
   {
     xQueueReceive( xQueue, &uwValueReceived, portMAX_DELAY );
+    #ifdef VERBOSE
+      printf("---[DEBUG]--- New value in the queue! Received in RX task\n\r"); 
+    #endif
     xTick = xTaskGetTickCount();
     printf("%03lu - Tick Count: %lu\n\r", uwValueReceived, xTick);
   }

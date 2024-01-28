@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "FreeRTOS.h"
 #include "task.h"
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -98,6 +99,9 @@ int main(void)
   MX_FREERTOS_Init();
 
   /* Start scheduler */
+  #ifdef VERBOSE
+    printf("Start FreeRTOS\n\r");  
+  #endif
   vTaskStartScheduler();
 
   /* We should never get here as control is now taken by the scheduler */
