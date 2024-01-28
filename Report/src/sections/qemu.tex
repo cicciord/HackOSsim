@@ -1,2 +1,9 @@
-\section{Qemu}
-This section is aboout Qemu.
+\section{QEMU}
+QEMU, short for Quick EMUlator, is an open-source emulator that allows users to run virtual machines and emulate various architectures. Originally designed for x86, it has evolved over the years to support a wide range of architectures, including ARM, MIPS, PowerPC, and more. QEMU enables developers to create virtual environments for testing, debugging, and development without the need for physical hardware.
+
+\vspace{\baselineskip}
+
+QEMU operates using a combination of emulation and virtualization techniques. While virtualization relies on the host system's CPU to directly execute guest code, emulation translates guest instructions to host instructions, enabling the execution of different architectures on the host platform. QEMU uses dynamic binary translation (DBT) to achieve this, dynamically converting guest code to host code on the fly.
+
+\paragraph{QEMU Packages}
+QEMU packages follow a consistent naming convention to reflect their purpose and target architecture. Typically, package names begin with \textit{qemu} followed by the specific architecture or target type. For user-mode emulation, where QEMU runs specific applications on a different architecture, package names start with \textit{qemu-<arch>} (e.g., \textit{qemu-arm} for ARM architecture). On the other hand, for full system emulation, where QEMU simulates an entire computer system, the package names begin with \textit{qemu-system-<arch>} (e.g., \textit{\textbf{qemu-system-arm}} for ARM architecture).

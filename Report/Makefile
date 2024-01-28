@@ -41,5 +41,6 @@ pdf: $(BUILD_DIR)/$(OUTPUT_FILE)
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm -rf $(SRC_DIR)/{*.aux,*.fdb_latexmk,*.fls,*.log,*.out,*.pdf,*.synctex.gz,*.toc}
 
 .PHONY: default clean pdf
