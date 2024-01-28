@@ -15,7 +15,8 @@ OUTPUT_PDF 	:= $(PDF_FILE_NAME).pdf
 SRC_FILES 	 = $(wildcard $(SRC_DIR)/*.tex)
 SRC_FILES 	+= $(wildcard $(SRC_DIR)/**/*.tex)
 
-# build main.pdf as default
+default: $(BUILD_DIR)/$(OUTPUT_FILE)
+
 $(BUILD_DIR)/$(OUTPUT_FILE): $(SRC_FILES) $(BUILD_DIR)
 	cd $(SRC_DIR); \
 		pdflatex \
@@ -35,10 +36,10 @@ $(BUILD_DIR)/$(OUTPUT_FILE): $(SRC_FILES) $(BUILD_DIR)
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
 
-pdf-export: $(BUILD_DIR)/$(OUTPUT_FILE)
-	cp $(BUILD_DIR)/$(OUTPUT_FILE) $(CURRENT_DIR)/$(OUTPUT_PDF)
+pdf: $(BUILD_DIR)/$(OUTPUT_FILE)
+	cp $(BUILD_DIR)/$(OUTPUT_FILE) $(CURRENT_DIR)/../$(OUTPUT_PDF)
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: default clean
+.PHONY: default clean pdf
