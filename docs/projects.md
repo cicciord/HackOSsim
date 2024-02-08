@@ -19,7 +19,7 @@ The following demo can be found in the folder [Demo](../Demo/).
 
 ### example 1
 
-This example shows what is needed to emulate a board and get it up and running. It simply prints a "Hello, World!" message on the screen. Here the focus is more on what does the board need to run correctly than the software developed.
+This example shows what is needed to emulate a board and get it up and running. It simply prints a "Hello, World!" message on the screen.
 
 A complete description is given [here](../Demo/example_1/README.md)
 
