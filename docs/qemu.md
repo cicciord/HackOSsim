@@ -1,6 +1,6 @@
 # Qemu Installation and Usage
 
-_Go back to [Table of Contents](../README.md)_
+_Go back to the [main page](../README.md)_
 
 This tutorial provides comprehensive instructions for setting up an embedded OS on QEMU, using Ubuntu as the host operating system.
 
