@@ -17,6 +17,8 @@ Each processor architecture require a small amount of architecture specific RTOS
 
 The memory management files are located in the `FreeRTOS/FreeRTOS/Source/portable/MemMang` and are called `heap_x.c`, we will use `heap_4.c` for our project.
 
+In order to use FreeRTOS we need to include the `FreeRTOSCOnfig.h` file in our project, this file will contain the configuration of the RTOS.
+
 ## Compile
 
 Everything needed to build the project is in the build directory
