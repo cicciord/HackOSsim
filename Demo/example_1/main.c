@@ -1,5 +1,3 @@
-/// TODO: Write title, description and instructions
-
 #include <stdint.h>
 #include <stdio.h>
 
