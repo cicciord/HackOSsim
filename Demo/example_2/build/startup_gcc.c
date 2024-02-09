@@ -47,8 +47,6 @@ typedef struct UART_t
 extern void vPortSVCHandler( void );
 extern void xPortPendSVHandler( void );
 extern void xPortSysTickHandler( void );
-extern void TIMER0_Handler( void );
-extern void TIMER1_Handler( void );
 
 /* Exception handlers. */
 static void HardFault_Handler( void ) __attribute__( ( naked ) );
@@ -85,8 +83,8 @@ const uint32_t* isr_vector[] __attribute__((section(".isr_vector"))) =
     0,
     0,
     0,
-    ( uint32_t * ) TIMER0_Handler,     // Timer 0
-	( uint32_t * ) TIMER1_Handler,     // Timer 1
+    0,
+	0,
     0,
     0,
     0,

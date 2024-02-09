@@ -1,18 +1,15 @@
-
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
-#include "queue.h"
-#include "semphr.h"
 
 /* Standard includes. */
 #include <stdio.h>
 #include <string.h>
 
+/* Task priorities. */
 
-
-//Task priorities
-
+#define TASK1_PRIORITY						( tskIDLE_PRIORITY + 4 )
+#define TASK2_PRIORITY                      ( tskIDLE_PRIORITY + 4 )
 
 // Task stack sizes
 #define TASK_STACK_SIZE  520
@@ -26,12 +23,6 @@ void vTaskFunction2(void *params);
 
 /*-----------------------------------------------------------*/
 
-/* Task priorities. */
-
-#define TASK1_PRIORITY						( tskIDLE_PRIORITY + 4 )
-#define TASK2_PRIORITY                      ( tskIDLE_PRIORITY + 4 )
-
-
 /* printf() output uses the UART.  These constants define the addresses of the
 required UART registers. */
 #define UART0_ADDRESS 	( 0x40004000UL )
@@ -40,13 +31,6 @@ required UART registers. */
 #define UART0_CTRL		( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 8UL ) ) ) )
 #define UART0_BAUDDIV	( * ( ( ( volatile uint32_t * )( UART0_ADDRESS + 16UL ) ) ) )
 #define TX_BUFFER_MASK	( 1UL )
-
-/*
- * Only the comprehensive demo uses application hook (callback) functions.  See
- * https://www.FreeRTOS.org/a00016.html for more information.
- */
-void vFullDemoTickHookFunction( void );
-void vFullDemoIdleFunction( void );
 
 /*
  * Printf() output is sent to the serial port.  Initialise the serial hardware.
@@ -58,11 +42,10 @@ static void prvUARTInit( void );
 void main( void )
 {
 
-/* Hardware initialisation.  printf() output uses the UART for IO. */
-prvUARTInit();
+	/* Hardware initialisation.  printf() output uses the UART for IO. */
+	prvUARTInit();
 
-/* Start the  tasks. */
-	
+	/* Start the  tasks. */
 	xTaskCreate(vTaskFunction1,"Task-1",TASK_STACK_SIZE,NULL,TASK1_PRIORITY,&xTaskHandle1);
 	xTaskCreate(vTaskFunction2,"Task-2",TASK_STACK_SIZE,NULL,TASK2_PRIORITY,&xTaskHandle2);
 
@@ -86,7 +69,6 @@ void vTaskFunction1(void *params){
 }
 
 //Task 2 function
-
 void vTaskFunction2(void *params){
 
 	for(;;){
@@ -98,51 +80,10 @@ void vTaskFunction2(void *params){
 }
 /*-----------------------------------------------------------*/
 
-void vFullDemoTickHookFunction( void )
-{
-	
-	
-}
-
-void vApplicationMallocFailedHook( void )
-{
-	
-}
-/*-----------------------------------------------------------*/
-
-void vApplicationIdleHook( void )
-{
-	
-}
-/*-----------------------------------------------------------*/
-
-void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
-{
-	
-}
-/*-----------------------------------------------------------*/
-
-void vApplicationTickHook( void )
-{
-	/* This function will be called by each tick interrupt if
-	configUSE_TICK_HOOK is set to 1 in FreeRTOSConfig.h.  User code can be
-	added here, but the tick hook is called from an interrupt context, so
-	code must not attempt to block, and only the interrupt safe FreeRTOS API
-	functions can be used (those that end in FromISR()). */
-
-	
-	extern void vFullDemoTickHookFunction( void );
-
-	vFullDemoTickHookFunction();
-}
-/*-----------------------------------------------------------*/
-
-
-void vAssertCalled( const char *pcFileName, uint32_t ulLine )
+void vAssertCalled( const char * pcFile, uint32_t ulLine )
 {
 
 }
-/*-----------------------------------------------------------*/
 
 /* configUSE_STATIC_ALLOCATION is set to 1, so the application must provide an
 implementation of vApplicationGetIdleTaskMemory() to provide the memory that is

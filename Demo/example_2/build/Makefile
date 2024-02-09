@@ -31,9 +31,6 @@ SOURCE_FILES += $(KERNEL_DIR)/event_groups.c
 SOURCE_FILES += $(KERNEL_DIR)/stream_buffer.c
 SOURCE_FILES += $(KERNEL_DIR)/portable/MemMang/heap_4.c
 SOURCE_FILES += $(KERNEL_DIR)/portable/GCC/ARM_CM3/port.c
-SOURCE_FILES += (EXAMPLE_2)/IntQueue.c
-SOURCE_FILES += (EXAMPLE_2)/IntQueueTimer.c
-
 
 VPATH += $(EXAMPLE_2)
 INCLUDE_DIRS += -I$(EXAMPLE_2) -I$(EXAMPLE_2)/CMSIS
