@@ -1,6 +1,22 @@
 # NUCLEO-F103RB FREERTOS BLINK LED
 
-This project use FreeRTOS to implement one task that blinks an LED each second.
+This project implements a task on FreeRTOS to blink a LED on a NUCLEO-F103RB board.
+
+- [NUCLEO-F103RB FREERTOS BLINK LED](#nucleo-f103rb-freertos-blink-led)
+  - [Requirements](#requirements)
+  - [Usage](#usage)
+    - [Run Simulation](#run-simulation)
+    - [Compile](#compile)
+    - [Debug](#debug)
+      - [Command Line](#command-line)
+      - [Visual Studio Code](#visual-studio-code)
+    - [Clean](#clean)
+  - [TUTORIAL](#tutorial)
+    - [Task Creation](#task-creation)
+    - [LED Blinking Logic](#led-blinking-logic)
+    - [Scheduler Initialization](#scheduler-initialization)
+    - [Infinite Loop](#infinite-loop)
+    - [Conclusion](#conclusion)
 
 A **NUCLEO-F103RB** board simulated on QEMU is used.
 
@@ -60,3 +76,41 @@ To clean all the build files run
 ```bash
 make clean
 ```
+
+## TUTORIAL
+
+The project is a simple example of using FreeRTOS to blink an LED on a NUCLEO-F103RB board.
+
+### Task Creation
+
+In the `main` function, a task named `Task-Blink-LED` is created using the `xTaskCreate` function. This task is associated with the `vTaskBlinkLED_handler` function, which contains the logic for toggling the LED.
+
+### LED Blinking Logic
+
+The `vTaskBlinkLED_handler` function, executed by the created task, contains a continuous loop that toggles the state of the LED pin (LD2_Pin) using `HAL_GPIO_TogglePin` every 1000 milliseconds (1 second) with `vTaskDelay(1000)`.
+
+```c
+void vTaskBlinkLED_handler(void *params)
+{
+  while(1) {
+    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
+    vTaskDelay(1000);
+  }
+}
+```
+
+### Scheduler Initialization
+
+The FreeRTOS scheduler is started using `vTaskStartScheduler()`, allowing the created task to run.
+
+```c
+vTaskStartScheduler();
+```
+
+### Infinite Loop
+
+Since the scheduler takes control, the `while(1)` loop in the `main` function is never reached, and the control is handed over to the FreeRTOS scheduler.
+
+### Conclusion
+
+The LED blinking mechanism is achieved through the continuous execution of the `vTaskBlinkLED_handler` task, which toggles the LED pin state at a regular interval. The scheduler ensures the task runs concurrently with other tasks in the FreeRTOS environment.
