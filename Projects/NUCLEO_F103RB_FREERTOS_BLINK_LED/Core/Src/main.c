@@ -157,8 +157,8 @@ void SystemClock_Config(void)
 void vTaskBlinkLED_handler(void *params)
 {
   while(1) {
-    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
-    vTaskDelay(1000);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 
