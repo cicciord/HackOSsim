@@ -4,6 +4,13 @@ _Go back to the [main page](../README.md)_
 
 This tutorial provides comprehensive instructions for setting up an embedded OS on QEMU, using Ubuntu as the host operating system.
 
+- [Installation](#installation)
+  - [Usage](#usage)
+    - [FreeRTOS](#freertos)
+    - [QEMU Demo](#qemu-demo)
+- [xPack QEMU](#xpack-qemu)
+  - [Installation](#installation-1)
+
 ## Installation
 
 The following packages have to be installed on the system:

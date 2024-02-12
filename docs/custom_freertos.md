@@ -2,11 +2,14 @@
 
 _Go back to the [main page](../README.md)_
 
-This project implements a custom memory manager for FreeRTOS. The implementation adds some features to the default FreeRTOS `heap_4.c` memory manager. The features are:
+This project implements a custom memory manager for FreeRTOS. The implementation adds some features to the default FreeRTOS `heap_4.c` memory manager. The features are: **best-fit** and **worst-fit** memory allocation strategies, and a **realloc** function.
 
-- **Best-fit** memory allocation
-- **Worst-fit** memory allocation
-- **Realloc** implementation
+- [Best-fit](#best-fit)
+- [Worst-fit](#worst-fit)
+- [Realloc](#realloc)
+- [usage](#usage)
+  - [Configuration](#configuration)
+- [Testing](#testing)
 
 ## Best-fit
 
