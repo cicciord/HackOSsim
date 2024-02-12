@@ -1,0 +1,64 @@
+\section{Memory Management}
+
+A custom memory management library has been implemented. The library is a modifies version of the \textit{heap\_4.c} implementation provided by FreeRTOS.
+
+In the provided implementation it has been implemented the \textit{realloc} function, among with \textit{best-fit} and \textit{worst-fit} allocation strategy.
+
+\subsection{Realloc}
+    \subsubsection{Implementation}
+    The implementation of the realloc function is the following.
+
+    \begin{lstlisting}[language=c,breaklines]
+    void *pvPortRealloc(void *pv, size_t xWantedSize);
+    \end{lstlisting}
+
+    The function takes two arguments, the pointer to the memory block to be reallocated and the new size of the memory block. The function returns a pointer to the reallocated memory block.
+
+    In case a NULL pointer is passed as the first argument, the function behaves as a malloc call. In case the second argument is 0, the function behaves as a free call.
+    
+    In any other case the funcion will try to reallocate the memory block, after checking that the pointer corresponds to a valid memory block.
+
+    The reallocation is implemented in the following way:
+
+    \begin{codebox}
+    \begin{lstlisting}
+    BlockLink_t * pxLink;
+    void * pvReturn = NULL;
+    uint8_t * puc = ( uint8_t * ) pv;
+    size_t xBlockSize;
+    size_t xMoveSize;
+
+    /* The memory being reallocated will have an BlockLink_t structure immediately
+        * before it. */
+    puc -= xHeapStructSize;
+
+    /* This casting is to keep the compiler from issuing warnings. */
+    pxLink = ( void * ) puc;
+    \end{lstlisting}
+    \end{codebox}
+
+    \begin{codebox}
+    \begin{lstlisting}[language=c]
+    /* The size of the block being reallocated */
+    xBlockSize = ( pxLink->xBlockSize & ~heapBLOCK_ALLOCATED_BITMASK ) - xHeapStructSize;
+
+    /* Allocate new memory block */
+    pvReturn = pvPortMalloc( xWantedSize );
+
+    if( pvReturn != NULL )
+    {
+        /* The size of the memory to copy */
+        xMoveSize = xBlockSize < xWantedSize ? xBlockSize : xWantedSize;
+
+        /* Copy the memory to the new location */
+        memcpy( pvReturn, pv, xMoveSize );
+
+        /* Free old memory block */
+        vPortFree(pv);
+    } 
+    \end{lstlisting}
+    \end{codebox}
+
+    Notice that FreeRTOS use the first bit of the block size to store the allocation status of the block. For this reason if a block is allocated the size of the block is obtained by clearing the first bit of the block size.
+
+    \subsubsection{Testing}

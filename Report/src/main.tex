@@ -1,14 +1,33 @@
 \documentclass[a4paper]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{listings}
 
-% links
 \usepackage[colorlinks]{hyperref}
 \hypersetup{hidelinks}
 
 \usepackage{graphicx}
 \graphicspath{{images}}
+
+% code section style
+\usepackage{listings}
+\usepackage[scaled]{beramono}
+\usepackage{tcolorbox}
+\newtcolorbox{codebox}{
+    colback=gray!10,
+    colframe=gray,
+    boxrule=0.5pt,
+}
+\lstset{
+    breaklines,
+    basicstyle=\small\fontfamily{fvm}\selectfont
+}
+
+% page style
+\usepackage{geometry}
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+}
 
 % title
 \title{
@@ -46,6 +65,8 @@
 \input{sections/qemu.tex}
 
 \input{sections/freertos.tex}
+
+\input{sections/memmang.tex}
 
 
 
