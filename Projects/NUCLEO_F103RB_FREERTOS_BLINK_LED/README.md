@@ -44,6 +44,9 @@ The `HAL_GPIO_TogglePin` function is used to toggle the state of the LED pin. It
 The **NUCLEO-F103RB** GPIO port memory mapping is the following
 
 <!-- inisert the image of the memory mapping -->
+<p align="center">
+  <img src="./img/gpio_register_map.png" width="800" title="GPIO Registers Map">
+</p>
 
 The state of a pin can be changed by programming the BSRR (Bits Set Reset Register). The Low Bits of the BSRR are used to `set` the state of the pins, while the High Bits are used to `reset`.
 
