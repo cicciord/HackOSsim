@@ -58,15 +58,15 @@ Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
 Core/Src/system_stm32f1xx.c \
-../../FreeRTOS/FreeRTOS/Source/croutine.c \
-../../FreeRTOS/FreeRTOS/Source/event_groups.c \
-../../FreeRTOS/FreeRTOS/Source/list.c \
-../../FreeRTOS/FreeRTOS/Source/queue.c \
-../../FreeRTOS/FreeRTOS/Source/stream_buffer.c \
-../../FreeRTOS/FreeRTOS/Source/tasks.c \
-../../FreeRTOS/FreeRTOS/Source/timers.c \
-../../MemMang/heap_4.c \
-../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
+../FreeRTOS/FreeRTOS/Source/croutine.c \
+../FreeRTOS/FreeRTOS/Source/event_groups.c \
+../FreeRTOS/FreeRTOS/Source/list.c \
+../FreeRTOS/FreeRTOS/Source/queue.c \
+../FreeRTOS/FreeRTOS/Source/stream_buffer.c \
+../FreeRTOS/FreeRTOS/Source/tasks.c \
+../FreeRTOS/FreeRTOS/Source/timers.c \
+../MemMang/heap_4.c \
+../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
 Test/realloc_test.c \
 Test/malloc_test.c \
 Core/Src/hex_dump.c \
@@ -134,12 +134,12 @@ C_INCLUDES =  \
 -ICore/Inc \
 -IDrivers/STM32F1xx_HAL_Driver/Inc/Legacy \
 -IDrivers/STM32F1xx_HAL_Driver/Inc \
--I../../FreeRTOS/FreeRTOS/Source/include \
--I../../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3 \
+-I../FreeRTOS/FreeRTOS/Source/include \
+-I../FreeRTOS/FreeRTOS/Source/portable/GCC/ARM_CM3 \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
 -IDrivers/CMSIS/Include \
 -ITest/Inc \
--I../../MemMang
+-I../MemMang
 
 
 # compile gcc flags
