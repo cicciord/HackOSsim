@@ -2,26 +2,38 @@
 
 This project implements a basic application on the NUCLEO-F103RB board using FreeRTOS as a real-time operating system. The application is designed to initialize a FreeRTOS instance with two basic tasks, demonstrating the behavior of the scheduler with different system configuration settings and task priorities.
 
-## Table of Contents
-
-- [NUCLEO-F103RB FreeRTOS Feature](#nucleo-f103rb-freertos-feature)
-  - [Table of Contents](#table-of-contents)
-  - [Requirements](#requirements)
-  - [Usage](#usage)
-    - [Run Simulation](#run-simulation)
-    - [Compile](#compile)
-    - [Debug](#debug)
-      - [Command Line](#command-line)
-      - [Visual Studio Code](#visual-studio-code)
-    - [Clean](#clean)
-  - [How it works](#how-it-works)
-    - [Initialization](#initialization)
-    - [Timer](#timer)
-    - [Task TX](#task-tx)
-    - [Task RX](#task-rx)
-    - [Memory Management](#memory-management)
+- [How it works](#how-it-works)
+  - [Timer](#timer)
+  - [Task TX](#task-tx)
+  - [Task RX](#task-rx)
+- [Requirements](#requirements)
+- [Usage](#usage)
+  - [Run Simulation](#run-simulation)
+  - [Compile](#compile)
+  - [Debug](#debug)
+    - [Command Line](#command-line)
+    - [Visual Studio Code](#visual-studio-code)
+  - [Clean](#clean)
 
 A **NUCLEO-F103RB** board simulated on QEMU is used.
+
+## How it works
+
+ This project demonstrates the interaction of tasks with semaphores, queues, and timers in the FreeRTOS environment.
+
+ <!-- Draw schema of the exercise -->
+
+### Timer
+
+The **timer** is set to expire periodically every 1000 milliseconds. When the timer expires, it calls the callback function, which _gives_ the **semaphore**.
+
+### Task TX
+
+The TX task is waiting for the **semaphore**. When the semaphore is given, the TX task _takes_ the semaphore and a value to the **queue**. The value sent is a counter that is incremented each loop.
+
+### Task RX
+
+The RX task is waiting for an item in the **queue**. When an item arrives in the queue, the RX task receives it and prints the received value and the current tick count.
 
 ## Requirements
 
@@ -85,27 +97,3 @@ To clean all the build files run
 ```bash
 make clean
 ```
-
-## How it works
-
- This project demonstrates the interaction between semaphores, queues, and tasks in the FreeRTOS environment. The timer periodically expires and gives a semaphore. When the semaphore is given, the TX task sends a value to the queue. The RX task, waiting for an item in the queue, receives the value and prints it. This process repeats continuously.
-
-### Initialization 
-
-The MX_FREERTOS_Init function is called to initialize the necessary data structures. It creates a binary semaphore *(xSemphr)*, a timer *(xTimer)*, a queue *(xQueue)*, and two tasks *(prvTaskTX* and *prvTaskRX)*.
-
-### Timer
-
-The timer is set to expire every 1000 milliseconds (defined by *TIMER_PERIOD_MS*). When the timer expires, it calls the callback function vTimerCallback, which in turn gives the semaphore *(xSemaphoreGive)*.
-
-### Task TX
-
-The TX task *(prvTaskTX)* is waiting for the semaphore. When the semaphore is given, the TX task takes the semaphore *(xSemaphoreTake)* and sends a value to the queue *(xQueueSend)*. The value sent is a counter that is incremented each loop.
-
-### Task RX
-
-The RX task *(prvTaskRX)* is waiting for an item in the queue. When an item arrives in the queue, the RX task receives it *(xQueueReceive)* and prints the received value and the current tick count.
-
-### Memory Management
-
-The functions *vApplicationGetIdleTaskMemory* and *vApplicationGetTimerTaskMemory* are used to provide static memory for the idle task and the timer task, respectively. These functions are invoked when *configSUPPORT_STATIC_ALLOCATION* is set to 1, indicating that static memory allocation is enabled.
