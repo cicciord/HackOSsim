@@ -1,6 +1,6 @@
 \section{Memory Management}
 
-A custom memory management library has been implemented. The library is a modifies version of the \textit{heap\_4.c} implementation provided by FreeRTOS.
+A custom memory management library has been implemented. The library is a modified version of the \textit{heap\_4.c} implementation provided by FreeRTOS.
 
 In the provided implementation it has been implemented the \textit{realloc} function, among with \textit{best-fit} and \textit{worst-fit} allocation strategy.
 
@@ -62,3 +62,544 @@ In the provided implementation it has been implemented the \textit{realloc} func
     Notice that FreeRTOS use the first bit of the block size to store the allocation status of the block. For this reason if a block is allocated the size of the block is obtained by clearing the first bit of the block size.
 
     \subsubsection{Testing}
+    The realloc function has been tested on the following cases:
+
+    \begin{itemize}
+        \item Reallocating a block to a larger size
+        \item Reallocating a block to a smaller size
+        \item Reallocating a NULL pointer
+        \item Reallocating a block to size 0
+    \end{itemize}
+
+    In all test the \textit{configHEAP\_CLEAR\_MEMORY\_ON\_FREE} has been set to 1 to clear the memory after a free operation in order to better visualize the memory status.
+
+    \paragraph{Reallocating a block to a larger size}
+    To test the realloc function a block of memory of 10 bytes is allocated and then reallocated to a size of 30 bytes. The memory status is printed before and after the reallocation.
+
+    Following the output of the test
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ************************************************************
+    *  [TEST]   Reallocate memory to a greater size            *
+    ************************************************************
+    
+    ---[DEBUG]--- Malloc is called with wantedSize 10 bytes
+    ---[DEBUG]--- Buffer initialized with 10 char (a)
+    
+    Initial Block stats:
+        Allocated     : Yes
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 24 (bytes)
+        Data size     : 16 (bytes)
+    
+    Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  00 00 00 00 18 00 00 80  ........
+        0008  61 61 61 61 61 61 61 61  aaaaaaaa
+        0010  61 61 00 00 00 00 00 00  aa......
+    \end{lstlisting}
+    \end{outputbox}
+    
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ---[DEBUG]--- Memory is reallocated with new size 30
+    
+    New Block stats:
+        Allocated     : Yes
+        Block pointer : 0x200005f8
+        Data pointer  : 0x20000600
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+    
+    Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  00 00 00 00 28 00 00 80  ....(...
+        0008  61 61 61 61 61 61 61 61  aaaaaaaa
+        0010  61 61 00 00 00 00 00 00  aa......
+        0018  00 00 00 00 00 00 00 00  ........
+        0020  00 00 00 00 00 00 00 00  ........
+    
+    Old Block stats:
+        Allocated     : No
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 24 (bytes)
+        Data size     : 16 (bytes)
+    
+    Old Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  20 06 00 20 18 00 00 00   .. ....
+        0008  00 00 00 00 00 00 00 00  ........
+        0010  00 00 00 00 00 00 00 00  ........
+    
+    Heap Stats:
+        Total Heap Size                   : 3072
+        Available Space in bytes          : 3016
+        Largest free block in bytes       : 2992
+        Smallest free block in bytes      : 24
+        Number of free block              : 2
+        Minumum Ever Free Bytes Remaining : 2992
+        Successful allocations            : 2
+        Successful frees                  : 1
+    
+    ---[DEBUG]--- Used memory is freed
+    
+    ************************************************************
+    \end{lstlisting}
+    \end{outputbox}
+
+    \textbf{Notice}: the cortex-m3 architecture is little-endian, so the memory is printed in reverse order.
+
+    An allocated block of memory can be recognized by the first 8 bytes. The first 4 bytes are the pointer to the next block and the second 4 bytes are the block size. For an allocated block the first 4 bytes are zeros, while the highest bit of the secnd 4 bytes is 1, thus the highest byte is 0x80.
+
+    \paragraph{Reallocating a block to a smaller size}
+    The test is similar to the previus one but the block is reallocated to a smaller size.
+
+    Following the output of the test
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ************************************************************
+    *  [TEST]   Reallocate memory to a smaller size            *
+    ************************************************************
+
+    ---[DEBUG]--- Malloc is called with wantedSize 30 bytes
+    ---[DEBUG]--- Buffer initialized with 30 char (b)
+
+    Initial Block stats:
+        Allocated     : Yes
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+
+    Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  00 00 00 00 28 00 00 80  ....(...
+        0008  62 62 62 62 62 62 62 62  bbbbbbbb
+        0010  62 62 62 62 62 62 62 62  bbbbbbbb
+        0018  62 62 62 62 62 62 62 62  bbbbbbbb
+        0020  62 62 62 62 62 62 00 00  bbbbbb..
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ---[DEBUG]--- Memory is reallocated with new size 10
+
+    New Block stats:
+        Allocated     : Yes
+        Block pointer : 0x20000608
+        Data pointer  : 0x20000610
+        Block size    : 24 (bytes)
+        Data size     : 16 (bytes)
+
+    Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  00 00 00 00 18 00 00 80  ........
+        0008  62 62 62 62 62 62 62 62  bbbbbbbb
+        0010  62 62 00 00 00 00 00 00  bb......
+
+    Old Block stats:
+        Allocated     : No
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+
+    Old Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  20 06 00 20 28 00 00 00   .. (...
+        0008  00 00 00 00 00 00 00 00  ........
+        0010  00 00 00 00 00 00 00 00  ........
+        0018  00 00 00 00 00 00 00 00  ........
+        0020  00 00 00 00 00 00 00 00  ........
+
+    Heap Stats:
+        Total Heap Size                   : 3072
+        Available Space in bytes          : 3032
+        Largest free block in bytes       : 2992
+        Smallest free block in bytes      : 40
+        Number of free block              : 2
+        Minumum Ever Free Bytes Remaining : 2992
+        Successful allocations            : 4
+        Successful frees                  : 3
+
+    ---[DEBUG]--- Used memory is freed
+
+    ************************************************************
+    \end{lstlisting}
+    \end{outputbox}
+
+    \paragraph{Reallocating a NULL pointer}
+    The NULL pointer is reallocated, it can be observed that the memory is allocated to a new address, same as a malloc call.
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ************************************************************
+    *  [TEST]   Allocate memory using realloc                  *
+    ************************************************************
+
+    ---[DEBUG]--- Realloc is called with wantedSize 10 bytes and
+                  NULL pointer
+    ---[DEBUG]--- Buffer initialized with 10 char (c)
+    
+    Block stats:
+      Allocated     : Yes
+      Block pointer : 0x200005e0
+      Data pointer  : 0x200005e8
+      Block size    : 24 (bytes)
+      Data size     : 16 (bytes)
+    
+    Block Memory:
+     offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+      0000  00 00 00 00 18 00 00 80  ........
+      0008  63 63 63 63 63 63 63 63  cccccccc
+      0010  63 63 00 00 00 00 00 00  cc......
+    
+    Heap Stats:
+      Total Heap Size                   : 3072
+      Available Space in bytes          : 3032
+      Largest free block in bytes       : 3032
+      Smallest free block in bytes      : 3032
+      Number of free block              : 1
+      Minumum Ever Free Bytes Remaining : 2992
+      Successful allocations            : 5
+      Successful frees                  : 4
+    
+    ---[DEBUG]--- Used memory is freed
+    
+    ************************************************************
+    \end{lstlisting}
+    \end{outputbox}
+
+    \paragraph{Reallocating a block to size 0}
+    The block is reallocated to size 0, it can be observed that the memory is freed, same as a free call.
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ************************************************************
+    *  [TEST]   Free memory uising realloc                     *
+    ************************************************************
+        
+    ---[DEBUG]--- Malloc is called with wantedSize 10
+    ---[DEBUG]--- Buffer initialized with 10 char (d)
+    
+    Block stats:
+        Allocated     : Yes
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 24 (bytes)
+        Data size     : 16 (bytes)
+    
+    Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  00 00 00 00 18 00 00 80  ........
+        0008  64 64 64 64 64 64 64 64  dddddddd
+        0010  64 64 00 00 00 00 00 00  dd......
+    
+    ---[DEBUG]--- Memory is reallocated with new size 0
+    
+    Block stats:
+        Allocated     : No
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 3056 (bytes)
+        Data size     : 3048 (bytes)
+    
+    Block Memory:
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  d0 11 00 20 f0 0b 00 00  ... ....
+        0008  00 00 00 00 00 00 00 00  ........
+    
+    Heap Stats:
+        Total Heap Size                   : 3072
+        Available Space in bytes          : 3056
+        Largest free block in bytes       : 3056
+        Smallest free block in bytes      : 3056
+        Number of free block              : 1
+        Minumum Ever Free Bytes Remaining : 2992
+        Successful allocations            : 6
+        Successful frees                  : 6
+    
+    ************************************************************
+    \end{lstlisting}
+    \end{outputbox}
+
+\subsection{Best-Fit and Worst-fit Strategy}
+    \subsubsection{Implementation}
+    FreeRTOS by default use a \textit{first-fit} allocation strategy and handles the free blocks in a linked list. In order to allocate a block the list is traversed until a block greater than the requested size is found. 
+
+    The \textit{best-fit} strategy is implemented by traversing the list and keeping track of the smallest block greater than the requested size. The first block greater than the requested size is returned.
+
+    Following the implementation
+
+    \paragraph{Best-fit} Traverse the list and find the smallest difference between the block size and the requested size.
+
+    \begin{codebox}
+    \begin{lstlisting}
+    #if (configHEAP_ALLOCATION_TYPE == 1)
+        configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
+        /* traverse the whole free block list */
+        while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
+        {
+            /* Check if the current block is a valid option and if another valid block
+               was found before and check wheter is a best fit */
+            if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                    &&
+                    (   pxBlockTmp == NULL
+                        ||
+                        ( ( pxBlock->xBlockSize - xWantedSize ) < ( pxBlockTmp->xBlockSize - xWantedSize ) )
+                    )
+                )
+            {
+                pxPreviousBlockTmp = pxPreviousBlock;
+                pxBlockTmp = pxBlock;
+            }
+            pxPreviousBlock = pxBlock;
+            pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+            heapVALIDATE_BLOCK_POINTER( pxBlock );
+        }
+        pxPreviousBlock = pxPreviousBlockTmp;
+        pxBlock = pxBlockTmp;
+    \end{lstlisting}
+    \end{codebox}
+
+    \paragraph{Worst-fit} Traverse the list and find the largest difference between the block size and the requested size.
+
+    \begin{codebox}
+    \begin{lstlisting}
+    #elif (configHEAP_ALLOCATION_TYPE == 2)
+        configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
+        /* traverse the whole free block list */
+        while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
+        {
+            /* Check if the current block is a valid option and if another valid block
+               was found before and check wheter is a worst fit */
+            if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                    &&
+                    (   pxBlockTmp == NULL
+                        ||
+                        ( ( pxBlock->xBlockSize - xWantedSize ) > ( pxBlockTmp->xBlockSize - xWantedSize ) )
+                    )
+                )
+            {
+                pxPreviousBlockTmp = pxPreviousBlock;
+                pxBlockTmp = pxBlock;
+            }
+            pxPreviousBlock = pxBlock;
+            pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+            heapVALIDATE_BLOCK_POINTER( pxBlock );
+        }
+        pxPreviousBlock = pxPreviousBlockTmp;
+        pxBlock = pxBlockTmp;
+    \end{lstlisting}
+    \end{codebox}
+
+    \paragraph{First-fit} Traverse the list and return the first block greater than the requested size. Default case.
+
+    \begin{codebox}
+    \begin{lstlisting}
+    #else
+        while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
+        {
+            pxPreviousBlock = pxBlock;
+            pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+            heapVALIDATE_BLOCK_POINTER( pxBlock );
+        }
+    #endif
+    \end{lstlisting}
+    \end{codebox}
+
+    \subsubsection{Testing}
+    \paragraph{Best-fit} The best-fit strategy has been tested by creating a memory layout with 5 blocks of memory as follow:
+
+    %table with 6 columns and 3 rows (header row and column included)
+
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Block 1} & \textbf{Block 2} & \textbf{Block 3} & \textbf{Block 4} & \textbf{Block 5} \\
+    \hline
+    \textbf{Allocated} & No & Yes & No & Yes & No \\
+    \textbf{Byte} & 64 & 32 & 32 & 32 & 2856 \\
+    \hline
+    \end{tabular}
+    \end{table}
+
+    A new block of 32 bytes is requested, the best-fit strategy should return the block 3, the smallest block greater than the requested size.
+
+    Following the output of the test
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ************************************************************
+    *  [TEST]   Best-Fit Allocation of a memory block          *
+    ************************************************************
+
+    ---[DEBUG]--- A first block is allocated of size 64bytes
+
+    ---[DEBUG]--- A second block is allocated of size 32bytes
+
+    ---[DEBUG]--- A third block is allocated of size 32bytes
+
+    ---[DEBUG]--- A fourth block is allocated of size 32bytes
+
+    ---[DEBUG]--- Free the first block to leave a hole of 64bytes
+
+    ---[DEBUG]--- Free the third block to leave a hole of 32bytes
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    First Block stats:
+        Allocated     : No
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 72 (bytes)
+        Data size     : 64 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    Second Block stats:
+        Allocated     : Yes
+        Block pointer : 0x20000628
+        Data pointer  : 0x20000630
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    Third Block stats:
+        Allocated     : No
+        Block pointer : 0x20000650
+        Data pointer  : 0x20000658
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    Fourth Block stats:
+        Allocated     : Yes
+        Block pointer : 0x20000678
+        Data pointer  : 0x20000680
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    Last Block stats:
+        Allocated     : No
+        Block pointer : 0x200006a0
+        Data pointer  : 0x200006a8
+        Block size    : 2864 (bytes)
+        Data size     : 2856 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ---[DEBUG]--- Allocate a new block of 32 bytes
+
+    Block stats:
+        Allocated     : Yes
+        Block pointer : 0x20000650
+        Data pointer  : 0x20000658
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+
+    ************************************************************
+    \end{lstlisting}
+    \end{outputbox}
+
+    \paragraph{Worst-fit} The worst-fit strategy has been tested by creating a memory layout with 3 blocks of memory as follow:
+
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Block 1} & \textbf{Block 2} & \textbf{Block 3} \\
+    \hline
+    \textbf{Allocated} & No & Yes & No \\
+    \textbf{Byte} & 64 & 32 & 2936 \\
+    \hline
+    \end{tabular}
+    \end{table}
+
+    A new block of 32 bytes is requested, the worst-fit strategy should return the block 3, the largest block greater than the requested size.
+
+    Following the output of the test
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ************************************************************
+    *  [TEST]   Worst-Fit allocation of a memory block         *
+    ************************************************************
+    
+    ---[DEBUG]--- A first block is allocated of size 64bytes
+    
+    ---[DEBUG]--- A second block is allocated of size 32bytes
+    
+    ---[DEBUG]--- Free the first block to leave a hole of 64bytes
+    \end{lstlisting}
+    \end{outputbox}
+    
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    First Block stats:
+        Allocated     : No
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 72 (bytes)
+        Data size     : 64 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+    
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    Second Block stats:
+        Allocated     : Yes
+        Block pointer : 0x20000628
+        Data pointer  : 0x20000630
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+    
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    Third Block stats:
+        Allocated     : No
+        Block pointer : 0x20000650
+        Data pointer  : 0x20000658
+        Block size    : 2944 (bytes)
+        Data size     : 2936 (bytes)
+    \end{lstlisting}
+    \end{outputbox}
+    
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
+    ---[DEBUG]--- Allocate a new block of 32 bytes
+    
+    Block stats:
+        Allocated     : Yes
+        Block pointer : 0x20000650
+        Data pointer  : 0x20000658
+        Block size    : 40 (bytes)
+        Data size     : 32 (bytes)
+    
+    ************************************************************
+    \end{lstlisting}
+    \end{outputbox}
