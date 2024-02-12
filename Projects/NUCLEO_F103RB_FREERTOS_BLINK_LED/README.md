@@ -1,8 +1,61 @@
 # NUCLEO-F103RB FREERTOS BLINK LED
 
-This project use FreeRTOS to implement one task that blinks an LED each second.
+This project implements a task on FreeRTOS to blink a LED on a NUCLEO-F103RB board.
+
+- [How it Works](#how-it-works)
+  - [Task Handler Function](#task-handler-function)
+  - [HAL_GPIO_TogglePin](#hal_gpio_togglepin)
+- [Requirements](#requirements)
+- [Usage](#usage)
+  - [Run Simulation](#run-simulation)
+  - [Compile](#compile)
+  - [Debug](#debug)
+    - [Command Line](#command-line)
+    - [Visual Studio Code](#visual-studio-code)
+  - [Clean](#clean)
 
 A **NUCLEO-F103RB** board simulated on QEMU is used.
+
+## How it Works
+
+### Task Handler Function
+
+The `vTaskBlinkLED_handler` function, executed by the created task, contains a continuous loop that toggles the state of the LED pin using `HAL_GPIO_TogglePin` every 1000 milliseconds (1 second) with `vTaskDelay(1000)`.
+
+```c
+void vTaskBlinkLED_handler(void *params)
+{
+  while(1) {
+    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
+    vTaskDelay(1000);
+  }
+}
+```
+
+### HAL_GPIO_TogglePin 
+
+The `HAL_GPIO_TogglePin` function is used to toggle the state of the LED pin. It takes two arguments, the GPIO port and the pin number.
+
+`GPIOA` is a macro that represents the GPIO port A (`0x40010800`) and `LD2_Pin` is a macro that represents the `GPIO_PIN_5` (`0x20`).
+
+The **NUCLEO-F103RB** GPIO port memory mapping is the following
+
+<!-- inisert the image of the memory mapping -->
+<p align="center">
+  <img src="./img/gpio_register_map.png" width="800" title="GPIO Register Map">
+</p>
+
+The state of a pin can be changed by programming the BSRR (Bits Set Reset Register). The Low Bits of the BSRR are used to `set` the state of the pins, while the High Bits are used to `reset`.
+
+The `HAL_GPIO_TogglePin does exatly this operation
+
+```c
+/* get current Output Data Register value */
+odr = GPIOx->ODR;
+
+/* Set selected pins that were at low level, and reset ones that were high */
+GPIOx->BSRR = ((odr & GPIO_Pin) << GPIO_NUMBER) | (~odr & GPIO_Pin);
+```
 
 ## Requirements
 

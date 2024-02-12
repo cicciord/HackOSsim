@@ -10,6 +10,7 @@ This section is dedicated on using QEMU and FreeRTOS to develope embedded projec
 - [Projects](#projects)
     - [LED Blink](#led-blink)
     - [Tasks Priority](#tasks-priority)
+    - [FreeRTOS Features](#freertos-features)
 
 ## Demo
 
@@ -50,3 +51,9 @@ A complete description is given [here](../Projects/NUCLEO_F103RB_FREERTOS_BLINK_
 This Project wants to show how the scheduler handles different tasks based on the priority assigned and the FreeRTOS configuration. The [example 2](#example-2) is copied here, but a walk-through on changing different parameters to experiment different scheduler behaviours is provided.
 
 A complete description is given [here](../Projects/NUCLEO_F103RB_FREERTOS_TASK_PRIORITY/README.md)
+
+### FreeRTOS Features
+
+The aim of this project is to demonstrate the interaction of tasks with additional FreeRTOS features, such as semaphores, queues, and timers and use this tools to create a simple communication between tasks.
+
+A complete description is given [here](../Projects/NUCLEO_F103RB_FREERTOS_FEATURES/README.md)
