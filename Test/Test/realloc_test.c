@@ -78,16 +78,20 @@ void vTestReallocate()
     hexDump("Block Memory", xNewBlockStats.pvBlock, xNewBlockStats.xBlockSize);
 
     printf("\n\r");
-    hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
-
+    printf("Old Block stats:\n\r");
+    vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
+    vPrintBlockStats(&xBlockStats);
     printf("\n\r");
-    printf("---[DEBUG]--- Used memory is freed\n\r");
-    vPortFree(pcNewBuff);
+    hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
     printf("\n\r");
     printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
     vPrintHeapStats(&xHeapStats);
+
+    printf("\n\r");
+    printf("---[DEBUG]--- Used memory is freed\n\r");
+    vPortFree(pcNewBuff);
 
     printf("\n\r");
     printf("************************************************************\n\r");
@@ -151,16 +155,20 @@ void vTestReallocate()
     hexDump("Block Memory", xNewBlockStats.pvBlock, xNewBlockStats.xBlockSize);
 
     printf("\n\r");
-    hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
-
+    printf("Old Block stats:\n\r");
+    vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
+    vPrintBlockStats(&xBlockStats);
     printf("\n\r");
-    printf("---[DEBUG]--- Used memory is freed\n\r");
-    vPortFree(pcNewBuff);
+    hexDump("Old Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
     printf("\n\r");
     printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
     vPrintHeapStats(&xHeapStats);
+
+    printf("\n\r");
+    printf("---[DEBUG]--- Used memory is freed\n\r");
+    vPortFree(pcNewBuff);
 
     printf("\n\r");
     printf("************************************************************\n\r");
@@ -210,13 +218,13 @@ void vTestAllocate()
     hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
 
     printf("\n\r");
-    printf("---[DEBUG]--- Used memory is freed\n\r");
-    vPortFree(pcBuff);
-
-    printf("\n\r");
     printf("Heap Stats:\n\r");
     vPortGetHeapStats(&xHeapStats);
     vPrintHeapStats(&xHeapStats);
+
+    printf("\n\r");
+    printf("---[DEBUG]--- Used memory is freed\n\r");
+    vPortFree(pcBuff);
 
     printf("\n\r");
     printf("************************************************************\n\r");
@@ -279,7 +287,11 @@ void vTestFree()
     }
 
     printf("\n\r");
-    hexDump("Block Memory", xBlockStats.pvBlock, xBlockStats.xBlockSize);
+    printf("Block stats:\n\r");
+    vPortGetBlockStats(&xBlockStats, (void *)pcBuff);
+    vPrintBlockStats(&xBlockStats);
+    printf("\n\r");
+    hexDump("Block Memory", xBlockStats.pvBlock, ((xWantedSize / 8) + ((xWantedSize % 8) ? 1 : 0)) * 8);
 
     printf("\n\r");
     printf("Heap Stats:\n\r");

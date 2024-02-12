@@ -25,11 +25,13 @@ void vTestBestFit()
     BlockStats_t xSecondBlockStats;
     BlockStats_t xThirdBlockStats;
     BlockStats_t xFourthBlockStats;
+    BlockStats_t xLastBlockStats;
     BlockStats_t xBlockStats;
     void * pvFirstBlock64;
     void * pvSecondBlock32;
     void * pvThirdBlock32;
     void * pvFourthBlock32;
+    void * pvLastBlock;
     void * pv;
 
     printf("---[DEBUG]--- A first block is allocated of size 64bytes\n\r");
@@ -95,6 +97,12 @@ void vTestBestFit()
     vPortGetBlockStats(&xFourthBlockStats, pvFourthBlock32);
     vPrintBlockStats(&xFourthBlockStats);
 
+    pvLastBlock = xFourthBlockStats.pvData + xFourthBlockStats.xBlockSize;
+    printf("\n\r");
+    printf("Last Block stats:\n\r");
+    vPortGetBlockStats(&xLastBlockStats, pvLastBlock);
+    vPrintBlockStats(&xLastBlockStats);
+
     printf("\n\r");
     printf("---[DEBUG]--- Allocate a new block of 32 bytes\n\r");
     pv = pvPortMalloc(32);
@@ -121,11 +129,11 @@ void vTestWorstFit()
 
     BlockStats_t xFirstBlockStats;
     BlockStats_t xSecondBlockStats;
-    BlockStats_t xThirdBlockStats;
+    BlockStats_t xLastBlockStats;
     BlockStats_t xBlockStats;
     void * pvFirstBlock64;
     void * pvSecondBlock32;
-    void * pvThirdBlock32;
+    void * pvLastBlock;
     void * pv;
 
     printf("---[DEBUG]--- A first block is allocated of size 64bytes\n\r");
@@ -146,21 +154,8 @@ void vTestWorstFit()
     }
 
     printf("\n\r");
-    printf("---[DEBUG]--- A third block is allocated of size 32bytes\n\r");
-    pvThirdBlock32 = pvPortMalloc(32);
-    if( pvThirdBlock32 == NULL )
-    {
-        printf("Malloc failed\n");
-        return;
-    }
-
-    printf("\n\r");
     printf("---[DEBUG]--- Free the first block to leave a hole of 64bytes\n\r");
     vPortFree(pvFirstBlock64);
-
-    printf("\n\r");
-    printf("---[DEBUG]--- Free the third block to leave the rest of the memory free\n\r");
-    vPortFree(pvThirdBlock32);
 
     printf("\n\r");
     printf("First Block stats:\n\r");
@@ -172,10 +167,11 @@ void vTestWorstFit()
     vPortGetBlockStats(&xSecondBlockStats, pvSecondBlock32);
     vPrintBlockStats(&xSecondBlockStats);
 
+    pvLastBlock = xSecondBlockStats.pvData + xSecondBlockStats.xBlockSize;
     printf("\n\r");
     printf("Third Block stats:\n\r");
-    vPortGetBlockStats(&xThirdBlockStats, pvThirdBlock32);
-    vPrintBlockStats(&xThirdBlockStats);
+    vPortGetBlockStats(&xLastBlockStats, pvLastBlock);
+    vPrintBlockStats(&xLastBlockStats);
 
     printf("\n\r");
     printf("---[DEBUG]--- Allocate a new block of 32 bytes\n\r");
