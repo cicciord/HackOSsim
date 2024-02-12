@@ -125,7 +125,7 @@ void vTask1_handler(void *argument)
   {
     printf("Hello from Task 1\n\r");
     #if ( TASK_1_DELAY_ENABLE )
-      vTaskDelay(TASK_1_DELAY_VALUE);
+      vTaskDelay(pdMS_TO_TICKS(TASK_1_DELAY_VALUE));
     #endif
   }
   /* USER CODE END vTask1_handler */
@@ -146,7 +146,7 @@ void vTask2_handler(void *argument)
   {
     printf("Hello from Task 2\n\r");
     #if ( TASK_2_DELAY_ENABLE )
-      vTaskDelay(TASK_2_DELAY_VALUE);
+      vTaskDelay(pdMS_TO_TICKS(TASK_2_DELAY_VALUE));
     #endif
   }
   /* USER CODE END vTask2_handler */
