@@ -12,8 +12,10 @@ The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows 
 
 The function \texttt{HAL\_GPIO\_TogglePin(GPIOA, LD2\_Pin)} is used to switch the state of the LED:
 
-\begin{verbatim}
-HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
-\end{verbatim}
+\begin{codebox}
+\begin{lstlisting}[language=bash]
+    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
+\end{lstlisting}
+\end{codebox}
 
 This function call acts as a toggle switch for the LED. Each execution of this line of code will invert the current state of the LED. This allows us to create a blinking effect by repeatedly calling this function with a delay in between.
