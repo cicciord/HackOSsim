@@ -8,9 +8,7 @@ The HAL library is an Application Programming Interface (API) that abstracts the
 
 To control the LED, we need to be able to manipulate the state of a specific output pin on the microcontroller. This pin is the one to which the LED is connected. In hardware terms, powering the LED involves supplying voltage to the pin, which is achieved by setting the corresponding bit to 1. Conversely, to turn off the LED, we remove voltage from the pin by setting the corresponding bit to 0.
 
-The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows us to alter the state of a pin. This function takes two arguments: the GPIO port and the pin number. For our project, the GPIO port is \texttt{GPIOA} and the pin number is \texttt{LD2\_Pin}.
-
-The function \texttt{HAL\_GPIO\_TogglePin(GPIOA, LD2\_Pin)} is used to switch the state of the LED:
+The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows us to alter the state of a pin. This function takes two arguments: the GPIO port and the pin number. For our project, the GPIO port is \texttt{GPIOA} and the pin number is \texttt{LD2\_Pin}:
 
 \begin{codebox}
 \begin{lstlisting}[language=bash]
