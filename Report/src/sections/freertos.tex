@@ -1,2 +1,28 @@
 \section{FreeRTOS}
-This section is about FreeRTOS.
+\subsection{What is FreeRTOS?}
+FreeRTOS is a real-time operating system (RTOS) for embedded devices, it is the market-leading RTOS. The OS provide a kernel around which software applications can be built, regardless of the specific hardware platform.
+
+The need for a RTOS arises from the inherent complexity of managing multiple tasks in real-time environments. Embedded systems often have to respond to events in a timely and predictable manner. FreeRTOS provides the necessary features to achieve this, such as task scheduling, inter-task communication, and synchronization.
+
+\subsection{FreeRTOS Usage}
+In order to use FreeRTOS, the user must include the FreeRTOS source code in their project. It is designed to be simple and easy to use, only three source files common to all ports and one microcontroller specific file are required.
+
+In the official FreeRTOS project, the file to be included are located in:
+
+\begin{itemize}
+    \item \textit{FreeRTOS/Source/tasks.c}
+    \item \textit{FreeRTOS/Source/queue.c}
+    \item \textit{FreeRTOS/Source/list.c}
+    \item \textit{FreeRTOS/Source/portable/[compiler]/[architecture]/port.c}
+    \item \textit{FreeRTOS/Source/portable/MemMang/heap\_x.c}
+\end{itemize}
+
+The following header files paths must be included in the project:
+
+\begin{itemize}
+    \item \textit{FreeRTOS/Source/include}
+    \item \textit{FreeRTOS/Source/portable/[compiler]/[architecture]}
+    \item \textit{[path to FreeRTOSconfig.h]}
+\end{itemize}
+
+Every project must include a \textit{FreeRTOSConfig.h} file, which is used to configure the RTOS to the specific needs of the application.
