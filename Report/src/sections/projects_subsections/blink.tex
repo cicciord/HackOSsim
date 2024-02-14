@@ -1,40 +1,19 @@
 \subsection{LED Blink Project}
 
-This project is a simple demonstration of a LED blinking on a NUCLEO-F103RB board. The board is simulated on QEMU and the task is managed by FreeRTOS.
+This project focuses on the interaction with a microcontroller's hardware, specifically controlling a LED. The goal is to make a LED blink every 1000 milliseconds. To achieve this, we use the HAL (Hardware Abstraction Layer) library provided by STM.
 
-\subsubsection{Task Handler Function}
+The HAL library is an Application Programming Interface (API) that abstracts the details of the microcontroller's hardware. This means that we can write code that interacts with the hardware in a high-level and portable way. For this project, the HAL library allows us to control the state of a LED.
 
-The task handler function, \texttt{vTaskBlinkLED\_handler}, is executed by the created task. It contains a continuous loop that toggles the state of the LED pin every 1000 milliseconds (1 second). This is achieved using the \texttt{HAL\_GPIO\_TogglePin} function and the \texttt{vTaskDelay(1000)} function.
+\subsubsection{LED Control}
+
+To control the LED, we need to be able to change the state of a specific output pin on the microcontroller. This is the pin to which the LED is connected. In hardware terms, turning the LED on means providing voltage to the pin (setting the corresponding bit to 1), while turning the LED off means removing voltage from the pin (setting the corresponding bit to 0).
+
+The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows us to change the state of a pin. This function takes two arguments: the GPIO port and the pin number. For our project, the GPIO port is \texttt{GPIOA} and the pin number is \texttt{LD2\_Pin}.
+
+Here is an example of how this function can be used to change the state of the LED:
 
 \begin{verbatim}
-void vTaskBlinkLED_handler(void *params)
-{
-  while(1) {
-    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
-    vTaskDelay(1000);
-  }
-}
+HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
 \end{verbatim}
 
-\subsubsection{HAL\_GPIO\_TogglePin}
-
-The \texttt{HAL\_GPIO\_TogglePin} function is used to toggle the state of the LED pin. It takes two arguments: the GPIO port and the pin number.
-
-\subsubsection{Requirements}
-
-To run the project, the following requirements are needed:
-\begin{itemize}
-\item xPack QEMU
-\item Arm GNU Toolchain
-\end{itemize}
-
-\subsubsection{Usage}
-
-Here are the commands to run, compile, debug, and clean the project:
-
-\begin{itemize}
-\item Run Simulation: \texttt{make qemu}
-\item Compile: \texttt{make}
-\item Debug: Run \texttt{make qemu-gdb} and in another terminal session, run \texttt{arm-none-eabi-gdb build/NUCLEO\_F103RB\_FREERTOS\_BLINK\_LED.elf -ex "target remote localhost:1234"}.
-\item Clean: \texttt{make clean}
-\end{itemize}
+In this way, every time this line of code is executed, the state of the LED will change. If the LED is on, it will turn off. If the LED is off, it will turn on.
