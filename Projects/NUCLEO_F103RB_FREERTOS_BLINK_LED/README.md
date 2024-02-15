@@ -20,14 +20,14 @@ A **NUCLEO-F103RB** board simulated on QEMU is used.
 
 ### Task Handler Function
 
-The `vTaskBlinkLED_handler` function, executed by the created task, contains a continuous loop that toggles the state of the LED pin using `HAL_GPIO_TogglePin` every 1000 milliseconds (1 second) with `vTaskDelay(1000)`.
+The `vTaskBlinkLED_handler` function, executed by the created task, contains a continuous loop that toggles the state of the LED pin using `HAL_GPIO_TogglePin` every 1000 milliseconds (1 second) with `vTaskDelay`.
 
 ```c
 void vTaskBlinkLED_handler(void *params)
 {
   while(1) {
-    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
-    vTaskDelay(1000);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 ```
@@ -36,7 +36,7 @@ void vTaskBlinkLED_handler(void *params)
 
 The `HAL_GPIO_TogglePin` function is used to toggle the state of the LED pin. It takes two arguments, the GPIO port and the pin number.
 
-`GPIOA` is a macro that represents the GPIO port A (`0x40010800`) and `LD2_Pin` is a macro that represents the `GPIO_PIN_5` (`0x20`).
+`LD2_GPIO_Port` is a macro that represents the GPIO port A (`0x40010800`) and `LD2_Pin` is a macro that represents the `GPIO_PIN_5` (`0x20`).
 
 The **NUCLEO-F103RB** GPIO port memory mapping is the following
 
