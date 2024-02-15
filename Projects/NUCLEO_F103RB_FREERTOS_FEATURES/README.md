@@ -1,6 +1,8 @@
 # NUCLEO-F103RB FreeRTOS Feature
 
-This project implements a basic application on the NUCLEO-F103RB board using FreeRTOS as a real-time operating system. The application is designed to initialize a FreeRTOS instance with two basic tasks, demonstrating the behavior of the scheduler with different system configuration settings and task priorities.
+This project is designed to demonstrate how some of the features of FreeRTOS can be used. A timer,
+a semaphore and a queue are used to show how tasks can be synchronized and communicate with each
+other.
 
 - [How it works](#how-it-works)
   - [Timer](#timer)
