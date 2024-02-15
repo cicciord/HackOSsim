@@ -2,18 +2,23 @@
 
 This project focuses on the interaction with a microcontroller's hardware, specifically controlling a LED. The goal is to make a LED blink every 1000 milliseconds. To achieve this, we use the HAL (Hardware Abstraction Layer) library provided by STM.
 
-The HAL library is an Application Programming Interface (API) that abstracts the details of the microcontroller's hardware. This means that we can write code that interacts with the hardware in a high-level and portable way. For this project, the HAL library allows us to control the state of a LED.
+\subsubsection{Hardware Abstraction Layer (HAL)}
 
-\subsubsection{LED Control}
+The HAL library is an Application Programming Interface (API) that abstracts the details of the microcontroller's hardware. This means that we can write code that interacts with the hardware in a high-level and portable way.
 
-To control the LED, we need to be able to manipulate the state of a specific output pin on the microcontroller. This pin is the one to which the LED is connected. In hardware terms, powering the LED involves supplying voltage to the pin, which is achieved by setting the corresponding bit to 1. Conversely, to turn off the LED, we remove voltage from the pin by setting the corresponding bit to 0.
+The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows us to alter the state of a pin. This function takes two arguments: the GPIO port and the pin number. For the LED, the GPIO port is \texttt{GPIOA} (0x40000000) and the pin number is \texttt{GPIO\_PIN\_5} (0x20):
 
-The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows us to alter the state of a pin. This function takes two arguments: the GPIO port and the pin number. For our project, the GPIO port is \texttt{GPIOA} and the pin number is \texttt{LD2\_Pin}:
+\subsubsection{Pin Control}
 
-\begin{codebox}
-\begin{lstlisting}[language=bash]
-    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
-\end{lstlisting}
-\end{codebox}
+To control the LED on a NUCLEO-F103RB board, the HAL library needs to write some bits in memory. From the documentation of the board, the GPIO Register Map has the following structure:
 
-This function call acts as a toggle switch for the LED. Each execution of this line of code will invert the current state of the LED. This allows us to create a blinking effect by repeatedly calling this function with a delay in between.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/projects/gpio_register_map.png}
+    \caption{GPIO Register Map}
+    \label{fig:gpio_register_map}
+\end{figure}
+
+To set or reset a pin, the BSSR (Bit Set/Reset Register) is used. The first 16 bits of the BSSR register are used to set, while the last 16 bits are used to reset.
+
+To toggle a pin, first the current value is taken from the ODR (Output Data Register) and then the BSSR low register is written with the inverse of the current value, while the BSSR high register is written with the current value.
