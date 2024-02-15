@@ -4,18 +4,20 @@ This project is a practical exploration of task scheduling in FreeRTOS. It invol
 
 \subsubsection{Project Initialization and Execution}
 
-The project is initialized with two tasks of equal priority. Each task prints a message ("Hello from Task x") to the console every second, thanks to a delay added to each task. The scheduler is set to preemptive mode, which means that it can interrupt a currently running task to start executing a higher-priority task.
+The project is initialized with two tasks of equal priority. Each task prints a message ("Hello from Task x") to the console every second, thanks to a \textbf{delay} added to each task. The scheduler is set to \textbf{preemptive} mode, which means that it can interrupt a currently running task to start executing a higher-priority task.
 
-When the project is run, the console output shows that each task is executed in a round-robin way, as expected in a preemptive scheduler with tasks of equal priority.
+When the project runs, the console output shows that each task is executed in a \textbf{round-robin} way, as expected in a preemptive scheduler with tasks of equal priority in FreeRTOS.
 
 \subsubsection{Disabling Preemption}
 
-When preemption is disabled, the scheduler cannot interrupt a running task until it has finished. In this project, however, each task includes a delay, which suspends the task after printing its message. This allows the other task to be executed, despite the lack of preemption.
+When preemption is disabled, the scheduler cannot interrupt a running task until it has finished. The expected behavior is that the first task runs indefinitely, and the second task is never executed. Though we observe the same behavior as in the preemptive mode.
 
-If the delay is removed from both tasks and preemption is disabled, the first task runs indefinitely, and the second task is never executed. This is because without preemption and without a delay to suspend the first task, there is nothing to allow the scheduler to switch to the second task.
+The reason for this is that each task includes a delay using the \texttt{vTaskDelay} function, which put the task in the \textbf{blocked} state for a specified period. This allows the other task to be executed, despite the lack of preemption.
+
+If the delay is removed from both tasks and preemption is disabled, the first task runs indefinitely, and the second task is never executed.
 
 \subsubsection{Changing Task Priorities}
 
-The priority of each task can be adjusted in the `ProjectConfig.h` file. If the priority of Task 2 is set higher than that of Task 1, then when the project is run, Task 2 is executed indefinitely, and Task 1 is never executed. This is because the scheduler always chooses the highest-priority task to run.
+If the priority of Task 2 is set higher than that of Task 1, then when the project is run, Task 2 is executed indefinitely, and Task 1 is never executed. This is because the scheduler always chooses the highest-priority task to run.
 
 Even if preemption is re-enabled, the output does not change, because Task 2 still has a higher priority than Task 1. The scheduler will always choose Task 2 over Task 1, regardless of whether it can preempt the currently running task.
