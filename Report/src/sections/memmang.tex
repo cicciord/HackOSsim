@@ -1,18 +1,16 @@
 \section{Memory Management}
 
-A custom memory management library has been implemented. The library is a modified version of the \textit{heap\_4.c} implementation provided by FreeRTOS.
+A custom memory management library has been implemented. The library is a modified version of the \textit{heap\_4.c} provided by FreeRTOS.
 
-In the provided implementation it has been implemented the \textit{realloc} function, among with \textit{best-fit} and \textit{worst-fit} allocation strategy.
+In the custom implementation it has been developed the \textit{realloc} function, among with \textit{best-fit} and \textit{worst-fit} allocation strategy.
 
 \subsection{Realloc}
     \subsubsection{Implementation}
     The implementation of the realloc function is the following.
 
-    \begin{codebox}
-    \begin{lstlisting}[language=c,breaklines]
+    \begin{lstlisting}[language=c]
     void *pvPortRealloc(void *pv, size_t xWantedSize);
     \end{lstlisting}
-    \end{codebox}
 
     The function takes two arguments, the pointer to the memory block to be reallocated and the new size of the memory block. The function returns a pointer to the reallocated memory block.
 
@@ -154,7 +152,7 @@ In the provided implementation it has been implemented the \textit{realloc} func
 
     \textbf{Notice}: the cortex-m3 architecture is little-endian, so the memory is printed in reverse order.
 
-    An allocated block of memory can be recognized by the first 8 bytes. The first 4 bytes are the pointer to the next block and the second 4 bytes are the block size. For an allocated block the first 4 bytes are zeros, while the highest bit of the secnd 4 bytes is 1, thus the highest byte is 0x80.
+    An allocated block of memory can be recognized by the first 8 bytes. The first 4 bytes are the pointer to the next block and the second 4 bytes are the block size. For an allocated block the first 4 bytes are zeros, while the highest bit of the second 4 bytes is 1, thus the highest byte is 0x80.
 
     \paragraph{Reallocating a block to a smaller size}
     The test is similar to the previus one but the block is reallocated to a smaller size.
