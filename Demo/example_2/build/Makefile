@@ -60,16 +60,16 @@ $(OUTPUT_DIR)/$(IMAGE): ./mps2_m3.ld $(OBJS_OUTPUT) Makefile
 	@echo ""
 	@echo "--- Final linking ---"
 	@echo ""
-	$(LD) $(OBJS_OUTPUT) $(CFLAGS) 	\
-		-Xlinker 											\
-		--gc-sections 								\
-		-Xlinker 											\
-		-T ./mps2_m3.ld 							\
-		-Xlinker 											\
-		-Map=$(OUTPUT_DIR)/$(MAP) 		\
-		-specs=nano.specs 						\
-		-specs=nosys.specs 						\
-		-specs=rdimon.specs 					\
+	$(LD) $(OBJS_OUTPUT) $(CFLAGS) \
+		-Xlinker \
+		--gc-sections \
+		-Xlinker \
+		-T ./mps2_m3.ld \
+		-Xlinker \
+		-Map=$(OUTPUT_DIR)/$(MAP) \
+		-specs=nano.specs \
+		-specs=nosys.specs \
+		-specs=rdimon.specs \
 		-o $(OUTPUT_DIR)/$(IMAGE)
 	$(SIZE) $(OUTPUT_DIR)/$(IMAGE)		
 
@@ -77,12 +77,12 @@ $(DEP_OUTPUT):
 include $(wildcard $(DEP_OUTPUT))
 
 qemu: $(OUTPUT_DIR)/$(IMAGE)
-	qemu-system-arm 									\
-		-machine mps2-an385 						\
-		-cpu cortex-m3 									\
-		-kernel $(OUTPUT_DIR)/$(IMAGE) 	\
-		-monitor none 									\
-		-nographic 											\
+	qemu-system-arm \
+		-machine mps2-an385 \
+		-cpu cortex-m3 \
+		-kernel $(OUTPUT_DIR)/$(IMAGE) \
+		-monitor none \
+		-nographic \
 		-serial stdio
 
 clean:
