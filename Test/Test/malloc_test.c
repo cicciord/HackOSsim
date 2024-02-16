@@ -14,7 +14,7 @@
 #include "heap_stats.h"
 
 /* Private user code ---------------------------------------------------------*/
-void vTestBestFit()
+TestResult_t vTestBestFit()
 {
     printf("************************************************************\n\r");
     printf("*  [TEST]   Best-Fit Allocation of a memory block          *\n\r");
@@ -39,7 +39,9 @@ void vTestBestFit()
     if( pvFirstBlock64 == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -48,7 +50,9 @@ void vTestBestFit()
     if( pvSecondBlock32 == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -57,7 +61,9 @@ void vTestBestFit()
     if( pvThirdBlock32 == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -66,7 +72,9 @@ void vTestBestFit()
     if( pvFourthBlock32 == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -109,18 +117,30 @@ void vTestBestFit()
     if( pv == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
     printf("\n\r");
     printf("Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, pv);
     vPrintBlockStats(&xBlockStats);
+
+    if( pv != pvThirdBlock32 )
+    {
+        printf("---[FAILED]--- The block is not allocated in the third block\n\r");
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
+    }
  
     printf("\n\r");
     printf("************************************************************\n\r");
+
+    return PASSED;
 }
 
-void vTestWorstFit()
+TestResult_t vTestWorstFit()
 {
     printf("************************************************************\n\r");
     printf("*  [TEST]   Worst-Fit allocation of a memory block         *\n\r");
@@ -141,7 +161,9 @@ void vTestWorstFit()
     if( pvFirstBlock64 == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -150,7 +172,9 @@ void vTestWorstFit()
     if( pvSecondBlock32 == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -179,13 +203,23 @@ void vTestWorstFit()
     if( pv == NULL )
     {
         printf("Malloc failed\n");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
     printf("\n\r");
     printf("Block stats:\n\r");
     vPortGetBlockStats(&xBlockStats, pv);
     vPrintBlockStats(&xBlockStats);
  
+    if( pv != pvLastBlock )
+    {
+        printf("---[FAILED]--- The block is not allocated in the last block\n\r");
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
+    }
+
     printf("\n\r");
     printf("************************************************************\n\r");
 }

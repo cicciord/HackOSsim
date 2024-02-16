@@ -8,9 +8,11 @@
 #ifndef REALLOC_TEST
 #define REALLOC_TEST
 
+#include "test.h"
+
 /* Exported functions prototypes ---------------------------------------------*/
-void vTestReallocate();
-void vTestAllocate();
-void vTestFree();
+TestResult_t vTestReallocate();
+TestResult_t vTestAllocate();
+TestResult_t vTestFree();
 
 #endif

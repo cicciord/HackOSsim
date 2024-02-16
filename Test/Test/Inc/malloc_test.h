@@ -8,9 +8,11 @@
 #ifndef MALLOC_TEST
 #define MALLOC_TEST
 
+#include "test.h"
+
 /* Exported functions prototypes ---------------------------------------------*/
-void vTestBestFit();
-void vTestWorstFit();
+TestResult_t vTestBestFit();
+TestResult_t vTestWorstFit();
 
 
 #endif

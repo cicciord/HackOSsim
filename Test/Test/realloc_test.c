@@ -14,7 +14,7 @@
 #include "realloc.h"
 
 /* Private user code ---------------------------------------------------------*/
-void vTestReallocate()
+TestResult_t vTestReallocate()
 {
     printf("************************************************************\n\r");
     printf("*  [TEST]   Reallocate memory to a greater size            *\n\r");
@@ -41,7 +41,9 @@ void vTestReallocate()
     if (pcBuff == NULL)
     {
         printf("Malloc failed\n\r");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     /* Initialize the buffer with some data */
@@ -67,7 +69,9 @@ void vTestReallocate()
     if (pcNewBuff == NULL)
     {
         printf("The memory has not been reallocated\n\r");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -118,7 +122,9 @@ void vTestReallocate()
     if (pcBuff == NULL)
     {
         printf("Malloc failed\n\r");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     /* Initialize the buffer with some data */
@@ -144,7 +150,9 @@ void vTestReallocate()
     if (pcNewBuff == NULL)
     {
         printf("The memory has not been reallocated\n\r");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -173,9 +181,11 @@ void vTestReallocate()
     printf("\n\r");
     printf("************************************************************\n\r");
     printf("\n\r");
+
+    return PASSED;
 }
 
-void vTestAllocate()
+TestResult_t vTestAllocate()
 {
     printf("************************************************************\n\r");
     printf("*  [TEST]   Allocate memory using realloc                  *\n\r");
@@ -200,7 +210,9 @@ void vTestAllocate()
     if (pcBuff == NULL)
     {
         printf("Realloc failed\n\r");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     /* Initialize the buffer with some data */
@@ -229,9 +241,11 @@ void vTestAllocate()
     printf("\n\r");
     printf("************************************************************\n\r");
     printf("\n\r");
+
+    return PASSED;
 }
 
-void vTestFree()
+TestResult_t vTestFree()
 {
     printf("************************************************************\n\r");
     printf("*  [TEST]   Free memory uising realloc                     *\n\r");
@@ -257,7 +271,9 @@ void vTestFree()
     if (pcBuff == NULL)
     {
         printf("Malloc failed\n\r");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     /* Initialize the buffer with some data */
@@ -283,7 +299,9 @@ void vTestFree()
     if (pcNewBuff != NULL)
     {
         printf("Realloc free failed\n\r");
-        return;
+        return FAILED;
+        printf("\n\r");
+        printf("************************************************************\n\r");
     }
 
     printf("\n\r");
@@ -301,6 +319,8 @@ void vTestFree()
     printf("\n\r");
     printf("************************************************************\n\r");
     printf("\n\r");
+
+    return PASSED;
 }
 
 /*----------------------------------------------------------------------------*/
