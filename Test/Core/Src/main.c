@@ -72,6 +72,15 @@ void prvPrintHeapStats(HeapStats_t *pxHeapStats);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  #if( configHEAP_ALLOCATION_TYPE == 1 )
+  TestResult_t xResultBestFit;
+  #elif( configHEAP_ALLOCATION_TYPE == 2 )
+  TestResult_t xResultWorstFit;
+  #else
+  TestResult_t xResultReallocate;
+  TestResult_t xResultAllocate;
+  TestResult_t xResultFree;
+  #endif
 
   /* USER CODE END 1 */
 
@@ -104,15 +113,23 @@ int main(void)
   /* EXAMPLE TEST BEGIN */
   #if( configHEAP_ALLOCATION_TYPE == 1 )
   printf("MALLOC BEST-FIT UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
-  vTestBestFit();
+  xResultBestFit = vTestBestFit();
+  printf("\n\r\n\r\n\r\n\r [TEST]\n\r\n\r");
+  printf("-> %-40s %s\n\r", "Best-Fit Test", (xResultBestFit == PASSED) ? "PASSED" : "FAILED");
   #elif( configHEAP_ALLOCATION_TYPE == 2 )
   printf("MALLOC WORST-FIT UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
-  vTestWorstFit();
+  xResultWorstFit = vTestWorstFit();
+  printf("\n\r\n\r\n\r\n\r [TEST]\n\r\n\r");
+  printf("-> %-40s %s\n\r", "Worst-Fit Test", (xResultWorstFit == PASSED) ? "PASSED" : "FAILED");
   #else
   printf("REALLOC UNIT TEST (NUCLEO-F103RB)\n\r\n\r");
-  vTestReallocate();
-  vTestAllocate();
-  vTestFree();
+  xResultReallocate = vTestReallocate();
+  xResultAllocate = vTestAllocate();
+  xResultFree = vTestFree();
+  printf("\n\r\n\r\n\r\n\r [TEST]\n\r\n\r");
+  printf("-> %-40s %s\n\r", "Reallocation Test", (xResultReallocate == PASSED) ? "PASSED" : "FAILED");
+  printf("-> %-40s %s\n\r", "Allocation Test", (xResultAllocate == PASSED) ? "PASSED" : "FAILED");
+  printf("-> %-40s %s\n\r", "Free Test", (xResultFree == PASSED) ? "PASSED" : "FAILED");
   #endif
   /* EXAMPLE TEST END */
   /* Start scheduler */
