@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>HackOSSim Presentation</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>HackOSSim Project</h1>
+					<ul>
+						<li>s323518 - Francesco Laterza</li>
+						<li>s328764 - Leonardo Rizzo</li>
+						<li>s328743 - Massimo Aresca</li>
+						<li>s322787 - Yann Freddy Dongue Dongmo</li>
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h2>Project Structure</h2>
+					</section>
+					<section>
+						<h3>README</h3>
+						<p>Documentation about the project.</p>
+						<p>Provides link to documentation of different section of the project.</p>
+						<p>The rest of the documentation can be found in the <code>docs/</code> folder.</p>
+					</section>
+					<section>
+						<h3>FreeRTOS</h3>
+						<p>Git submodule of the official <b>FreeRTOS</b> repository</p>
+					</section>
+					<section>
+						<h3>Demo</h3>
+						<p>Practical examples on how to setup QEMU and FreeRTOS are located in <code>Demo/</code></p>
+					</section>
+					<section>
+						<h3>Projects</h3>
+						<p>Practical Projects on QEMU and FreeRTOS are present in <code>Projects/</code></p>
+					</section>
+					<section>
+						<h3>Custom Memory Management</h3>
+						<p>The folder <code>MemMang/</code> contain a custom memory management library</p>
+						<p>The test for the custom library is present in <code>Test/</code></p>
+					</section>
+				</section>
+
+				<section>
+					QEMU and FreeRTOS Tutorial
+				</section>
+
+				<section>
+					<h2>Projects</h2>
+				</section>
+
+				<section>
+					<section>
+						<h3>Blink Project</h3>
+					</section>
+					<section>
+						<h4>HAL Library</h4>
+						<p>Hardware Abstraction Layer Library provided by STM</p>
+						<pre>
+							<code data-trim data-noescape>
+								HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h4>LED Control</h4>
+						<p>The LED is connect to pin nuber 5 of the GPIO A port</p>
+						<img src="../Report/src/images/projects/gpio_register_map.png" alt="gpio register map" width=480>
+					</section>
+					<section>
+						<pre>
+							<code data-trim data-noescape data-line-numbers="8-9|11-15">
+								void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
+								{
+									uint32_t odr;
+
+									/* Check the parameters */
+									assert_param(IS_GPIO_PIN(GPIO_Pin));
+
+									/* get current Output Data Register value */
+									odr = GPIOx->ODR;
+
+									/* Set selected pins that were at low level, and reset
+									   ones that were high */
+									GPIOx->BSRR =
+										((odr & GPIO_Pin) << GPIO_NUMBER) | (~odr & GPIO_Pin);
+								}
+							</code>
+						</pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>Scheduler Project</h3>
+					</section>
+					<section>
+						<p>Demonstrate how the scheduler works with different configurations</p>
+					</section>
+					<section>
+						<code>ProjectConfig.h</code>
+						<pre>
+							<code data-trim data-noescape data-line-numbers="10-16">
+								#ifndef PROJECT_CONFIG_H
+								#define PROJECT_CONFIG_H
+
+								/*-----------------------------------------------------------
+								* Configuration parameters for the project.
+								* Change them in order to experiment different behaviours of
+								* the scheduler
+								*----------------------------------------------------------*/
+
+								#define USE_PREEMPTION          1
+								#define PRIORITY_TASK_1         2
+								#define PRIORITY_TASK_2         2
+								#define TASK_1_DELAY_ENABLE     1
+								#define TASK_2_DELAY_ENABLE     1
+								#define TASK_1_DELAY_VALUE      1000
+								#define TASK_2_DELAY_VALUE      1000
+
+								#endif
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>Different configurations:</p>
+						<ul>
+							<li>Preemptive, same priority</li>
+							<li>Non-preemptive, same priority</li>
+							<li>Non-preemptive, same priority, no delay</li>
+							<li>Non-preemptive, different priority, no delay</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>Features Projects</h3>
+					</section>
+					<section>
+						<p>Designed to show how some FreeRTOS features work and how tasks can be synchronized and communicate with each other.</p>
+					</section>
+					<section>
+						<img src="../Report/src/images/projects/project_feature_schema.png" alt="features project schema" width="720" style="filter: invert(100);">
+					</section>
+				</section>
+
+				<section>
+					Custom Memory Management
+				</section>
+
+				<section>
+					Testing
+				</section>
+
+				<section>
+					Thanks!
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
