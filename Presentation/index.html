@@ -287,6 +287,18 @@
 					<section>
 						<h3>Best-fit and Worst-fit Strategy</h3>
 					</section>
+					<section>
+						<p>Free memory blocks are handle in a linked list</p>
+						<p>FreeRTOS by default use a <em>First-fit</em> approach</p>
+						<p>Traverse the list until a block big enough is found</p>
+					</section>
+					<section>
+						<p>To implement a <em>Best-fit</em> strategy the list has to be traversed entirely, keeping track of the block with the minimum size difference</p>
+					</section>
+					<section>
+						<p>To implement a <em>Worst-fit</em> strategy the list has to be traversed entirely, keeping track of the block with the maximum size difference</p>
+					</section>
+				</section>
 				</section>
 
 				<section>
