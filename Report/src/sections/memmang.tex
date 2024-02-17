@@ -6,7 +6,7 @@ In the custom implementation it has been developed the \textit{realloc} function
 
 \subsection{Realloc}
     \subsubsection{Implementation}
-    The implementation of the realloc function is the following.
+    The implementation of the realloc function is the following:
 
     \begin{lstlisting}[language=c]
     void *pvPortRealloc(void *pv, size_t xWantedSize);
@@ -120,7 +120,11 @@ In the custom implementation it has been developed the \textit{realloc} function
         0010  61 61 00 00 00 00 00 00  aa......
         0018  00 00 00 00 00 00 00 00  ........
         0020  00 00 00 00 00 00 00 00  ........
+    \end{lstlisting}
+    \end{outputbox}
     
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
     Old Block stats:
         Allocated     : No
         Block pointer : 0x200005e0
@@ -133,7 +137,11 @@ In the custom implementation it has been developed the \textit{realloc} function
         0000  20 06 00 20 18 00 00 00   .. ....
         0008  00 00 00 00 00 00 00 00  ........
         0010  00 00 00 00 00 00 00 00  ........
+    \end{lstlisting}
+    \end{outputbox}
     
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
     Heap Stats:
         Total Heap Size                   : 3072
         Available Space in bytes          : 3016
@@ -201,7 +209,11 @@ In the custom implementation it has been developed the \textit{realloc} function
         0000  00 00 00 00 18 00 00 80  ........
         0008  62 62 62 62 62 62 62 62  bbbbbbbb
         0010  62 62 00 00 00 00 00 00  bb......
+    \end{lstlisting}
+    \end{outputbox}
 
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
     Old Block stats:
         Allocated     : No
         Block pointer : 0x200005e0
@@ -216,7 +228,11 @@ In the custom implementation it has been developed the \textit{realloc} function
         0010  00 00 00 00 00 00 00 00  ........
         0018  00 00 00 00 00 00 00 00  ........
         0020  00 00 00 00 00 00 00 00  ........
+    \end{lstlisting}
+    \end{outputbox}
 
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
     Heap Stats:
         Total Heap Size                   : 3072
         Available Space in bytes          : 3032
@@ -247,27 +263,31 @@ In the custom implementation it has been developed the \textit{realloc} function
     ---[DEBUG]--- Buffer initialized with 10 char (c)
     
     Block stats:
-      Allocated     : Yes
-      Block pointer : 0x200005e0
-      Data pointer  : 0x200005e8
-      Block size    : 24 (bytes)
-      Data size     : 16 (bytes)
+        Allocated     : Yes
+        Block pointer : 0x200005e0
+        Data pointer  : 0x200005e8
+        Block size    : 24 (bytes)
+        Data size     : 16 (bytes)
     
     Block Memory:
-     offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
-      0000  00 00 00 00 18 00 00 80  ........
-      0008  63 63 63 63 63 63 63 63  cccccccc
-      0010  63 63 00 00 00 00 00 00  cc......
-    
+       offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+        0000  00 00 00 00 18 00 00 80  ........
+        0008  63 63 63 63 63 63 63 63  cccccccc
+        0010  63 63 00 00 00 00 00 00  cc......
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]   
     Heap Stats:
-      Total Heap Size                   : 3072
-      Available Space in bytes          : 3032
-      Largest free block in bytes       : 3032
-      Smallest free block in bytes      : 3032
-      Number of free block              : 1
-      Minumum Ever Free Bytes Remaining : 2992
-      Successful allocations            : 5
-      Successful frees                  : 4
+        Total Heap Size                   : 3072
+        Available Space in bytes          : 3032
+        Largest free block in bytes       : 3032
+        Smallest free block in bytes      : 3032
+        Number of free block              : 1
+        Minumum Ever Free Bytes Remaining : 2992
+        Successful allocations            : 5
+        Successful frees                  : 4
     
     ---[DEBUG]--- Used memory is freed
     
@@ -299,7 +319,11 @@ In the custom implementation it has been developed the \textit{realloc} function
         0000  00 00 00 00 18 00 00 80  ........
         0008  64 64 64 64 64 64 64 64  dddddddd
         0010  64 64 00 00 00 00 00 00  dd......
-    
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]
     ---[DEBUG]--- Memory is reallocated with new size 0
     
     Block stats:
@@ -313,7 +337,11 @@ In the custom implementation it has been developed the \textit{realloc} function
        offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
         0000  d0 11 00 20 f0 0b 00 00  ... ....
         0008  00 00 00 00 00 00 00 00  ........
-    
+    \end{lstlisting}
+    \end{outputbox}
+
+    \begin{outputbox}
+    \begin{lstlisting}[language=bash]   
     Heap Stats:
         Total Heap Size                   : 3072
         Available Space in bytes          : 3056
@@ -340,30 +368,30 @@ In the custom implementation it has been developed the \textit{realloc} function
 
     \begin{codebox}
     \begin{lstlisting}
-    #if (configHEAP_ALLOCATION_TYPE == 1)
-        configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
-        /* traverse the whole free block list */
-        while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
-        {
-            /* Check if the current block is a valid option and if another valid block
-               was found before and check wheter is a best fit */
-            if  (   ( pxBlock->xBlockSize >= xWantedSize )
-                    &&
-                    (   pxBlockTmp == NULL
-                        ||
-                        ( ( pxBlock->xBlockSize - xWantedSize ) < ( pxBlockTmp->xBlockSize - xWantedSize ) )
-                    )
+#if (configHEAP_ALLOCATION_TYPE == 1)
+    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
+    /* traverse the whole free block list */
+    while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
+    {
+        /* Check if the current block is a valid option and if another valid block
+            was found before and check wheter is a best fit */
+        if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                &&
+                (   pxBlockTmp == NULL
+                    ||
+                    ( ( pxBlock->xBlockSize - xWantedSize ) < ( pxBlockTmp->xBlockSize - xWantedSize ) )
                 )
-            {
-                pxPreviousBlockTmp = pxPreviousBlock;
-                pxBlockTmp = pxBlock;
-            }
-            pxPreviousBlock = pxBlock;
-            pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
-            heapVALIDATE_BLOCK_POINTER( pxBlock );
+            )
+        {
+            pxPreviousBlockTmp = pxPreviousBlock;
+            pxBlockTmp = pxBlock;
         }
-        pxPreviousBlock = pxPreviousBlockTmp;
-        pxBlock = pxBlockTmp;
+        pxPreviousBlock = pxBlock;
+        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+        heapVALIDATE_BLOCK_POINTER( pxBlock );
+    }
+    pxPreviousBlock = pxPreviousBlockTmp;
+    pxBlock = pxBlockTmp;
     \end{lstlisting}
     \end{codebox}
 
@@ -371,30 +399,30 @@ In the custom implementation it has been developed the \textit{realloc} function
 
     \begin{codebox}
     \begin{lstlisting}
-    #elif (configHEAP_ALLOCATION_TYPE == 2)
-        configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
-        /* traverse the whole free block list */
-        while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
-        {
-            /* Check if the current block is a valid option and if another valid block
-               was found before and check wheter is a worst fit */
-            if  (   ( pxBlock->xBlockSize >= xWantedSize )
-                    &&
-                    (   pxBlockTmp == NULL
-                        ||
-                        ( ( pxBlock->xBlockSize - xWantedSize ) > ( pxBlockTmp->xBlockSize - xWantedSize ) )
-                    )
+#elif (configHEAP_ALLOCATION_TYPE == 2)
+    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
+    /* traverse the whole free block list */
+    while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
+    {
+        /* Check if the current block is a valid option and if another valid block
+            was found before and check wheter is a worst fit */
+        if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                &&
+                (   pxBlockTmp == NULL
+                    ||
+                    ( ( pxBlock->xBlockSize - xWantedSize ) > ( pxBlockTmp->xBlockSize - xWantedSize ) )
                 )
-            {
-                pxPreviousBlockTmp = pxPreviousBlock;
-                pxBlockTmp = pxBlock;
-            }
-            pxPreviousBlock = pxBlock;
-            pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
-            heapVALIDATE_BLOCK_POINTER( pxBlock );
+            )
+        {
+            pxPreviousBlockTmp = pxPreviousBlock;
+            pxBlockTmp = pxBlock;
         }
-        pxPreviousBlock = pxPreviousBlockTmp;
-        pxBlock = pxBlockTmp;
+        pxPreviousBlock = pxBlock;
+        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+        heapVALIDATE_BLOCK_POINTER( pxBlock );
+    }
+    pxPreviousBlock = pxPreviousBlockTmp;
+    pxBlock = pxBlockTmp;
     \end{lstlisting}
     \end{codebox}
 
@@ -402,14 +430,14 @@ In the custom implementation it has been developed the \textit{realloc} function
 
     \begin{codebox}
     \begin{lstlisting}
-    #else
-        while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
-        {
-            pxPreviousBlock = pxBlock;
-            pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
-            heapVALIDATE_BLOCK_POINTER( pxBlock );
-        }
-    #endif
+#else
+    while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
+    {
+        pxPreviousBlock = pxBlock;
+        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+        heapVALIDATE_BLOCK_POINTER( pxBlock );
+    }
+#endif
     \end{lstlisting}
     \end{codebox}
 
