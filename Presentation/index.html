@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>HackOSSim Presentation</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/dracula.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>HackOSSim Project</h1>
+				</section>
+
+				<section>
+					<section>
+						<h2>Project Structure</h2>
+					</section>
+					<section>
+						<h3>README</h3>
+						<p>Documentation about the project.</p>
+						<p>Provides link to documentation of different section of the project.</p>
+						<p>The rest of the documentation can be found in the <code>docs/</code> folder.</p>
+					</section>
+					<section>
+						<h3>FreeRTOS</h3>
+						<p>Git submodule of the official <b>FreeRTOS</b> repository</p>
+					</section>
+					<section>
+						<h3>Demo</h3>
+						<p>Practical examples on how to setup QEMU and FreeRTOS are located in <code>Demo/</code></p>
+					</section>
+					<section>
+						<h3>Projects</h3>
+						<p>Practical Projects on QEMU and FreeRTOS are present in <code>Projects/</code></p>
+					</section>
+					<section>
+						<h3>Custom Memory Management</h3>
+						<p>The folder <code>MemMang/</code> contain a custom memory management library</p>
+						<p>The test for the custom library is present in <code>Test/</code></p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>QEMU and FreeRTOS Tutorial</h2>
+					</section>
+					<section>
+						<p>QEMU is an open-source emulator that allows to run virtual machines and emulate various architectures.</p>
+					</section>
+					<section>
+						<h4>Install QEMU</h4>
+						<pre>
+							<code class="hljs bash" data-trim data-noescape>
+								sudo apt upgrade && sudo apt update
+								sudo apt install qemu-system
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h4>QEMU for 32-bit ARM</h4>
+						<pre>
+							<code class="hljs bash" data-trim data-noescape>
+								qemu-system-arm -machine [machine] -cpu [cpu] -kernel [kernel]
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>FreeRTOS is a Real-Time Operating Sistem</p>
+						<p>The kernel source code should be included in the project to use the OS</p>
+					</section>
+					<section>
+						<p>Essential files to be included</p>
+						<ul>
+							<li><code>task.c</code></li>
+							<li><code>queue.c</code></li>
+							<li><code>list.c</code></li>
+							<li><code>port.c</code></li>
+							<li><code>heap_x.c</code></li>
+							<li><code>FreeRTOSConfig.h</code></li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>Projects</h2>
+				</section>
+
+				<section>
+					<section>
+						<h3>Blink Project</h3>
+					</section>
+					<section>
+						<h4>HAL Library</h4>
+						<p>Hardware Abstraction Layer Library provided by STM</p>
+						<pre>
+							<code class="hljs c" data-trim data-noescape>
+								HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h4>LED Control</h4>
+						<p>The LED is connect to pin nuber 5 of the GPIO A port</p>
+						<img src="../Report/src/images/projects/gpio_register_map.png" alt="gpio register map" width=480>
+					</section>
+					<section>
+						<pre>
+							<code class="hljs c" data-trim data-noescape data-line-numbers="8-9|11-15">
+								void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
+								{
+									uint32_t odr;
+
+									/* Check the parameters */
+									assert_param(IS_GPIO_PIN(GPIO_Pin));
+
+									/* get current Output Data Register value */
+									odr = GPIOx->ODR;
+
+									/* Set selected pins that were at low level, and reset
+									   ones that were high */
+									GPIOx->BSRR =
+										((odr & GPIO_Pin) << GPIO_NUMBER) | (~odr & GPIO_Pin);
+								}
+							</code>
+						</pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>Scheduler Project</h3>
+					</section>
+					<section>
+						<p>Demonstrate how the scheduler works with different configurations</p>
+					</section>
+					<section>
+						<code>ProjectConfig.h</code>
+						<pre>
+							<code class="hljs h" data-trim data-noescape data-line-numbers="10-16">
+								#ifndef PROJECT_CONFIG_H
+								#define PROJECT_CONFIG_H
+
+								/*-----------------------------------------------------------
+								* Configuration parameters for the project.
+								* Change them in order to experiment different behaviours of
+								* the scheduler
+								*----------------------------------------------------------*/
+
+								#define USE_PREEMPTION          1
+								#define PRIORITY_TASK_1         2
+								#define PRIORITY_TASK_2         2
+								#define TASK_1_DELAY_ENABLE     1
+								#define TASK_2_DELAY_ENABLE     1
+								#define TASK_1_DELAY_VALUE      1000
+								#define TASK_2_DELAY_VALUE      1000
+
+								#endif
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>Different configurations:</p>
+						<ul>
+							<li>Preemptive, same priority</li>
+							<li>Non-preemptive, same priority</li>
+							<li>Non-preemptive, same priority, no delay</li>
+							<li>Non-preemptive, different priority, no delay</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>Features Projects</h3>
+					</section>
+					<section>
+						<p>Designed to show how some FreeRTOS features work and how tasks can be synchronized and communicate with each other.</p>
+					</section>
+					<section>
+						<img src="../Report/src/images/projects/project_feature_schema_nobackground.png" alt="features project schema" width="720" style="filter: invert(100);">
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Custom Memory Management</h2>
+					</section>
+					<section>
+						<h3>Realloc</h3>
+					</section>
+					<section>
+						<pre>
+							<code class="hljs c" data-trim data-noescape data-line-numbers="9|69-72|11|63-66|13-23|29-36|40-49|74">
+								void * pvPortRealloc( void * pv, size_t xWantedSize )
+								{
+									BlockLink_t * pxLink;
+									void * pvReturn = NULL;
+									uint8_t * puc = ( uint8_t * ) pv;
+									size_t xBlockSize;
+									size_t xMoveSize;
+
+									if( xWantedSize > 0 )
+									{
+										if( pv != NULL )
+										{
+											/* The memory being reallocated will have an
+											*  BlockLink_t structure immediately before it. */
+											puc -= xHeapStructSize;
+
+											/* This casting is to keep the compiler from issuing
+											*  warnings. */
+											pxLink = ( void * ) puc;
+
+											heapVALIDATE_BLOCK_POINTER( pxLink );
+											configASSERT( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 );
+											configASSERT( pxLink->pxNextFreeBlock == NULL );
+
+											if( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 )
+											{
+												if( pxLink->pxNextFreeBlock == NULL )
+												{
+													/* The size of the block being reallocated */
+													xBlockSize = ( pxLink->xBlockSize
+																	&
+																	~heapBLOCK_ALLOCATED_BITMASK )
+																	- xHeapStructSize;
+
+													/* Allocate new memory block */
+													pvReturn = pvPortMalloc( xWantedSize );
+
+													if( pvReturn != NULL )
+													{
+														/* The size of the memory to copy */
+														xMoveSize = xBlockSize < xWantedSize
+																	?
+																	xBlockSize : xWantedSize;
+
+														/* Copy the memory to the new location */
+														memcpy( pvReturn, pv, xMoveSize );
+
+														/* Free old memory block */
+														vPortFree(pv);
+													}
+												}
+												else
+												{
+													mtCOVERAGE_TEST_MARKER();
+												}
+											}
+											else
+											{
+												mtCOVERAGE_TEST_MARKER();
+											}
+										}
+										else
+										{
+											/* if pv is NULL allocate new memory */
+											return pvPortMalloc( xWantedSize );
+										}
+									}
+									else
+									{
+										/* if xWantedSize is 0 free the memory */
+										vPortFree( pv );
+									}
+
+									return pvReturn;
+								}
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h3>Best-fit and Worst-fit Strategy</h3>
+					</section>
+					<section>
+						<p>Free memory blocks are handle in a linked list</p>
+						<p>FreeRTOS by default use a <em>First-fit</em> approach</p>
+						<p>Traverse the list until a block big enough is found</p>
+					</section>
+					<section>
+						<p>To implement a <em>Best-fit</em> strategy the list has to be traversed entirely, keeping track of the block with the minimum size difference</p>
+					</section>
+					<section>
+						<p>To implement a <em>Worst-fit</em> strategy the list has to be traversed entirely, keeping track of the block with the maximum size difference</p>
+					</section>
+				</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Testing</h2>
+					</section>
+					<section>
+						<h3>Realloc Test</h3>
+					</section>
+					<section>
+						<pre>
+							<code class="hljs txt" data-trim data-noescape data-line-numbers="3-5|7-8|10-21|23|25-38|40-51|67-69|71-72|74-87|89|91-102|104-117|133-135|137-139|141-152|168-170|172-173|175-186|188|190-200|218-222">
+								(qemu) REALLOC UNIT TEST (NUCLEO-F103RB)
+
+								************************************************************
+								*  [TEST]   Reallocate memory to a greater size            *
+								************************************************************
+								
+								---[DEBUG]--- Malloc is called with wantedSize 10 bytes
+								---[DEBUG]--- Buffer initialized with 10 char (a)
+								
+								Initial Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  61 61 61 61 61 61 61 61  aaaaaaaa
+								  0010  61 61 00 00 00 00 00 00  aa......
+								
+								---[DEBUG]--- Memory is reallocated with new size 30
+								
+								New Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005f8
+								  Data pointer  : 0x20000600
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 28 00 00 80  ....(...
+								  0008  61 61 61 61 61 61 61 61  aaaaaaaa
+								  0010  61 61 00 00 00 00 00 00  aa......
+								  0018  00 00 00 00 00 00 00 00  ........
+								  0020  00 00 00 00 00 00 00 00  ........
+								
+								Old Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Old Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  20 06 00 20 18 00 00 00   .. ....
+								  0008  00 00 00 00 00 00 00 00  ........
+								  0010  00 00 00 00 00 00 00 00  ........
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3016
+								  Largest free block in bytes       : 2992
+								  Smallest free block in bytes      : 24
+								  Number of free block              : 2
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 2
+								  Successful frees                  : 1
+								
+								---[DEBUG]--- Used memory is freed
+								
+								************************************************************
+								
+								************************************************************
+								*  [TEST]   Reallocate memory to a smaller size            *
+								************************************************************
+								
+								---[DEBUG]--- Malloc is called with wantedSize 30 bytes
+								---[DEBUG]--- Buffer initialized with 30 char (b)
+								
+								Initial Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 28 00 00 80  ....(...
+								  0008  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0010  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0018  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0020  62 62 62 62 62 62 00 00  bbbbbb..
+								
+								---[DEBUG]--- Memory is reallocated with new size 10
+								
+								New Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000608
+								  Data pointer  : 0x20000610
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0010  62 62 00 00 00 00 00 00  bb......
+								
+								Old Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Old Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  20 06 00 20 28 00 00 00   .. (...
+								  0008  00 00 00 00 00 00 00 00  ........
+								  0010  00 00 00 00 00 00 00 00  ........
+								  0018  00 00 00 00 00 00 00 00  ........
+								  0020  00 00 00 00 00 00 00 00  ........
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3032
+								  Largest free block in bytes       : 2992
+								  Smallest free block in bytes      : 40
+								  Number of free block              : 2
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 4
+								  Successful frees                  : 3
+								
+								---[DEBUG]--- Used memory is freed
+								
+								************************************************************
+								
+								************************************************************
+								*  [TEST]   Allocate memory using realloc                  *
+								************************************************************
+								
+								---[DEBUG]--- Realloc is called with wantedSize 10 bytes and
+											  NULL pointer
+								---[DEBUG]--- Buffer initialized with 10 char (c)
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  63 63 63 63 63 63 63 63  cccccccc
+								  0010  63 63 00 00 00 00 00 00  cc......
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3032
+								  Largest free block in bytes       : 3032
+								  Smallest free block in bytes      : 3032
+								  Number of free block              : 1
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 5
+								  Successful frees                  : 4
+								
+								---[DEBUG]--- Used memory is freed
+								
+								************************************************************
+								
+								************************************************************
+								*  [TEST]   Free memory uising realloc                     *
+								************************************************************
+								
+								---[DEBUG]--- Malloc is called with wantedSize 10
+								---[DEBUG]--- Buffer initialized with 10 char (d)
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  64 64 64 64 64 64 64 64  dddddddd
+								  0010  64 64 00 00 00 00 00 00  dd......
+								
+								---[DEBUG]--- Memory is reallocated with new size 0
+								
+								Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 3056 (bytes)
+								  Data size     : 3048 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  d0 11 00 20 f0 0b 00 00  ... ....
+								  0008  00 00 00 00 00 00 00 00  ........
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3056
+								  Largest free block in bytes       : 3056
+								  Smallest free block in bytes      : 3056
+								  Number of free block              : 1
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 6
+								  Successful frees                  : 6
+								
+								************************************************************
+								
+								
+								
+								
+								
+								 [TEST]
+								
+								-> Reallocation Test                        PASSED
+								-> Allocation Test                          PASSED
+								-> Free Test                                PASSED
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h3>Best-fit Test</h3>
+					</section>
+					<section>
+						<pre>
+							<code class="hljs txt" data-trim data-noescape data-line-numbers="3-5|7-17|19-24|26-31|33-38|40-45|47-52|54-61|68-70">
+								(qemu) MALLOC BEST-FIT UNIT TEST (NUCLEO-F103RB)
+
+								************************************************************
+								*  [TEST]   Best-Fit Allocation of a memory block          *
+								************************************************************
+								
+								---[DEBUG]--- A first block is allocated of size 64bytes
+								
+								---[DEBUG]--- A second block is allocated of size 32bytes
+								
+								---[DEBUG]--- A third block is allocated of size 32bytes
+								
+								---[DEBUG]--- A fourth block is allocated of size 32bytes
+								
+								---[DEBUG]--- Free the first block to leave a hole of 64bytes
+								
+								---[DEBUG]--- Free the third block to leave a hole of 32bytes
+								
+								First Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 72 (bytes)
+								  Data size     : 64 (bytes)
+								
+								Second Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000628
+								  Data pointer  : 0x20000630
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Third Block stats:
+								  Allocated     : No
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Fourth Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000678
+								  Data pointer  : 0x20000680
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Last Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200006a0
+								  Data pointer  : 0x200006a8
+								  Block size    : 2864 (bytes)
+								  Data size     : 2856 (bytes)
+								
+								---[DEBUG]--- Allocate a new block of 32 bytes
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								************************************************************
+								
+								
+								
+								
+								 [TEST]
+								
+								-> Best-Fit Test                            PASSED
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h3>Worst-fit Test</h3>
+					</section>
+					<section>
+						<pre>
+							<code class="hljs txt" data-trim data-noescape data-line-numbers="3-5|7-11|13-18|20-25|27-32|34-41|48-50">
+								(qemu) MALLOC WORST-FIT UNIT TEST (NUCLEO-F103RB)
+
+								************************************************************
+								*  [TEST]   Worst-Fit allocation of a memory block         *
+								************************************************************
+								
+								---[DEBUG]--- A first block is allocated of size 64bytes
+								
+								---[DEBUG]--- A second block is allocated of size 32bytes
+								
+								---[DEBUG]--- Free the first block to leave a hole of 64bytes
+								
+								First Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 72 (bytes)
+								  Data size     : 64 (bytes)
+								
+								Second Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000628
+								  Data pointer  : 0x20000630
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Third Block stats:
+								  Allocated     : No
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 2944 (bytes)
+								  Data size     : 2936 (bytes)
+								
+								---[DEBUG]--- Allocate a new block of 32 bytes
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								************************************************************
+								
+								
+								
+								
+								 [TEST]
+								
+								-> Worst-Fit Test                           PASSED
+							</code>
+						</pre>
+					</section>
+				</section>
+
+				<section>
+					<h2>Thanks!</h2>
+					<ul>
+						<li>s323518 - Francesco Laterza</li>
+						<li>s328764 - Leonardo Rizzo</li>
+						<li>s328743 - Massimo Aresca</li>
+						<li>s322787 - Yann Freddy Dongue Dongmo</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
