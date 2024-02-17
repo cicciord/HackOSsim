@@ -56,7 +56,44 @@
 				</section>
 
 				<section>
-					QEMU and FreeRTOS Tutorial
+					<section>
+						<h2>QEMU and FreeRTOS Tutorial</h2>
+					</section>
+					<section>
+						<p>QEMU is an open-source emulator that allows to run virtual machines and emulate various architectures.</p>
+					</section>
+					<section>
+						<h4>Install QEMU</h4>
+						<pre>
+							<code class="hljs bash" data-trim data-noescape>
+								sudo apt upgrade && sudo apt update
+								sudo apt install qemu-system
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h4>QEMU for 32-bit ARM</h4>
+						<pre>
+							<code class="hljs bash" data-trim data-noescape>
+								qemu-system-arm -machine [machine] -cpu [cpu] -kernel [kernel]
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>FreeRTOS is a Real-Time Operating Sistem</p>
+						<p>The kernel source code should be included in the project to use the OS</p>
+					</section>
+					<section>
+						<p>Essential files to be included</p>
+						<ul>
+							<li><code>task.c</code></li>
+							<li><code>queue.c</code></li>
+							<li><code>list.c</code></li>
+							<li><code>port.c</code></li>
+							<li><code>heap_x.c</code></li>
+							<li><code>FreeRTOSConfig.h</code></li>
+						</ul>
+					</section>
 				</section>
 
 				<section>
@@ -71,7 +108,7 @@
 						<h4>HAL Library</h4>
 						<p>Hardware Abstraction Layer Library provided by STM</p>
 						<pre>
-							<code data-trim data-noescape>
+							<code class="hljs c" data-trim data-noescape>
 								HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 							</code>
 						</pre>
@@ -83,7 +120,7 @@
 					</section>
 					<section>
 						<pre>
-							<code data-trim data-noescape data-line-numbers="8-9|11-15">
+							<code class="hljs c" data-trim data-noescape data-line-numbers="8-9|11-15">
 								void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 								{
 									uint32_t odr;
@@ -114,7 +151,7 @@
 					<section>
 						<code>ProjectConfig.h</code>
 						<pre>
-							<code data-trim data-noescape data-line-numbers="10-16">
+							<code class="hljs h" data-trim data-noescape data-line-numbers="10-16">
 								#ifndef PROJECT_CONFIG_H
 								#define PROJECT_CONFIG_H
 
