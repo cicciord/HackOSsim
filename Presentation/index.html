@@ -302,7 +302,243 @@
 				</section>
 
 				<section>
-					Testing
+					<section>
+						<h2>Testing</h2>
+					</section>
+					<section>
+						<h3>Realloc Test</h3>
+					</section>
+					<section>
+						<pre>
+							<code class="hljs txt" data-trim data-noescape data-line-numbers="3-5|7-8|10-21|23|25-38|40-51|67-69|71-72|74-87|89|91-102|104-117|133-135|137-139|141-152|168-170|172-173|175-186|188|190-200|218-222">
+								(qemu) REALLOC UNIT TEST (NUCLEO-F103RB)
+
+								************************************************************
+								*  [TEST]   Reallocate memory to a greater size            *
+								************************************************************
+								
+								---[DEBUG]--- Malloc is called with wantedSize 10 bytes
+								---[DEBUG]--- Buffer initialized with 10 char (a)
+								
+								Initial Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  61 61 61 61 61 61 61 61  aaaaaaaa
+								  0010  61 61 00 00 00 00 00 00  aa......
+								
+								---[DEBUG]--- Memory is reallocated with new size 30
+								
+								New Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005f8
+								  Data pointer  : 0x20000600
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 28 00 00 80  ....(...
+								  0008  61 61 61 61 61 61 61 61  aaaaaaaa
+								  0010  61 61 00 00 00 00 00 00  aa......
+								  0018  00 00 00 00 00 00 00 00  ........
+								  0020  00 00 00 00 00 00 00 00  ........
+								
+								Old Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Old Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  20 06 00 20 18 00 00 00   .. ....
+								  0008  00 00 00 00 00 00 00 00  ........
+								  0010  00 00 00 00 00 00 00 00  ........
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3016
+								  Largest free block in bytes       : 2992
+								  Smallest free block in bytes      : 24
+								  Number of free block              : 2
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 2
+								  Successful frees                  : 1
+								
+								---[DEBUG]--- Used memory is freed
+								
+								************************************************************
+								
+								************************************************************
+								*  [TEST]   Reallocate memory to a smaller size            *
+								************************************************************
+								
+								---[DEBUG]--- Malloc is called with wantedSize 30 bytes
+								---[DEBUG]--- Buffer initialized with 30 char (b)
+								
+								Initial Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 28 00 00 80  ....(...
+								  0008  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0010  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0018  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0020  62 62 62 62 62 62 00 00  bbbbbb..
+								
+								---[DEBUG]--- Memory is reallocated with new size 10
+								
+								New Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000608
+								  Data pointer  : 0x20000610
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  62 62 62 62 62 62 62 62  bbbbbbbb
+								  0010  62 62 00 00 00 00 00 00  bb......
+								
+								Old Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Old Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  20 06 00 20 28 00 00 00   .. (...
+								  0008  00 00 00 00 00 00 00 00  ........
+								  0010  00 00 00 00 00 00 00 00  ........
+								  0018  00 00 00 00 00 00 00 00  ........
+								  0020  00 00 00 00 00 00 00 00  ........
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3032
+								  Largest free block in bytes       : 2992
+								  Smallest free block in bytes      : 40
+								  Number of free block              : 2
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 4
+								  Successful frees                  : 3
+								
+								---[DEBUG]--- Used memory is freed
+								
+								************************************************************
+								
+								************************************************************
+								*  [TEST]   Allocate memory using realloc                  *
+								************************************************************
+								
+								---[DEBUG]--- Realloc is called with wantedSize 10 bytes and
+											  NULL pointer
+								---[DEBUG]--- Buffer initialized with 10 char (c)
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  63 63 63 63 63 63 63 63  cccccccc
+								  0010  63 63 00 00 00 00 00 00  cc......
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3032
+								  Largest free block in bytes       : 3032
+								  Smallest free block in bytes      : 3032
+								  Number of free block              : 1
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 5
+								  Successful frees                  : 4
+								
+								---[DEBUG]--- Used memory is freed
+								
+								************************************************************
+								
+								************************************************************
+								*  [TEST]   Free memory uising realloc                     *
+								************************************************************
+								
+								---[DEBUG]--- Malloc is called with wantedSize 10
+								---[DEBUG]--- Buffer initialized with 10 char (d)
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 24 (bytes)
+								  Data size     : 16 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  00 00 00 00 18 00 00 80  ........
+								  0008  64 64 64 64 64 64 64 64  dddddddd
+								  0010  64 64 00 00 00 00 00 00  dd......
+								
+								---[DEBUG]--- Memory is reallocated with new size 0
+								
+								Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 3056 (bytes)
+								  Data size     : 3048 (bytes)
+								
+								Block Memory:
+								  offset b0 b1 b2 b3 b4 b5 b6 b7   ASCII
+								  0000  d0 11 00 20 f0 0b 00 00  ... ....
+								  0008  00 00 00 00 00 00 00 00  ........
+								
+								Heap Stats:
+								  Total Heap Size                   : 3072
+								  Available Space in bytes          : 3056
+								  Largest free block in bytes       : 3056
+								  Smallest free block in bytes      : 3056
+								  Number of free block              : 1
+								  Minumum Ever Free Bytes Remaining : 2992
+								  Successful allocations            : 6
+								  Successful frees                  : 6
+								
+								************************************************************
+								
+								
+								
+								
+								
+								 [TEST]
+								
+								-> Reallocation Test                        PASSED
+								-> Allocation Test                          PASSED
+								-> Free Test                                PASSED
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h3>Best-fit Test</h3>
+					</section>
 				</section>
 
 				<section>
