@@ -18,12 +18,6 @@
 			<div class="slides">
 				<section>
 					<h1>HackOSSim Project</h1>
-					<ul>
-						<li>s323518 - Francesco Laterza</li>
-						<li>s328764 - Leonardo Rizzo</li>
-						<li>s328743 - Massimo Aresca</li>
-						<li>s322787 - Yann Freddy Dongue Dongmo</li>
-					</ul>
 				</section>
 
 				<section>
@@ -539,10 +533,151 @@
 					<section>
 						<h3>Best-fit Test</h3>
 					</section>
+					<section>
+						<pre>
+							<code class="hljs txt" data-trim data-noescape data-line-numbers="3-5|7-17|19-24|26-31|33-38|40-45|47-52|54-61|68-70">
+								(qemu) MALLOC BEST-FIT UNIT TEST (NUCLEO-F103RB)
+
+								************************************************************
+								*  [TEST]   Best-Fit Allocation of a memory block          *
+								************************************************************
+								
+								---[DEBUG]--- A first block is allocated of size 64bytes
+								
+								---[DEBUG]--- A second block is allocated of size 32bytes
+								
+								---[DEBUG]--- A third block is allocated of size 32bytes
+								
+								---[DEBUG]--- A fourth block is allocated of size 32bytes
+								
+								---[DEBUG]--- Free the first block to leave a hole of 64bytes
+								
+								---[DEBUG]--- Free the third block to leave a hole of 32bytes
+								
+								First Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 72 (bytes)
+								  Data size     : 64 (bytes)
+								
+								Second Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000628
+								  Data pointer  : 0x20000630
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Third Block stats:
+								  Allocated     : No
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Fourth Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000678
+								  Data pointer  : 0x20000680
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Last Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200006a0
+								  Data pointer  : 0x200006a8
+								  Block size    : 2864 (bytes)
+								  Data size     : 2856 (bytes)
+								
+								---[DEBUG]--- Allocate a new block of 32 bytes
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								************************************************************
+								
+								
+								
+								
+								 [TEST]
+								
+								-> Best-Fit Test                            PASSED
+							</code>
+						</pre>
+					</section>
+					<section>
+						<h3>Worst-fit Test</h3>
+					</section>
+					<section>
+						<pre>
+							<code class="hljs txt" data-trim data-noescape data-line-numbers="3-5|7-11|13-18|20-25|27-32|34-41|48-50">
+								(qemu) MALLOC WORST-FIT UNIT TEST (NUCLEO-F103RB)
+
+								************************************************************
+								*  [TEST]   Worst-Fit allocation of a memory block         *
+								************************************************************
+								
+								---[DEBUG]--- A first block is allocated of size 64bytes
+								
+								---[DEBUG]--- A second block is allocated of size 32bytes
+								
+								---[DEBUG]--- Free the first block to leave a hole of 64bytes
+								
+								First Block stats:
+								  Allocated     : No
+								  Block pointer : 0x200005e0
+								  Data pointer  : 0x200005e8
+								  Block size    : 72 (bytes)
+								  Data size     : 64 (bytes)
+								
+								Second Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000628
+								  Data pointer  : 0x20000630
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								Third Block stats:
+								  Allocated     : No
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 2944 (bytes)
+								  Data size     : 2936 (bytes)
+								
+								---[DEBUG]--- Allocate a new block of 32 bytes
+								
+								Block stats:
+								  Allocated     : Yes
+								  Block pointer : 0x20000650
+								  Data pointer  : 0x20000658
+								  Block size    : 40 (bytes)
+								  Data size     : 32 (bytes)
+								
+								************************************************************
+								
+								
+								
+								
+								 [TEST]
+								
+								-> Worst-Fit Test                           PASSED
+							</code>
+						</pre>
+					</section>
 				</section>
 
 				<section>
-					Thanks!
+					<h2>Thanks!</h2>
+					<ul>
+						<li>s323518 - Francesco Laterza</li>
+						<li>s328764 - Leonardo Rizzo</li>
+						<li>s328743 - Massimo Aresca</li>
+						<li>s322787 - Yann Freddy Dongue Dongmo</li>
+					</ul>
 				</section>
 			</div>
 		</div>
