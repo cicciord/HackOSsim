@@ -1,6 +1,6 @@
 \section{Memory Management}
 
-A custom memory management library has been implemented. The library is a modified version of the \textit{heap\_4.c} provided by FreeRTOS.
+A custom memory management library has been implemented. The library is a modified version of the \texttt{heap\_4.c} provided by FreeRTOS.
 
 In the custom implementation it has been developed the \textit{realloc} function, among with \textit{best-fit} and \textit{worst-fit} allocation strategy.
 
@@ -14,7 +14,7 @@ In the custom implementation it has been developed the \textit{realloc} function
 
     The function takes two arguments, the pointer to the memory block to be reallocated and the new size of the memory block. The function returns a pointer to the reallocated memory block.
 
-    In case a NULL pointer is passed as the first argument, the function behaves as a malloc call. In case the second argument is 0, the function behaves as a free call.
+    In case a \texttt{NULL} pointer is passed as the first argument, the function behaves as a malloc call. In case the second argument is 0, the function behaves as a free call.
     
     In any other case the funcion will try to reallocate the memory block, after checking that the pointer corresponds to a valid memory block.
 
@@ -64,14 +64,7 @@ In the custom implementation it has been developed the \textit{realloc} function
     \subsubsection{Testing}
     The realloc function has been tested on the following cases:
 
-    \begin{itemize}
-        \item Reallocating a block to a larger size
-        \item Reallocating a block to a smaller size
-        \item Reallocating a NULL pointer
-        \item Reallocating a block to size 0
-    \end{itemize}
-
-    In all test the \textit{configHEAP\_CLEAR\_MEMORY\_ON\_FREE} has been set to 1 to clear the memory after a free operation in order to better visualize the memory status.
+    \textbf{Notice}: In all test the \texttt{configHEAP\_CLEAR\_MEMORY\_ON\_FREE} has been set to 1 to clear the memory after a free operation in order to better visualize the memory status.
 
     \paragraph{Reallocating a block to a larger size}
     To test the realloc function a block of memory of 10 bytes is allocated and then reallocated to a size of 30 bytes. The memory status is printed before and after the reallocation.
@@ -250,7 +243,7 @@ In the custom implementation it has been developed the \textit{realloc} function
     \end{outputbox}
 
     \paragraph{Reallocating a NULL pointer}
-    The NULL pointer is reallocated, it can be observed that the memory is allocated to a new address, same as a malloc call.
+    The \texttt{NULL} pointer is reallocated, it can be observed that the memory is allocated to a new address, same as a malloc call.
 
     \begin{outputbox}
     \begin{lstlisting}[language=bash]
@@ -443,8 +436,6 @@ In the custom implementation it has been developed the \textit{realloc} function
 
     \subsubsection{Testing}
     \paragraph{Best-fit} The best-fit strategy has been tested by creating a memory layout with 5 blocks of memory as follow:
-
-    %table with 6 columns and 3 rows (header row and column included)
 
     \begin{table}[h]
     \centering

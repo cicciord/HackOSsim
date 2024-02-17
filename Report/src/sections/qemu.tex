@@ -3,7 +3,7 @@
 QEMU, short for Quick EMUlator, is an open-source emulator that allows users to run virtual machines and emulate various architectures. Originally designed for x86, it has evolved over the years to support a wide range of architectures, including ARM, MIPS, PowerPC, and more. QEMU enables developers to create virtual environments for testing, debugging, and development without the need for physical hardware.
 
 \subsection{The QEMU Packages}
-QEMU packages follow a consistent naming convention to reflect their purpose and target architecture. Typically, package names begin with \textit{qemu} followed by the specific architecture or target type. For user-mode emulation, where QEMU runs specific applications on a different architecture, package names start with \textit{qemu-<arch>} (e.g., \textit{qemu-arm} for ARM architecture). On the other hand, for full system emulation, where QEMU simulates an entire computer system, the package names begin with \textit{qemu-system-<arch>} (e.g., \textit{\textbf{qemu-system-arm}} for ARM architecture).
+QEMU packages follow a consistent naming convention to reflect their purpose and target architecture. Typically, package names begin with \texttt{qemu} followed by the specific architecture or target type. For user-mode emulation, where QEMU runs specific applications on a different architecture, package names start with \texttt{qemu-<arch>} (e.g., \texttt{qemu-arm} for ARM architecture). On the other hand, for full system emulation, where QEMU simulates an entire computer system, the package names begin with \texttt{qemu-system-<arch>} (e.g., \texttt{\textbf{qemu-system-arm}} for ARM architecture).
 
 \paragraph{Install QEMU}
 QEMU can be installed on a Debian-based system using the following command:
@@ -13,7 +13,7 @@ QEMU can be installed on a Debian-based system using the following command:
 For other distributions, the package name and the package manager may vary.
 
 \subsection{Run QEMU}
-In order to emulate a 32-bit ARM system the package \textit{qemu-system-arm} is used. Mandatory arguments are machine, CPU, and kernel image. The machine argument specifies the machine type to emulate, while the CPU argument specifies the CPU model, the kernel image is the kernel to be loaded.
+In order to emulate a 32-bit ARM system the package \texttt{qemu-system-arm} is used. Mandatory arguments are machine, CPU, and kernel image. The machine argument specifies the machine type to emulate, while the CPU argument specifies the CPU model, the kernel image is the kernel to be loaded.
 
 \vspace{\baselineskip}
 
@@ -24,4 +24,4 @@ The following command is used to run QEMU:
                     -kernel kernel.elf
 \end{lstlisting}
 
-In this example the machine is \textit{mps2-an385}, the CPU is \textit{cortex-m3} and the kernel image is \textit{kernel.elf}.
+In this example the machine is \texttt{mps2-an385}, the CPU is \texttt{cortex-m3} and the kernel image is \texttt{kernel.elf}.

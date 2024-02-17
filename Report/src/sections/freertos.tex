@@ -10,19 +10,19 @@ In order to use FreeRTOS, the user must include the FreeRTOS source code in thei
 In the official FreeRTOS project, the file to be included are located in:
 
 \begin{itemize}
-    \item \textit{FreeRTOS/Source/tasks.c}
-    \item \textit{FreeRTOS/Source/queue.c}
-    \item \textit{FreeRTOS/Source/list.c}
-    \item \textit{FreeRTOS/Source/portable/[compiler]/[architecture]/port.c}
-    \item \textit{FreeRTOS/Source/portable/MemMang/heap\_x.c}
+    \item \texttt{FreeRTOS/Source/tasks.c}
+    \item \texttt{FreeRTOS/Source/queue.c}
+    \item \texttt{FreeRTOS/Source/list.c}
+    \item \texttt{FreeRTOS/Source/portable/[compiler]/[architecture]/port.c}
+    \item \texttt{FreeRTOS/Source/portable/MemMang/heap\_x.c}
 \end{itemize}
 
 The following header files paths must be included in the project:
 
 \begin{itemize}
-    \item \textit{FreeRTOS/Source/include}
-    \item \textit{FreeRTOS/Source/portable/[compiler]/[architecture]}
-    \item \textit{[path to FreeRTOSconfig.h]}
+    \item \texttt{FreeRTOS/Source/include}
+    \item \texttt{FreeRTOS/Source/portable/[compiler]/[architecture]}
+    \item \texttt{[path to FreeRTOSconfig.h]}
 \end{itemize}
 
-Every project must include a \textit{FreeRTOSConfig.h} file, which is used to configure the RTOS to the specific needs of the application.
+Every project must include a \texttt{FreeRTOSConfig.h} file, which is used to configure the RTOS to the specific needs of the application.
