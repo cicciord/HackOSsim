@@ -64,8 +64,6 @@ In the custom implementation it has been developed the \textit{realloc} function
     \subsubsection{Testing}
     The realloc function has been tested on the following cases:
 
-    \textbf{Notice}: In all test the \texttt{configHEAP\_CLEAR\_MEMORY\_ON\_FREE} has been set to 1 to clear the memory after a free operation in order to better visualize the memory status.
-
     \paragraph{Reallocating a block to a larger size}
     To test the realloc function a block of memory of 10 bytes is allocated and then reallocated to a size of 30 bytes. The memory status is printed before and after the reallocation.
 
@@ -444,7 +442,7 @@ In the custom implementation it has been developed the \textit{realloc} function
     & \textbf{Block 1} & \textbf{Block 2} & \textbf{Block 3} & \textbf{Block 4} & \textbf{Block 5} \\
     \hline
     \textbf{Allocated} & No & Yes & No & Yes & No \\
-    \textbf{Byte} & 64 & 32 & 32 & 32 & 2856 \\
+    \textbf{Size (Bytes)} & 64 & 32 & 32 & 32 & 2856 \\
     \hline
     \end{tabular}
     \end{table}
@@ -552,7 +550,7 @@ In the custom implementation it has been developed the \textit{realloc} function
     & \textbf{Block 1} & \textbf{Block 2} & \textbf{Block 3} \\
     \hline
     \textbf{Allocated} & No & Yes & No \\
-    \textbf{Byte} & 64 & 32 & 2936 \\
+    \textbf{Size (Bytes)} & 64 & 32 & 2936 \\
     \hline
     \end{tabular}
     \end{table}
