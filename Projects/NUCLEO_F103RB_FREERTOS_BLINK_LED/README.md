@@ -70,7 +70,7 @@ _refer to the tutorial section to the guide on how to install those packages._
 
 ### Run Simulation
 
-To compile the project run this command in the **NUCLEO_F103RB_FREERTOS_BLINK_LED** directory
+To run the project run this command in the **NUCLEO_F103RB_FREERTOS_BLINK_LED** directory
 
 ```bash
 make qemu

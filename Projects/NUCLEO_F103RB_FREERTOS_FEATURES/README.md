@@ -50,7 +50,7 @@ _refer to the [tutorial section](../../docs/qemu.md) to the guide on how to inst
 
 ### Run Simulation
 
-To compile the project run this command in the **NUCLEO_F103RB_FREERTOS_FEATURES** directory
+To run the project run this command in the **NUCLEO_F103RB_FREERTOS_FEATURES** directory
 
 ```bash
 make qemu
