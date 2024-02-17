@@ -2,11 +2,11 @@
 
 This project focuses on the interaction with a microcontroller's hardware, specifically controlling a LED. The goal is to make a LED blink every 1000 milliseconds. To achieve this, we use the HAL (Hardware Abstraction Layer) library provided by STM.
 
-\subsubsection{Hardware Abstraction Layer (HAL)}
+\subsubsection{Hardware Abstraction Layer}
 
 The HAL library is an Application Programming Interface (API) that abstracts the details of the microcontroller's hardware. This means that we can write code that interacts with the hardware in a high-level and portable way.
 
-The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows us to alter the state of a pin. This function takes two arguments: the GPIO port and the pin number. For the LED, the GPIO port is \texttt{GPIOA} (0x40000000) and the pin number is \texttt{GPIO\_PIN\_5} (0x20):
+The HAL library provides a function, \texttt{HAL\_GPIO\_TogglePin}, that allows us to alter the state of a pin. This function takes two arguments: the GPIO port and the pin number. For the LED, the GPIO port is \texttt{GPIOA} (0x40000000) and the pin number is 5 (0x20 is the bitmask):
 
 \subsubsection{Pin Control}
 
