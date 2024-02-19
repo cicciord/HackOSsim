@@ -19,6 +19,6 @@ To control the LED on a NUCLEO-F103RB board, the HAL library needs to write some
     \label{fig:gpio_register_map}
 \end{figure}
 
-To set or reset a pin, the BSSR (Bit Set/Reset Register) is used. The first 16 bits of the BSSR register are used to set, while the last 16 bits are used to reset.
+To set or reset a pin, the BSRR (Bit Set/Reset Register) is used. The first 16 bits of the BSRR register are used to set, while the last 16 bits are used to reset.
 
-To toggle a pin, first the current value is taken from the ODR (Output Data Register) and then the BSSR low register is written with the inverse of the current value, while the BSSR high register is written with the current value.
+To toggle a pin, first the current value is taken from the ODR (Output Data Register) and then the BSRR low register is written with the inverse of the current value, while the BSRR high register is written with the current value.

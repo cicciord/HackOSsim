@@ -13,7 +13,8 @@ ENTRY_POINT := $(TEX_FILE_NAME).tex
 OUTPUT_FILE := $(TEX_FILE_NAME).pdf
 OUTPUT_PDF 	:= $(PDF_FILE_NAME).pdf
 SRC_FILES 	 = $(wildcard $(SRC_DIR)/*.tex)
-SRC_FILES 	+= $(wildcard $(SRC_DIR)/**/*.tex)
+SRC_FILES 	+= $(wildcard $(SRC_DIR)/*/*.tex)
+SRC_FILES 	+= $(wildcard $(SRC_DIR)/*/*/*.tex)
 
 default: $(BUILD_DIR)/$(OUTPUT_FILE)
 
